@@ -1,5 +1,6 @@
 # flake.nix
 {
+  description = "Nix Flake of danielgomezcoder 🏔️";
   inputs = {
     # Nix flake development/structure. Core inputs.
     # home-manager.url = "github:nix-community/home-manager"; # hm-stable
@@ -58,7 +59,6 @@
   outputs = inputs:
     inputs.snowfall-lib.mkFlake {
       inherit inputs;
-
       src = ./.;
 
       snowfall = {
@@ -66,15 +66,6 @@
         meta = {
           name = "my-awesome-flake";
           title = "My Awesome Flake";
-        };
-      };
-
-      deploy.nodes.test = {
-        hostname = "test";
-        interactiveSudo = true;
-        profiles.system = {
-          user = "root";
-          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.test;
         };
       };
 
@@ -89,5 +80,24 @@
           ];
           shellHook = ''alias d="deploy"'';
         };
+
+      deploy.nodes.snowfall-machine = {
+        hostname = "snowfall-machine";
+        sshUser = "root"; # username of the target machine
+        fastConnection = true; # Enable pipelined copying
+        profiles.system = {
+          user = "root"; # The user that the profile will be deployed to
+          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.test-machine;
+        };
+      };
+
+      deploy.nodes.test = {
+        hostname = "test";
+        interactiveSudo = true;
+        profiles.system = {
+          user = "root";
+          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.test;
+        };
+      };
     };
 }

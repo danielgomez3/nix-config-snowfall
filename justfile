@@ -84,9 +84,25 @@ deploy-usb-remote-disk flake network_target block_device:
 
 # 
 #
-# Utility functions
+# utility functions
 # 
 # 
+
+# TODO
+create-system:
+    echo "hello"
+
+# TODO
+create-module:
+    echo "hello"
+
+# 
+#
+# private functions (for internal justfile use)
+# 
+# 
+
+
 
 # TODO: WIP, doesn't work
 [private]
@@ -95,6 +111,7 @@ ssh-keygen username ip_address:
     ssh {{username}}@{{ip_address}} "test -f /home/{{username}}/.ssh/id_ed25519 || ssh-keygen -t ed25519 -b 4096 -C '{{ip_address}} key, danielgomezcoder@gmail.com' -f /home/{{username}}/.ssh/id_ed25519 -N ''"
     # Copy the public key to local authorized_keys (avoid duplicates)
     ssh {{username}}@{{ip_address}} "cat /home/daniel/.ssh/id_ed25519.pub" >> ~/.ssh/authorized_keys
+
 
 
 
