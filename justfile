@@ -1,3 +1,9 @@
+#
+# Global vars
+# 
+
+default := "default"
+
 
 # 
 # Building, evaluation, diagnostic

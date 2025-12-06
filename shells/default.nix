@@ -8,7 +8,7 @@
 with lib;
 with lib.${namespace}; {
   imports = [
-    ./dev.nix
+    ./flake-development/dev.nix
     # Add more shell files here
   ];
 }
