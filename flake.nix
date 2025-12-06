@@ -18,7 +18,7 @@
       src = ./.;
 
       snowfall = {
-        namespace = "mypkgs";
+        namespace = "daniel-namespace";
         meta = {
           name = "my-awesome-flake";
           title = "My Awesome Flake";
