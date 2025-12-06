@@ -14,8 +14,9 @@ with lib.${namespace}; {
   in
     pkgs.mkShell {
       packages = [
-        inputs.deploy-rs.packages.${pkgs.system}.deploy-rs
         pkgs.just
+        pkgs.direnv
+        pkgs.helix
       ];
       shellHook = ''alias d="deploy"'';
     };
