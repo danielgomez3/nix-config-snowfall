@@ -3,6 +3,7 @@
 # 
 
 default := "default"
+currentHost := "`hostname`"
 
 
 # 
@@ -27,7 +28,7 @@ development-shell shell=(default):
 # Deployment
 # 
 
-deploy-rs target=(host):
+deploy-rs target=(currentHost):
       nix run github:serokell/deploy-rs --show-trace -- --skip-checks ".#{{target}}"
 
 deploy-rs-all: 
