@@ -4,6 +4,7 @@
 
 default := "default"
 currentHost := "`hostname`"
+none := ""
 
 
 # 
@@ -24,6 +25,9 @@ eval-configuration host:
 development-shell shell=(default):
     nix develop .#{{shell}}
     
+metadata input=(none):
+    nix flake metadata {{input}}
+
 #
 # Deployment
 # 
@@ -44,4 +48,8 @@ deploy-rs-all:
         | tee "/var/tmp/just-apply_$i.log" >/dev/null &
     done 
     
+
+#
+# Virtualization
+# 
 

@@ -1,9 +1,10 @@
 # flake.nix
 {
   inputs = {
-    # Nix flake development/structure
+    # Nix flake development/structure. Core inputs.
     # home-manager.url = "github:nix-community/home-manager"; # hm-stable
     # home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     mysecrets.url = "git+ssh://git@github.com/danielgomez3/nix-secrets.git?ref=main&shallow=1";
     mysecrets.flake = false;
     snowfall-lib.url = "github:snowfallorg/lib";
@@ -22,7 +23,7 @@
     nix-on-droid.url = "github:nix-community/nix-on-droid/release-24.05";
     nix-on-droid.inputs.nixpkgs.follows = "nixpkgs";
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
-    jovian.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    jovian.inputs.nixpkgs.follows = "nixpkgs";
 
     # Nix flake deployment
     deploy-rs.url = "github:serokell/deploy-rs";
