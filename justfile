@@ -1,5 +1,12 @@
+# #
+# justfile
+# author: danielgomezcoder@gmail.com
+# #
+
+#
 #
 # Global vars
+# 
 # 
 
 default := "default"
@@ -8,7 +15,9 @@ none := ""
 
 
 # 
+# 
 # Building, evaluation, diagnostic
+# 
 # 
 
 build-configuration host:
@@ -18,8 +27,10 @@ eval-configuration host:
     nix eval .#nixosConfigurations.{{host}}.config.system.build.toplevel.drvPath
 
 
+# 
 #
 # Development
+# 
 # 
 
 development-shell shell=(default):
@@ -28,13 +39,18 @@ development-shell shell=(default):
 metadata input=(none):
     nix flake metadata {{input}}
 
+# 
 #
 # Deployment
+# 
 # 
 
 deploy-rs target=(currentHost):
       nix run github:serokell/deploy-rs --show-trace -- --skip-checks ".#{{target}}"
 
+# Deploy all NixOS configurations
+# TODO: this is too much. Snowflake probably already iterate
+# TODO: Look into systemd services for each, and more uniform logging
 deploy-rs-all: 
     #!/usr/bin/env bash
     # TODO: add usb device(s)
@@ -48,8 +64,43 @@ deploy-rs-all:
         | tee "/var/tmp/just-apply_$i.log" >/dev/null &
     done 
     
+# Deploy NixOS on a connected usb
+deploy-usb flake block_device:
+    -sudo wipefs -a {{block_device}}
+    sudo nix run 'github:nix-community/disko/latest#disko-install' -- --extra-files ~/.config/sops/age/keys.txt /root/.config/sops/age/keys.txt --flake '.#{{flake}}' --disk main {{block_device}}
 
+# Deploy NixOS on remote disk. Assumes you have a NixOS usb mounted on a device to 'infect' a hard drive (disk) on that computer.
+deploy-usb-remote-disk flake network_target block_device:
+    ssh root@{{network_target}} nix run 'github:nix-community/disko/latest#disko-install' -- --extra-files /root/.config/sops/age/keys.txt /run/secrets/luks_password --flake 'github:danielgomez3/nix-config/new-main#{{flake}}' --write-efi-boot-entries --disk main {{block_device}}
+
+
+
+
+# 
 #
 # Virtualization
+# 
+# 
+
+# 
+#
+# Utility functions
+# 
+# 
+
+# TODO: WIP, doesn't work
+[private]
+ssh-keygen username ip_address:
+    # Generate SSH key (only if doesn't exist)
+    ssh {{username}}@{{ip_address}} "test -f /home/{{username}}/.ssh/id_ed25519 || ssh-keygen -t ed25519 -b 4096 -C '{{ip_address}} key, danielgomezcoder@gmail.com' -f /home/{{username}}/.ssh/id_ed25519 -N ''"
+    # Copy the public key to local authorized_keys (avoid duplicates)
+    ssh {{username}}@{{ip_address}} "cat /home/daniel/.ssh/id_ed25519.pub" >> ~/.ssh/authorized_keys
+
+
+
+# 
+#
+# _
+# 
 # 
 
