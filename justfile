@@ -20,10 +20,10 @@ none := ""
 # 
 # 
 
-build-configuration host:
+build-configuration host: pre-command-hooks
     nix build .#nixosConfigurations.test.config.system.build.toplevel
 
-eval-configuration host:
+eval-configuration host: pre-command-hooks
     nix eval .#nixosConfigurations.{{host}}.config.system.build.toplevel.drvPath
 
 
@@ -45,19 +45,17 @@ metadata input=(none):
 # 
 # 
 
-deploy-rs target=(currentHost):
+deploy-rs target=(currentHost): pre-command-hooks
       nix run github:serokell/deploy-rs --show-trace -- --skip-checks ".#{{target}}"
 
 # Deploy all NixOS configurations
 # TODO: this is too much. Snowflake probably already iterate
 # TODO: Look into systemd services for each, and more uniform logging
-deploy-rs-all: 
+deploy-rs-all: pre-command-hooks
     #!/usr/bin/env bash
     # TODO: add usb device(s)
     # TODO: make into one-off systemd unit?
     : > /var/tmp/just-apply_all.log
-    just _update_secrets
-    git add --all
     for i in server desktop laptop living-room test-machine nas-server llm-machine hetzner-vps 3D-printer; do
         nohup nix run github:serokell/deploy-rs --show-trace -- --skip-checks ".#$i" \
         | tee -a /var/tmp/just-apply_all.log \
@@ -103,6 +101,10 @@ create-module:
 # 
 
 
+[private]
+pre-command-hooks:
+    nix flake update mysecrets
+    git add -A :/
 
 # TODO: WIP, doesn't work
 [private]
@@ -120,4 +122,6 @@ ssh-keygen username ip_address:
 # _
 # 
 # 
+
+
 
