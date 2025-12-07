@@ -5,14 +5,14 @@
   namespace,
   ...
 }: let
-  cfg = config.profiles.${namespace}.bitwarden;
+  cfg = config.${namespace}.nixos.programs.bitwarden;
   inherit
     (lib)
     mkEnableOption
     mkIf
     ;
 in {
-  options.profiles.${namespace}.bitwarden = {
+  options.${namespace}.nixos.programs.bitwarden = {
     enable = mkEnableOption "Bitwarden password manager";
   };
   config = mkIf cfg.enable {

@@ -9,8 +9,14 @@
     name = "daniel";
   };
 
-  profiles.${namespace} = {
-    cli.spicetify.enable = true;
+  mountain.home = {
+    # bundles = {
+    # };
+    # features = {
+    # };
+    programs = {
+      spicetify.enable = true;
+    };
   };
 
   home.stateVersion = "21.05";

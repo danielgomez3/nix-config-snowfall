@@ -15,10 +15,19 @@ in {
 
   nixpkgs.config.allowUnfree = true;
 
-  profiles.${namespace} = {
-    bitwarden.enable = true;
-    programs.tailscale.enable = true;
+  # profiles.${namespace} = {
+  #   bitwarden.enable = true;
+  #   programs.tailscale.enable = true;
+  # };
+  mountain.nixos = {
+    # bundles = {
+    # };
+    # features = {
+    # };
+    programs = {
+      bitwarden.enable = true;
+    };
   };
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "25.11";
 }

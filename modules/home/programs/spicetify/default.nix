@@ -7,10 +7,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.profiles.${namespace}.cli.spicetify;
+  cfg = config.${namespace}.home.programs.spicetify;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.cli.spicetify = {
+  options.${namespace}.home.programs.spicetify = {
     enable = mkEnableOption "Enable Spicetify";
   };
   config = mkIf cfg.enable {
