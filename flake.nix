@@ -3,9 +3,9 @@
   description = "Daniel's Nix Flake ⛰️";
   inputs = {
     # Nix flake development/structure. Core inputs.
-    # home-manager.url = "github:nix-community/home-manager"; # hm-stable
-    # home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager.url = "github:nix-community/home-manager"; # hm-stable
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     mysecrets.url = "git+ssh://git@github.com/danielgomez3/nix-secrets.git?ref=main&shallow=1";
     mysecrets.flake = false;
     snowfall-lib.url = "github:snowfallorg/lib";
@@ -61,6 +61,21 @@
       inherit inputs;
       src = ./.;
 
+      # # Add modules to all homes.
+      # homes.modules = with inputs; [
+      #   # my-input.homeModules.my-module
+      # ];
+
+      # # Add modules to a specific home.
+      # homes.users."daniel@my-host".modules = with inputs; [
+      #   # my-input.homeModules.my-module
+      # ];
+
+      # # Add modules to a specific home.
+      # homes.users."my-user@my-host".specialArgs = {
+      #   my-custom-value = "my-value";
+      # };
+
       snowfall = {
         # root = ./nix # Tell Snowfall Lib to look in the `./nix/` directory for  Nix files.
         namespace = "mountain"; # Choose a namespace to use for your flake's packages, library, and overlays.
@@ -91,13 +106,13 @@
         };
       };
 
-      deploy.nodes.test-machine = {
-        hostname = "test-machine";
+      deploy.nodes.snowfall-machine = {
+        hostname = "snowfall-machine";
         sshUser = "root"; # username of the target machine
         fastConnection = true; # Enable pipelined copying
         profiles.system = {
           user = "root"; # The user that the profile will be deployed to
-          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.test-machine;
+          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.snowfall-machine;
         };
       };
     };
