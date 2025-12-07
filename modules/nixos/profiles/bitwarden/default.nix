@@ -1,25 +1,24 @@
 {
   config,
   lib,
-  system,
-  inputs,
-  namespace,
   pkgs,
+  namespace,
   ...
 }: let
-  cfg = config.profiles.${namespace}.features.systemd-boot;
-  inherit (lib) mkEnableOption mkIf;
+  cfg = config.profiles.${namespace}.bitwarden;
+  inherit
+    (lib)
+    mkEnableOption
+    mkIf
+    ;
 in {
-  options.profiles.${namespace}.features.systemd-boot = {
-    enable = mkEnableOption "Enable systemd-boot";
+  options.profiles.${namespace}.bitwarden = {
+    enable = mkEnableOption "Bitwarden password manager";
   };
-
   config = mkIf cfg.enable {
-    boot.loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-      systemd-boot.configurationLimit = 3;
-      timeout = lib.mkForce 8;
-    };
+    environment.systemPackages = with pkgs; [
+      (rbw.override {withFzf = true;})
+      pinentry-curses
+    ];
   };
 }
