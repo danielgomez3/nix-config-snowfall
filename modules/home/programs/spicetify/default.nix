@@ -1,10 +1,8 @@
 {
   config,
   lib,
-  system,
-  inputs,
-  namespace,
   pkgs,
+  namespace,
   ...
 }: let
   cfg = config.${namespace}.home.programs.spicetify;

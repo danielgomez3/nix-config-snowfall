@@ -1,14 +1,16 @@
 {
   config,
   lib,
-  pkgs,
+  system,
+  inputs,
   namespace,
+  pkgs,
   ...
 }: let
   cfg = config.profiles.${namespace}.xxmodulenamexx;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.xxmodulenamexx = {
+  options.${namespace}.xxmoduletypexx.xxcategoryxx.xxoptionxx = {
     enable = mkEnableOption "Enable xxmodulenamexx";
   };
   config = mkIf cfg.enable {
