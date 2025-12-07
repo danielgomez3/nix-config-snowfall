@@ -16,12 +16,8 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   profiles.${namespace} = {
-    # systemd-boot.enable = true;
     bitwarden.enable = true;
-  };
-  programs.${namespace} = {
-    # systemd-boot.enable = true;
-    tailscale.enable = true;
+    programs.tailscale.enable = true;
   };
 
   system.stateVersion = "23.11";

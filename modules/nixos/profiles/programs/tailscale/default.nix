@@ -5,10 +5,10 @@
   namespace,
   ...
 }: let
-  cfg = config.programs.${namespace}.tailscale;
+  cfg = config.profiles.${namespace}.programs.tailscale;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.programs.${namespace}.tailscale = {
+  options.profiles.${namespace}.programs.tailscale = {
     enable = mkEnableOption "Tailscale profile";
   };
   config = mkIf cfg.enable {
