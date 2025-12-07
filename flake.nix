@@ -1,6 +1,6 @@
 # flake.nix
 {
-  description = "Nix Flake of danielgomezcoder 🏔️";
+  description = "Daniel's Nix Flake ⛰️";
   inputs = {
     # Nix flake development/structure. Core inputs.
     # home-manager.url = "github:nix-community/home-manager"; # hm-stable
@@ -62,10 +62,11 @@
       src = ./.;
 
       snowfall = {
-        namespace = "daniel-namespace";
+        # root = ./nix # Tell Snowfall Lib to look in the `./nix/` directory for  Nix files.
+        namespace = "mountain"; # Choose a namespace to use for your flake's packages, library, and overlays.
         meta = {
-          name = "my-awesome-flake";
-          title = "My Awesome Flake";
+          name = "daniel-flake"; # A slug to use in documentation when displaying things like file paths.
+          title = "My mind is a mountain"; # A title to show for your flake, typically the name.
         };
       };
 
@@ -81,22 +82,22 @@
           shellHook = ''alias d="deploy"'';
         };
 
-      deploy.nodes.snowfall-machine = {
-        hostname = "snowfall-machine";
-        sshUser = "root"; # username of the target machine
-        fastConnection = true; # Enable pipelined copying
-        profiles.system = {
-          user = "root"; # The user that the profile will be deployed to
-          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.test-machine;
-        };
-      };
-
       deploy.nodes.test = {
         hostname = "test";
         interactiveSudo = true;
         profiles.system = {
           user = "root";
           path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.test;
+        };
+      };
+
+      deploy.nodes.test-machine = {
+        hostname = "test-machine";
+        sshUser = "root"; # username of the target machine
+        fastConnection = true; # Enable pipelined copying
+        profiles.system = {
+          user = "root"; # The user that the profile will be deployed to
+          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.test-machine;
         };
       };
     };
