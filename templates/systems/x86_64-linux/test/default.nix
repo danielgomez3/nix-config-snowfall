@@ -35,18 +35,20 @@ with lib.${namespace}; {
   };
   console.keyMap = "uk";
 
-  users.users.daniel = {
+  users.users.philip = {
     isNormalUser = true;
-    description = "Daniel";
+    description = "Philip";
     extraGroups = ["networkmanager" "wheel"];
   };
+
+  networking.hostName = "test";
 
   services.openssh.enable = true;
 
   nix.settings.trusted-users = ["root" "@wheel"];
   security.sudo.extraRules = [
     {
-      users = ["daniel"];
+      users = ["philip"];
       commands = [
         {
           command = "ALL";
@@ -57,11 +59,4 @@ with lib.${namespace}; {
   ];
 
   system.stateVersion = "24.11";
-
-  # EXTRA:
-  ${namespace} = {
-    # programs.helix.enable = true;
-    # programs.neovim.enable = true;
-    programs.plex.enable = true;
-  };
 }

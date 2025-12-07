@@ -2,29 +2,17 @@
   lib,
   config,
   namespace,
+  pkgs,
   ...
 }:
-with lib;
-with lib.${namespace}; {
-  options.${namespace}.home.programs.neovim = {
-    enable = mkEnableOption "Neovim configuration";
+with lib; {
+  options.${namespace}.programs.neovim.enable = mkEnableOption "Neovim";
 
-    theme = mkOption {
-      type = types.str;
-      default = "catppuccin";
-      description = "Neovim theme";
-    };
-  };
-
-  config = mkIf config.${namespace}.home.programs.neovim.enable {
+  config = mkIf config.${namespace}.programs.neovim.enable {
     programs.neovim = {
       enable = true;
       viAlias = true;
       vimAlias = true;
-
-      extraConfig = ''
-        colorscheme ${config.${namespace}.home.programs.neovim.theme}
-      '';
     };
   };
 }

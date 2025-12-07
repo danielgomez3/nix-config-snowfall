@@ -12,7 +12,6 @@ with lib; {
     services.plex = {
       enable = true;
       openFirewall = true;
-      # user = "philip";
     };
   };
 }
