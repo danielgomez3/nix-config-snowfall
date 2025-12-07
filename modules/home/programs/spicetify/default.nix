@@ -5,10 +5,10 @@
   namespace,
   ...
 }: let
-  cfg = config.${namespace}.home.programs.spicetify;
+  cfg = config.profiles.${namespace}.home.programs.spicetify;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.${namespace}.home.programs.spicetify = {
+  options.profiles.${namespace}.home.programs.spicetify = {
     enable = mkEnableOption "Enable Spicetify";
   };
   config = mkIf cfg.enable {

@@ -19,7 +19,7 @@ in {
   #   bitwarden.enable = true;
   #   programs.tailscale.enable = true;
   # };
-  mountain.nixos = {
+  profiles.${namespace}.nixos = {
     # bundles = {
     # };
     # features = {

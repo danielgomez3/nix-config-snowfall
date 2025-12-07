@@ -9,7 +9,7 @@
     name = "daniel";
   };
 
-  mountain.home = {
+  profiles.${namespace}.home = {
     # bundles = {
     # };
     # features = {
