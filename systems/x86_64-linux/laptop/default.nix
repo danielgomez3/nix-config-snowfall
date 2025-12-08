@@ -25,7 +25,7 @@ in {
     # features = {
     # };
     programs = {
-      zsh.enable = true;
+      bitwarden.enable = true;
     };
   };
 

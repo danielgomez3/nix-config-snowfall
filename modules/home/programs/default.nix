@@ -5,6 +5,6 @@
   ...
 }: {
   imports = [
-    ./zsh.nix
+    # ./zsh.nix
   ];
 }
