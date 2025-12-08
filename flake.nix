@@ -1,6 +1,9 @@
 # flake.nix
 {
   description = "Daniel's Nix Flake ⛰️";
+  nixConfig = {
+    extra-experimental-features = ["nix-command" "flakes" "pipe-operators"];
+  };
   inputs = {
     # Nix flake development/structure. Core inputs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";

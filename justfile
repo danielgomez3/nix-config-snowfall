@@ -160,4 +160,8 @@ ssh-keygen username ip_address:
 # 
 
 
+repl:
+    # nix repl --file repl.nix --extra-experimental-features pipe-operators
+    nix repl --extra-experimental-features pipe-operators
+
 
