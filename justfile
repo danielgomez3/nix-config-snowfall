@@ -3,12 +3,14 @@
 # author: danielgomezcoder@gmail.com
 # #
 
+
 #
 #
 # Global vars
 # 
 # 
 
+# mod main
 default := "default"
 currentHost := "`hostname`"
 none := ""
@@ -19,6 +21,10 @@ none := ""
 # Building, evaluation, diagnostic
 # 
 # 
+
+[default]
+list:
+    just --list
 
 build-configuration host: pre-command-hooks
     nix build .#nixosConfigurations.test.config.system.build.toplevel
@@ -81,7 +87,7 @@ deploy-usb-remote-disk flake network_target block_device:
 # 
 
 # 
-#
+
 # utility functions
 # 
 # 
@@ -91,24 +97,17 @@ create-system:
     echo "hello"
 
 # Category created under /modules/nixos
-create-nixos-category category:
-    mkdir -p ./nixos/{{category}}
-    cp ./templates/extra/category/default.nix ./nixos/modules/{{category}}/
+[private]
+create-category platform category:
+    mkdir -p ./modules/{{platform}}/{{category}}
+    cp ./templates/extra/category/default.nix ./modules/{{platform}}/{{category}}/
 
-# Module created under /modules/nixos/{{category}}
-create-nixos-module category module:
-    mkdir ./nixos/{{category}}/{{module}}
-    cp ./templates/extra/module/nixos/default.nix ./nixos/modules/{{category}}/{{module}}.nix
-    # TODO: sed it up!
+# Module created under /modules/nixos/{{category}}. Create category first!
+create-module platform category module: 
+    mkdir -p ./modules/{{platform}}/{{category}}/{{module}}
+    cp ./templates/extra/module/nixos/default.nix ./modules/{{platform}}/{{category}}/{{module}}.nix
+    t="{{module}}.nix" && sed -i "/];/i ./$t" "./modules/{{platform}}/{{category}}/default.nix"
 
-create-home-module category module:
-    mkdir ./home/{{category}}/{{module}}
-    cp ./templates/extra/module/home/default.nix ./nixos/modules/{{category}}/{{module}}.nix
-    # TODO: sed it up!
-
-# TODO
-create-module:
-    echo "hello"
 
 
 # 
