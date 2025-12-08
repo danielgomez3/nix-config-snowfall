@@ -5,6 +5,5 @@
   ...
 }: {
   imports = [
-    ./systemd-boot.nix
   ];
 }
