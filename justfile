@@ -92,6 +92,17 @@ deploy-usb-remote-disk flake network_target block_device:
 # 
 # 
 
+push:
+    git add -A :/
+    git commit
+    git push
+
+commit:
+    git add -A :/
+    git commit
+
+
+
 # TODO
 create-system:
     echo "hello"
@@ -111,7 +122,9 @@ create-module platform category module:
     sed -i -E 's/\bxxmodulexx\b/{{module}}/g' ./modules/{{platform}}/{{category}}/{{module}}.nix
     sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./modules/{{platform}}/{{category}}/{{module}}.nix
 
-
+[confirm("Are you sure you want to delete this directory?")]
+delete-module module:
+    rm -rf ./modules/{{module}}
 
 
 # 
