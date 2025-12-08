@@ -7,10 +7,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.profiles.${namespace}.xxmodulenamexx;
+  cfg = config.profiles.${namespace}.xxmoduletypexx.xxcategoryxx.xxoptionxx;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.${namespace}.xxmoduletypexx.xxcategoryxx.xxoptionxx = {
+  options.profiles.${namespace}.xxmoduletypexx.xxcategoryxx.xxoptionxx = {
     enable = mkEnableOption "Enable xxmodulenamexx";
   };
   config = mkIf cfg.enable {

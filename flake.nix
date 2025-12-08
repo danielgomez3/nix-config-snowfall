@@ -101,9 +101,12 @@
       snowfall = {
         # root = ./nix # Tell Snowfall Lib to look in the `./nix/` directory for  Nix files.
         namespace = "mountain"; # Choose a namespace to use for your flake's packages, library, and overlays.
+
         meta = {
           name = "daniel-flake"; # A slug to use in documentation when displaying things like file paths.
           title = "My mind is a mountain"; # A title to show for your flake, typically the name.
+          extra_patterns = ["*.nix"];
+          exclude_patterns = ["default.nix"];
         };
       };
 
