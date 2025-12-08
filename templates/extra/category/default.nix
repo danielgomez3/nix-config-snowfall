@@ -4,6 +4,5 @@
   namespace,
   ...
 }: {
-  imports = [
-  ];
+  imports = lib.${namespace}.autoImportNamedFiles ./.;
 }

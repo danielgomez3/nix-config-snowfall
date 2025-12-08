@@ -4,7 +4,5 @@
   namespace,
   ...
 }: {
-  imports = [
-./plex.nix
-  ];
+  imports = lib.${namespace}.autoImportNamedFiles ./.;
 }

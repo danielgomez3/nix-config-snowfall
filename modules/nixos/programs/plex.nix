@@ -18,7 +18,7 @@ in {
     services.plex = {
       enable = true;
       openFirewall = true;
-      # user = "${config.myVars.username}";
+      user = "${config.myVars.username}";
       # dataDir = "/home/${username}/plex";
     };
   };

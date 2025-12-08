@@ -88,15 +88,24 @@
       #   # my-inputs.overlays.my-overlay
       # ];
 
+      # # Add a custom value to `specialArgs`.
+      # systems.hosts.laptop.specialArgs = {
+      #   username = "daniel";
+      # };
+
       # Add modules to all NixOS systems.
-      systems.modules.nixos = with inputs; [
-        # my-input.nixosModules.my-module
-      ];
+      # systems.modules.nixos = with inputs; [
+      # ];
+
+      # specialArgs = {
+      #   username = "daniel";
+      # };
 
       # # Add modules to all Darwin systems.
-      # systems.modules.darwin = with inputs; [
-      #   # my-input.darwinModules.my-module
-      # ];
+      systems.modules.darwin = with inputs; [
+        nix-darwin.darwinModules.home-manager
+        nix-homebrew.darwinModules.nix-homebrew
+      ];
 
       snowfall = {
         # root = ./nix # Tell Snowfall Lib to look in the `./nix/` directory for  Nix files.

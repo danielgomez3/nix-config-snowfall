@@ -13,6 +13,12 @@ in {
     # {config.facter.reportPath = ./facter.json;}
   ];
 
+  myVars.username = "daniel";
+  users.users.${config.myVars.username} = {
+    isNormalUser = true;
+    extraGroups = ["wheel"];
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   # profiles.${namespace} = {

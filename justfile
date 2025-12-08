@@ -32,9 +32,9 @@ build-configuration host: pre-command-hooks
 eval-configuration host: pre-command-hooks
     nix eval .#nixosConfigurations.{{host}}.config.system.build.toplevel.drvPath
 
-# observe built closure for a package, etc.
-query-built-configuration package:
-    nix-store --query --requisites result | grep {{package}}
+# observe built closure for a package, etc. Requires build-configuration
+query-configuration package:
+    nix-store --query --requisites ./result | grep {{package}}
 
 # 
 #
@@ -117,6 +117,7 @@ create-category platform category:
     cp ./templates/extra/category/default.nix ./modules/{{platform}}/{{category}}/
 
 # Module created under /modules/nixos/{{category}}. Create category first!
+[confirm("are you sure you want to nuke a dir?")]
 create-module platform category module: 
     cp ./templates/extra/module/default.nix ./modules/{{platform}}/{{category}}/{{module}}.nix
     t="{{module}}.nix" && sed -i "/];/i ./$t" "./modules/{{platform}}/{{category}}/default.nix"

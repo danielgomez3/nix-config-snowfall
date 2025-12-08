@@ -1,0 +1,9 @@
+{
+  lib,
+  pkgs,
+  namespace,
+  ...
+}: {
+  imports = [
+  ];
+}
