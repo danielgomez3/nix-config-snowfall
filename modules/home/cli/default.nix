@@ -5,6 +5,6 @@
   ...
 }: {
   imports = [
-    ./spicetify.nix
+./zsh.nix
   ];
 }

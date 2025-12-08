@@ -5,6 +5,6 @@
   ...
 }: {
   imports = [
-    ./bitwarden.nix
+./plex.nix
   ];
 }

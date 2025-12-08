@@ -24,8 +24,8 @@ in {
     # };
     # features = {
     # };
-    programs = {
-      bitwarden.enable = true;
+    cli = {
+      plex.enable = true;
     };
   };
 
