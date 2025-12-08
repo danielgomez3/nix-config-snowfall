@@ -1,4 +1,4 @@
-# xxmodulenamexx.nix
+# zsh.nix
 {
   config,
   lib,
@@ -8,10 +8,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.profiles.${namespace}.home.cli.zsh;
+  cfg = config.profiles.${namespace}.my.home.programs.zsh;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.home.cli.zsh = {
+  options.profiles.${namespace}.my.home.programs.zsh = {
     enable = mkEnableOption "Enable custom 'home' module 'zsh' for namespace '${namespace}'";
   };
   config = mkIf cfg.enable {

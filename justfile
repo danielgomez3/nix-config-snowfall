@@ -32,6 +32,9 @@ build-configuration host: pre-command-hooks
 eval-configuration host: pre-command-hooks
     nix eval .#nixosConfigurations.{{host}}.config.system.build.toplevel.drvPath
 
+# observe built closure for a package, etc.
+query-built-configuration package:
+    nix-store --query --requisites result | grep {{package}}
 
 # 
 #
@@ -122,8 +125,8 @@ create-module platform category module:
     sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./modules/{{platform}}/{{category}}/{{module}}.nix
 
 [confirm("Are you sure you want to delete this directory?")]
-delete-module module:
-    rm -rf ./modules/{{module}}
+delete-category platform category:
+    rm -rf ./modules/{{platform}}/{{category}}
 
 
 # 

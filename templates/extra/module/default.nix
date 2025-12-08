@@ -1,4 +1,4 @@
-# xxmodulenamexx.nix
+# xxmodulexx.nix
 {
   config,
   lib,
@@ -8,10 +8,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.profiles.${namespace}.xxplatformxx.xxcategoryxx.xxmodulexx;
+  cfg = config.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.xxplatformxx.xxcategoryxx.xxmodulexx = {
+  options.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx = {
     enable = mkEnableOption "Enable custom 'xxplatformxx' module 'xxmodulexx' for namespace '${namespace}'";
   };
   config =

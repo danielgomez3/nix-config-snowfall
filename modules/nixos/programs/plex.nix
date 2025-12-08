@@ -1,4 +1,4 @@
-# xxmodulenamexx.nix
+# plex.nix
 {
   config,
   lib,
@@ -8,10 +8,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.profiles.${namespace}.nixos.cli.plex;
+  cfg = config.profiles.${namespace}.my.nixos.programs.plex;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.nixos.cli.plex = {
+  options.profiles.${namespace}.my.nixos.programs.plex = {
     enable = mkEnableOption "Enable custom 'nixos' module 'plex' for namespace '${namespace}'";
   };
   config = mkIf cfg.enable {

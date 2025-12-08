@@ -19,12 +19,12 @@ in {
   #   bitwarden.enable = true;
   #   programs.tailscale.enable = true;
   # };
-  profiles.${namespace}.nixos = {
+  profiles.${namespace}.my.nixos = {
     # bundles = {
     # };
     # features = {
     # };
-    cli = {
+    programs = {
       plex.enable = true;
     };
   };

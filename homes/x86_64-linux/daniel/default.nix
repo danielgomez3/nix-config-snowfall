@@ -1,3 +1,5 @@
+# x86_64-linux/daniel/default.nix
+# NOTE: all nix machines with username 'daniel' will inherit this.
 {
   lib,
   pkgs,
@@ -9,12 +11,12 @@
     name = "daniel";
   };
 
-  profiles.${namespace}.home = {
+  profiles.${namespace}.my.home = {
     # bundles = {
     # };
     # features = {
     # };
-    cli = {
+    programs = {
       zsh.enable = true;
     };
   };
