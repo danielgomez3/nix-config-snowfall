@@ -18,6 +18,7 @@
     # };
     programs = {
       zsh.enable = true;
+      helix.enable = true;
     };
   };
 

@@ -112,12 +112,12 @@ create-system:
 
 # Category created under /modules/nixos
 [private]
+[confirm("are you sure you want to nuke this directory?")]
 create-category platform category:
     mkdir -p ./modules/{{platform}}/{{category}}
     cp ./templates/extra/category/default.nix ./modules/{{platform}}/{{category}}/
 
 # Module created under /modules/nixos/{{category}}. Create category first!
-[confirm("are you sure you want to nuke a dir?")]
 create-module platform category module: 
     cp ./templates/extra/module/default.nix ./modules/{{platform}}/{{category}}/{{module}}.nix
     t="{{module}}.nix" && sed -i "/];/i ./$t" "./modules/{{platform}}/{{category}}/default.nix"
@@ -125,7 +125,7 @@ create-module platform category module:
     sed -i -E 's/\bxxmodulexx\b/{{module}}/g' ./modules/{{platform}}/{{category}}/{{module}}.nix
     sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./modules/{{platform}}/{{category}}/{{module}}.nix
 
-[confirm("Are you sure you want to delete this directory?")]
+[confirm("Are you sure you want to nuke this directory?")]
 delete-category platform category:
     rm -rf ./modules/{{platform}}/{{category}}
 
