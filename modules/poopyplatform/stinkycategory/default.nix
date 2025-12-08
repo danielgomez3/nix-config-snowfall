@@ -6,5 +6,9 @@
 }: {
   imports = [
     ./stankmodule.nix
+./stankmodule.nix
+./stankmodule.nix
+./stankmodule.nix
+./stankmodule.nix
   ];
 }

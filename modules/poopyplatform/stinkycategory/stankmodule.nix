@@ -8,11 +8,11 @@
   pkgs,
   ...
 }: let
-  cfg = config.profiles.${namespace}.nixos.xxcategoryxx.xxmodulexx;
+  cfg = config.profiles.${namespace}.poopyplatform.stinkycategory.stankmodule;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.nixos.xxcategoryxx.xxmodulexx = {
-    enable = mkEnableOption "Enable custom nixos module: xxmodulenamexx";
+  options.profiles.${namespace}.poopyplatform.stinkycategory.stankmodule = {
+    enable = mkEnableOption "Enable custom poopyplatform module: stankmodule";
   };
   config =
     mkIf cfg.enable {
