@@ -4,7 +4,17 @@
 - Make shell sourced by direnv
 - enable programs.ssh.forwardX11 to have clipboard on headless server connect to desktop envs.
 
-# Module Layout
+# Documentation
+
+## Using my template
+
+<!-- TODO -->
+
+```nix
+nix flake init -t github:<>/templates#genericUser
+```
+
+## Module Layout
 
  Program configuration (like .dotfiles)
 options.${namespace}.programs.headscale.enable = true;

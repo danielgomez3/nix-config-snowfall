@@ -90,9 +90,26 @@ deploy-usb-remote-disk flake network_target block_device:
 create-system:
     echo "hello"
 
+# Category created under /modules/nixos
+create-nixos-category category:
+    mkdir -p ./nixos/{{category}}
+    cp ./templates/extra/category/default.nix ./nixos/modules/{{category}}/
+
+# Module created under /modules/nixos/{{category}}
+create-nixos-module category module:
+    mkdir ./nixos/{{category}}/{{module}}
+    cp ./templates/extra/module/nixos/default.nix ./nixos/modules/{{category}}/{{module}}.nix
+    # TODO: sed it up!
+
+create-home-module category module:
+    mkdir ./home/{{category}}/{{module}}
+    cp ./templates/extra/module/home/default.nix ./nixos/modules/{{category}}/{{module}}.nix
+    # TODO: sed it up!
+
 # TODO
 create-module:
     echo "hello"
+
 
 # 
 #
