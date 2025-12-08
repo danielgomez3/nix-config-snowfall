@@ -15,7 +15,7 @@
     # features = {
     # };
     programs = {
-      zsh.enable = true;
+      spicetify.enable = true;
     };
   };
 
