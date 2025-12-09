@@ -5,7 +5,9 @@
   pkgs,
   namespace,
   ...
-}: {
+}: let
+  inherit (lib) enabled;
+in {
   snowfallorg.user = {
     enable = true;
     name = "daniel";
@@ -13,14 +15,11 @@
 
   profiles.${namespace}.my.home = {
     bundles = {
+      core-minimal-home.enable = true;
     };
     # features = {
     # };
-    programs = {
-      zsh.enable = true;
-      # helix.enable = true;
-    };
+    # programs = {
+    # };
   };
-
-  home.stateVersion = "21.05";
 }

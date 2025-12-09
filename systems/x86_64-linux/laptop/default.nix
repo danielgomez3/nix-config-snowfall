@@ -14,7 +14,9 @@ in {
   ];
 
   myVars.username = "daniel";
-  users.users.${config.myVars.username} = {
+  myVars.hostname = "laptop";
+
+  users.users.${"daniel"} = {
     isNormalUser = true;
     extraGroups = ["wheel"];
   };
@@ -25,7 +27,8 @@ in {
   # };
   profiles.${namespace}.my.nixos = {
     bundles = {
-      desktop-environment.enable = true;
+      core-minimal-nixos.enable = true;
+      gui-desktop-environment.enable = true;
     };
     # features = {
     # };
@@ -33,6 +36,4 @@ in {
     #   plex.enable = true;
     # };
   };
-
-  system.stateVersion = "25.11";
 }
