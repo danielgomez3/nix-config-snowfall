@@ -12,8 +12,8 @@
   };
 
   profiles.${namespace}.my.home = {
-    # bundles = {
-    # };
+    bundles = {
+    };
     # features = {
     # };
     programs = {

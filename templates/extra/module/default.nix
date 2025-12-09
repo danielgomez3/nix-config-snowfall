@@ -1,18 +1,22 @@
 # xxmodulexx.nix
 {
-  config,
   lib,
-  system,
+  pkgs,
   inputs,
   namespace,
-  pkgs,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
 }: let
   cfg = config.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx;
   inherit (lib) mkEnableOption mkIf;
 in {
   options.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx = {
-    enable = mkEnableOption "Enable custom 'xxplatformxx' module 'xxmodulexx' for namespace '${namespace}'";
+    enable = mkEnableOption "Enable custom 'xxplatformxx', module 'xxmodulexx', for namespace '${namespace}'.";
   };
   config =
     mkIf cfg.enable {
