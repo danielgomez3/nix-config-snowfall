@@ -1,1 +1,8 @@
 /result
+*.qcow2
+*.raw
+*.iso
+*.vmdk
+*.vdi
+result* # Also ignore nix build results
+*.qcow2.zst # Compressed versions

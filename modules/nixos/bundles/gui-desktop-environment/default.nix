@@ -23,6 +23,7 @@ in {
     profiles.${namespace}.my.nixos = {
       programs = {
         gnome = enabled;
+        firefox = enabled;
       };
     };
   };

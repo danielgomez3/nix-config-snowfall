@@ -32,7 +32,7 @@ show:
     nix flake show --all-systems
 
 build-configuration host: pre-command-hooks
-    nix build .#nixosConfigurations.test.config.system.build.toplevel
+    nix build .#nixosConfigurations.{{host}}.config.system.build.toplevel
 
 eval-configuration host: pre-command-hooks
     nix eval .#nixosConfigurations.{{host}}.config.system.build.toplevel.drvPath
