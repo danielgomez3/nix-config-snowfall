@@ -29,9 +29,9 @@ in {
     };
     # features = {
     # };
-    programs = {
-      plex.enable = true;
-    };
+    # programs = {
+    #   plex.enable = true;
+    # };
   };
 
   system.stateVersion = "25.11";

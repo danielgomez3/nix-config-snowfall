@@ -120,6 +120,7 @@ create-category platform category:
 
 # Module created under /modules/nixos/{{category}}. Create category first!
 create-module platform category module: 
+    mkdir -p ./modules/{{platform}}/{{category}}/{{module}}/
     cp ./templates/extra/module/default.nix ./modules/{{platform}}/{{category}}/{{module}}/default.nix
     t="{{module}}/default.nix" && sed -i "/];/i ./$t" "./modules/{{platform}}/{{category}}/{{module}}/default.nix"
     sed -i -E 's/\bxxcategoryxx\b/{{category}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix

@@ -16,26 +16,9 @@
   inherit (lib) mkEnableOption mkIf;
 in {
   options.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx = {
-    enable = mkEnableOption "Enable custom 'xxplatformxx', module 'xxmodulexx', for namespace '${namespace}'.";
+    enable = mkEnableOption "Enable custom module for platform 'xxplatformxx', of category 'xxcategoryxx', of module 'xxmodulexx', for namespace '${namespace}'.";
   };
-  config = mkIf cfg.enable {
-    # profiles.${namespace}.my = {
-    #   nixos = {
-    #     bundles = {
-    #     };
-    #     features = {
-    #     };
-    #     programs = {
-    #     };
-    #   };
-    #   home = {
-    #     bundles = {
-    #     };
-    #     features = {
-    #     };
-    #     programs = {
-    #     };
-    #   };
-    # };
-  };
+  config =
+    mkIf cfg.enable {
+    };
 }
