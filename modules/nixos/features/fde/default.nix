@@ -1,24 +1,41 @@
 # fde.nix
-{...}: {
-  # boot.initrd.luks.devices = {
-  #   cryptroot = {
-  #     device = "/dev/disk/by-partlabel/luks";
-  #     allowDiscards = true;
-  #   };
-  # };
-
-  # This complements using zram, putting /tmp on RAM
-  boot = {
-    tmp = {
-      useTmpfs = true;
-      tmpfsSize = "50%";
-    };
+{
+  lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
+  ...
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.features.fde;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.features.fde = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'fde', for namespace '${namespace}'.";
   };
-
-  # Enable autoScrub for btrfs
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "weekly";
-    fileSystems = ["/"];
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
   };
 }

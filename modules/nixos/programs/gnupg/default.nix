@@ -1,14 +1,41 @@
-# gnpupg.nix
+# gnupg.nix
 {
+  lib,
   pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
   config,
   ...
-}: {
-  # services.pcscd.enable = true;
-  # home.packages = [pkgs.gnupg];
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   # pinentryPackage = pkgs.pinentry-gnome3;
-  #   enableSSHSupport = true;
-  # };
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.programs.gnupg;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.programs.gnupg = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'gnupg', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
+  };
 }

@@ -1,16 +1,41 @@
 # zram.nix
-# https://saylesss88.github.io/installation/enc/enc_install.html?highlight=luks#what-does-luks-encryption-protect
 {
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
   config,
   ...
 }: let
+  cfg = config.profiles.${namespace}.my.nixos.features.zram;
+  inherit (lib) mkEnableOption mkIf;
 in {
-  zramSwap = {
-    enable = true;
-    # one of "lzo", "lz4", "zstd"
-    algorithm = "zstd";
-    priority = 5;
-    memoryPercent = 50;
+  options.profiles.${namespace}.my.nixos.features.zram = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'zram', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
   };
 }

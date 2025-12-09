@@ -1,17 +1,41 @@
-# TODO: ignore 'result'?
+# fzf.nix
 {
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
-}: {
-  programs.fzf = {
-    enable = true;
-    enableBashIntegration = false;
-    enableZshIntegration = true;
-    # Fzf widgets
-    # defaultCommand = "${lib.getExe pkgs.fd} --strip-cwd-prefix=always --exclude .git";
-    changeDirWidgetCommand = "${lib.getExe pkgs.fd} --type d --follow --hidden --exclude '.*' --exclude .git --strip-cwd-prefix=always --base-directory .";
-    # fileWidgetCommand = "${lib.getExe pkgs.fd} --type f --follow --exclude .git --strip-cwd-prefix=always --base-directory ../";
-    fileWidgetCommand = "${lib.getExe pkgs.fd} --type f --follow --exclude .git --strip-cwd-prefix=always --base-directory .";
+}: let
+  cfg = config.profiles.${namespace}.my.home.programs.fzf;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.home.programs.fzf = {
+    enable = mkEnableOption "Enable custom 'home', module 'fzf', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
   };
 }

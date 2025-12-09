@@ -1,22 +1,41 @@
 # btop.nix
 {
+  lib,
   pkgs,
-  osConfig,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
 }: let
-  btopPackage =
-    if osConfig.myVars.isAMD
-    then pkgs.btop-rocm
-    else if osConfig.myVars.isNVIDIA
-    then pkgs.btop-cuda
-    else pkgs.btop; # else if osConfig.myVars.btop
+  cfg = config.profiles.${namespace}.my.home.programs.btop;
+  inherit (lib) mkEnableOption mkIf;
 in {
-  programs.btop = {
-    enable = true;
-    package = btopPackage;
-    settings = {
-      show_gpu = true;
-      gpu_support = true;
-    };
+  options.profiles.${namespace}.my.home.programs.btop = {
+    enable = mkEnableOption "Enable custom 'home', module 'btop', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
   };
 }
