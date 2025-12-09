@@ -210,14 +210,19 @@ run-configuration-in-vm-headless host: pre-command-hooks
     
 
 # Run any config in a headless vm as a background web service to view via noVNC.
+# 8GB RAM, 8 CPU cores, hardware virtualization, fast virtio gpu.
 run-configuration-in-vm-gui host: pre-command-hooks
     nixos-rebuild build-vm --flake .#{{host}}
-    ./result/bin/run-{{host}}-vm -vnc :1 & \
-    nix run nixpkgs#novnc -- --vnc localhost:5901 
+    ./result/bin/run-{{host}}-vm -vnc :1 \
+    -m 8192 -smp 8 -enable-kvm -cpu host -vga virtio &
+    just _run-novnc
   
 run-isoConfigurations host:
     nix build .#install-isoConfigurations.{{host}}
     nix run nixpkgs#qemu -- -cdrom result/iso/*.iso -m 4096 -enable-kvm -vnc :1 & \
+    _run-novnc:
+
+_run-novnc:
     nix run nixpkgs#novnc -- --vnc localhost:5901 
 
 
