@@ -113,11 +113,21 @@ commit:
 
 # TODO
 create-system platform host username:
+    echo "creating nixos system.."
     mkdir -p ./systems/{{platform}}/{{host}}/
-    cp ./extra/my-nix-mold-files/host/default.nix ./systems/{{platform}}/default.nix
-    sed -i -E 's/\bxxhostxx\b/{{host}}/g' ./systems/{{platform}}/default.nix
-    sed -i -E 's/\bxxusernamexx\b/{{username}}/g' ./systems/{{platform}}/default.nix
-    sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./systems/{{platform}}/default.nix
+    cp ./extra/my-nix-mold-files/host/default.nix ./systems/{{platform}}/{{host}}/default.nix
+    cp ./extra/my-nix-mold-files/host/hardware-configuration.nix ./systems/{{platform}}/{{host}}/hardware-configuration.nix
+    cp ./extra/my-nix-mold-files/host/default.nix ./systems/{{platform}}/{{host}}/default.nix
+    sed -i -E 's/\bxxhostxx\b/{{host}}/g' ./systems/{{platform}}/{{host}}/default.nix
+    sed -i -E 's/\bxxusernamexx\b/{{username}}/g' ./systems/{{platform}}/{{host}}/default.nix
+    sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./systems/{{platform}}/{{host}}/default.nix
+
+    echo "creating its home module.."
+    mkdir -p ./homes/{{platform}}/{{username}}@{{host}}/
+    cp ./extra/my-nix-mold-files/home/default.nix ./homes/{{platform}}/{{username}}@{{host}}/default.nix
+    sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./homes/{{platform}}/{{username}}@{{host}}/default.nix
+    sed -i -E 's/\bxxusernamexx\b/{{username}}/g' ./homes/{{platform}}/{{username}}@{{host}}/default.nix
+
 
 
 

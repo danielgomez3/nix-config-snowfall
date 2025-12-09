@@ -1,4 +1,4 @@
-# x86_64-linux/daniel@laptop/default.nix
+# x86_64-linux/daniel/default.nix
 {
   lib,
   pkgs,
@@ -17,8 +17,6 @@ in {
       core-minimal-home.enable = true;
     };
     features = {
-      # gui-desktop-environment = false; # For non-nix machines only!
-      gui-desktop-apps = enabled;
     };
     programs = {
     };

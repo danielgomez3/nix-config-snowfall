@@ -1,4 +1,4 @@
-# x86_64-linux/daniel@laptop/default.nix
+# xxplatformxx/xxusernamexx/default.nix
 {
   lib,
   pkgs,
@@ -9,7 +9,7 @@
 in {
   snowfallorg.user = {
     enable = true;
-    name = "daniel";
+    name = "xxusernamexx";
   };
 
   profiles.${namespace}.my.home = {
@@ -17,8 +17,6 @@ in {
       core-minimal-home.enable = true;
     };
     features = {
-      # gui-desktop-environment = false; # For non-nix machines only!
-      gui-desktop-apps = enabled;
     };
     programs = {
     };
