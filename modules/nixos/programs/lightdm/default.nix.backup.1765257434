@@ -19,10 +19,6 @@ in {
     enable = mkEnableOption "Enable custom 'nixos', module 'lightdm', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-
-  services.xserver.displayManager.lightdm = {
-    enable = true;
-  };
     # profiles.${namespace}.my = {
     #   nixos = {
     #     bundles = {

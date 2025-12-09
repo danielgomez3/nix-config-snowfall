@@ -1,4 +1,4 @@
-# lightdm.nix
+# vaultwarden.nix
 {
   lib,
   pkgs,
@@ -12,17 +12,13 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.nixos.programs.lightdm;
+  cfg = config.profiles.${namespace}.my.nixos.programs.vaultwarden;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.my.nixos.programs.lightdm = {
-    enable = mkEnableOption "Enable custom 'nixos', module 'lightdm', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.nixos.programs.vaultwarden = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'vaultwarden', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-
-  services.xserver.displayManager.lightdm = {
-    enable = true;
-  };
     # profiles.${namespace}.my = {
     #   nixos = {
     #     bundles = {

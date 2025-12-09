@@ -30,26 +30,6 @@ in {
     enable = mkEnableOption "Enable custom 'nixos', module 'wireguard-client', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-
-  networking.firewall = {
-    allowedUDPPorts = [51820];
-    allowedTCPPorts = [ports.mc 8787]; # Minecraft port
-  };
-  networking.wireguard.interfaces.wg0 = {
-    ips = ["${wgIP}/24"];
-    listenPort = 51820;
-    privateKeyFile = config.sops.secrets."wireguard-private-key-file/${hostname}".path;
-    peers = [
-      {
-        # VPS's public key
-        publicKey = "qXKphez8ANTJVcYEdk8rAPc6ypif1WzNjNEm369YPQo="; # This can stay the same across all clients!
-        allowedIPs = ["10.100.0.0/24"]; # ONLY route traffic meant for the VPS subnet through WireGuard.
-        # Your VPS public IP and port
-        endpoint = "danielgomezcoder.org:51820";
-        persistentKeepalive = 25;
-      }
-    ];
-  };
     # profiles.${namespace}.my = {
     #   nixos = {
     #     bundles = {

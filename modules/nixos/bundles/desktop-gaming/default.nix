@@ -19,21 +19,24 @@ in {
     enable = mkEnableOption "Enable custom 'nixos', module 'desktop-gaming', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    # profiles.${namespace}.my.home = {
-    #   bundles = {
-    #   };
-    #   features = {
-    #   };
-    #   programs = {
-    #   };
-    # };
-    # profiles.${namespace}.my.nixos = {
-    #   bundles = {
-    #   };
-    #   features = {
-    #   };
-    #   programs = {
-    #   };
-    # };
+    profiles.${namespace}.my.nixos = {
+      bundles = {
+      };
+      features = {
+        minecraft-client.enable = true;
+      };
+      programs = {
+        steam.enable = true;
+      };
+    };
+    profiles.${namespace}.my.home = {
+      bundles = {
+      };
+      features = {
+      };
+      programs = {
+        mangohud.enable = true;
+      };
+    };
   };
 }

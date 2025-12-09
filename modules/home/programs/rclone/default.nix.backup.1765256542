@@ -1,4 +1,4 @@
-# lightdm.nix
+# rclone.nix
 {
   lib,
   pkgs,
@@ -12,17 +12,13 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.nixos.programs.lightdm;
+  cfg = config.profiles.${namespace}.my.home.programs.rclone;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.my.nixos.programs.lightdm = {
-    enable = mkEnableOption "Enable custom 'nixos', module 'lightdm', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.home.programs.rclone = {
+    enable = mkEnableOption "Enable custom 'home', module 'rclone', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-
-  services.xserver.displayManager.lightdm = {
-    enable = true;
-  };
     # profiles.${namespace}.my = {
     #   nixos = {
     #     bundles = {

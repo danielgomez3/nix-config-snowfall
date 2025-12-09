@@ -19,21 +19,23 @@ in {
     enable = mkEnableOption "Enable custom 'nixos', module 'cosmic-desktop', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    # profiles.${namespace}.my.home = {
-    #   bundles = {
-    #   };
-    #   features = {
-    #   };
-    #   programs = {
-    #   };
-    # };
-    # profiles.${namespace}.my.nixos = {
-    #   bundles = {
-    #   };
-    #   features = {
-    #   };
-    #   programs = {
-    #   };
-    # };
+    profiles.${namespace}.my.home = {
+      bundles = {
+      };
+      features = {
+        my-cosmic-manager-settings.enable = true;
+      };
+      programs = {
+      };
+    };
+    profiles.${namespace}.my.nixos = {
+      bundles = {
+      };
+      features = {
+      };
+      programs = {
+        cosmic.enable = true;
+      };
+    };
   };
 }

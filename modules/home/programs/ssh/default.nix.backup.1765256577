@@ -1,4 +1,4 @@
-# plex.nix
+# ssh.nix
 {
   lib,
   pkgs,
@@ -12,11 +12,11 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.nixos.programs.plex;
+  cfg = config.profiles.${namespace}.my.home.programs.ssh;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.my.nixos.programs.plex = {
-    enable = mkEnableOption "Enable custom 'nixos', module 'plex', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.home.programs.ssh = {
+    enable = mkEnableOption "Enable custom 'home', module 'ssh', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
     # profiles.${namespace}.my.home = {
@@ -35,12 +35,5 @@ in {
     #   programs = {
     #   };
     # };
-    # Access via http://lan_ip:32400/web
-    services.plex = {
-      enable = true;
-      openFirewall = true;
-      user = "${config.myVars.username}";
-      # dataDir = "/home/${username}/plex";
-    };
   };
 }
