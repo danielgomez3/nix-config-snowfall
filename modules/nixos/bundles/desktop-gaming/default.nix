@@ -1,15 +1,39 @@
 # desktop-gaming.nix
 {
-  inputs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
   config,
   ...
-}: {
-  myNixOS = {
-    steam.enable = true;
-    minecraft-client.enable = true;
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.bundles.desktop-gaming;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.bundles.desktop-gaming = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'desktop-gaming', for namespace '${namespace}'.";
   };
-  home-manager.users.${config.myVars.username}.myHomeManager = {
-    mangohud.enable = true;
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my.home = {
+    #   bundles = {
+    #   };
+    #   features = {
+    #   };
+    #   programs = {
+    #   };
+    # };
+    # profiles.${namespace}.my.nixos = {
+    #   bundles = {
+    #   };
+    #   features = {
+    #   };
+    #   programs = {
+    #   };
+    # };
   };
 }

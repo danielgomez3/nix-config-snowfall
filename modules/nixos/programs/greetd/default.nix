@@ -1,17 +1,24 @@
-{ config, lib, pkgs, self, ... }:
+# greetd.nix
 {
-
-  # https://wiki.nixos.org/wiki/Sway
-  services.greetd = {                                                      
-    enable = true;                                                         
-    vt = 2;
-    settings = {                                                           
-      default_session = {                                                  
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
-        user = "greeter";                                                  
-      };                                                                   
-    };                                                                     
+  lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
+  ...
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.programs.greetd;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.programs.greetd = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'greetd', for namespace '${namespace}'.";
   };
-
-
+  config =
+    mkIf cfg.enable {
+    };
 }

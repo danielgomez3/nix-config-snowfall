@@ -1,56 +1,111 @@
 # base-system.nix
-# NOTE: different than core-system because this only should be inherited by personal, powerful, headed or headless x86/64 machines, that are NOT darwin or etc.
-# FIXME: This is insecure and casual because we implement a password login. DO NO INHERIT if you expose your server to the internet!!!
 {
-  pkgs,
   lib,
-  config,
+  pkgs,
   inputs,
-  self,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
 }: let
-  hapless = import "${inputs.self.outPath}/derivations/hapless.nix" {
-    inherit (pkgs) lib fetchFromGitHub;
-    python3 = pkgs.python312; # or python311
-  };
-  username = config.myVars.username;
+  cfg = config.profiles.${namespace}.my.nixos.bundles.base-system;
+  inherit (lib) mkEnableOption mkIf;
 in {
-  nixpkgs.overlays = [
-    (import "${self.outPath}/overlays/hapless.nix")
-  ];
-  myNixOS = {
-    core-system.enable = lib.mkDefault true;
-    hardware-examination.enable = lib.mkDefault true;
-    coding-environment.enable = lib.mkDefault true;
-    avahi.enable = lib.mkDefault true;
-    network-config.enable = lib.mkDefault true;
-    tailscale.enable = lib.mkDefault false;
-    good-repl-access.enable = lib.mkDefault true;
-    fonts.enable = lib.mkDefault true; # TODO change where fonts go, this could be too big
-    gnupg.enable = lib.mkDefault false;
+  options.profiles.${namespace}.my.nixos.bundles.base-system = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'base-system', for namespace '${namespace}'.";
   };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my.home = {
+    #   bundles = {
+    #   };
+    #   features = {
+    #   };
+    #   programs = {
+    #   };
+    # };
+    # profiles.${namespace}.my.nixos = {
+    #   bundles = {
+    #   };
+    #   features = {
+    #   };
+    #   programs = {
+    #   };
+    # };
 
-  swapDevices = [
-    {
-      device = "/swapfile";
-      size = 16 * 1024; # 16GB
-    }
-  ];
-  environment = {
-    systemPackages = with pkgs; [
-      hapless # This now uses the overridden version from the overlay
-      cmatrix
-      jmtpfs # For interfacing with my OP-1 Field.
-      woeusb
-      ntfs3g
-      nushell
-      waypipe # x11 forwarding alternative:
-      age
-      nix-tree
-      aria2
-      eza
-      tldr
-      tree
+    # TODO: put these in profiles
+    # myNixOS = {
+    #   openssh.enable = lib.mkDefault true;
+    #   sops.enable = lib.mkDefault true;
+    #   user-config.enable = lib.mkDefault true;
+    #   stylix.enable = lib.mkDefault true; # NOTE: this might be too big, and belong on base-system.nix
+    # };
+    # home-manager.users.${config.myVars.username}.myHomeManager = {
+    #   cli-apps.enable = lib.mkDefault true;
+    # };
+
+    system.stateVersion = "24.05";
+    nix.settings.experimental-features = ["nix-command" "flakes"];
+    nix.settings.allowed-uris = [
+      "github:"
+      "git+https://github.com/"
+      "git+ssh://github.com/"
+      "git+ssh://git@github.com/" # My secrets repository
+      "git+ssh://git@github.com/danielgomez3/nix-secrets.git"
+    ];
+
+    i18n.defaultLocale = "en_US.UTF-8";
+
+    i18n.extraLocaleSettings = {
+      LC_ADDRESS = "en_US.UTF-8";
+      LC_IDENTIFICATION = "en_US.UTF-8";
+      LC_MEASUREMENT = "en_US.UTF-8";
+      LC_MONETARY = "en_US.UTF-8";
+      LC_NAME = "en_US.UTF-8";
+      LC_NUMERIC = "en_US.UTF-8";
+      LC_PAPER = "en_US.UTF-8";
+      LC_TELEPHONE = "en_US.UTF-8";
+      LC_TIME = "en_US.UTF-8";
+    };
+
+    nix.settings.auto-optimise-store = true; # Optimize store every build. May slow down rebuilds
+    nix.settings.download-buffer-size = 9024288000; # 9 GB
+
+    # List packages installed in system profile. To search, run:
+    # $ nix search wget
+    environment.systemPackages = with pkgs; [
+      vim
+      git
+      wget
+      curl
+      pigz
+      nftables
+      iptables
+      unixtools.netstat
+      toybox
+      busybox # telnet,
+      openssl
+      dig # check dns records
+      mailutils # send mail via 'mail'
+      sysz
+      wireguard-tools
+      fd
+      procps
+      file
+      efibootmgr # for forcing dual-boot in cli
+      lm_sensors
+      gnutar
+      arp-scan # this one is sick: arp-scan --localnet
+      nmap # even better: nmap -sn <ip>/24
+      procs # view processes, cpu usage, and memory. Like btop and ps aux had a baby
+      uutils-coreutils-noprefix # updated version of 'dd' with progress param.
+      grc # colorize can cmd: grc nmap
+      gptfdisk
+      direnv
+      just
     ];
   };
 }

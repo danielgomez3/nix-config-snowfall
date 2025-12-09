@@ -1,25 +1,41 @@
 # nextcloud.nix
 {
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
   config,
   ...
 }: let
-  hostname = config.myVars.hostname;
+  cfg = config.profiles.${namespace}.my.nixos.programs.nextcloud;
+  inherit (lib) mkEnableOption mkIf;
 in {
-  # environment.etc."nextcloud-admin-pass".text = "MouseMouse!ThingWowLookit";
-  services.nextcloud = {
-    enable = true;
-    package = pkgs.nextcloud32;
-    hostName = hostname;
-    config.adminpassFile = config.sops.secrets."nextcloud-secret-pass".path;
-    config.dbtype = "sqlite";
+  options.profiles.${namespace}.my.nixos.programs.nextcloud = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'nextcloud', for namespace '${namespace}'.";
   };
-
-  services.nginx.virtualHosts."${hostname}".listen = [
-    {
-      addr = "0.0.0.0";
-      port = 9090;
-    }
-  ];
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
+  };
 }

@@ -64,7 +64,6 @@
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "x86_64-darwin";
   nixpkgs.config.allowBroken = true;
-  nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
   # nixpkgs.overlays = [ ];
 

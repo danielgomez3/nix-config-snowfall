@@ -1,14 +1,24 @@
+# gaming-system.nix
 {
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
   config,
   ...
 }: let
-  username = config.myVars.username;
+  cfg = config.profiles.${namespace}.my.nixos.bundles.gaming-system;
+  inherit (lib) mkEnableOption mkIf;
 in {
-  myNixOS = {
-    boot-to-steam-deck.enable = lib.mkDefault true;
+  options.profiles.${namespace}.my.nixos.bundles.gaming-system = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'gaming-system', for namespace '${namespace}'.";
   };
-
-  # home-manager.users.${username}.myHomeManager = {
-  # };
+  config =
+    mkIf cfg.enable {
+    };
 }

@@ -19,21 +19,21 @@ in {
     enable = mkEnableOption "Enable custom 'home', module 'gui-apps', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    profiles.${namespace}.my.home = {
-      bundles = {
-      };
-      features = {
-      };
-      programs = {
-      };
-    };
-    profiles.${namespace}.my.nixos = {
-      bundles = {
-      };
-      features = {
-      };
-      programs = {
-      };
-    };
+    # profiles.${namespace}.my.home = {
+    #   bundles = {
+    #   };
+    #   features = {
+    #   };
+    #   programs = {
+    #   };
+    # };
+    # profiles.${namespace}.my.nixos = {
+    #   bundles = {
+    #   };
+    #   features = {
+    #   };
+    #   programs = {
+    #   };
+    # };
   };
 }

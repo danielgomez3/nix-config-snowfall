@@ -19,22 +19,6 @@ in {
     enable = mkEnableOption "Enable custom 'nixos', module 'printing', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    profiles.${namespace}.my.home = {
-      bundles = {
-      };
-      features = {
-      };
-      programs = {
-      };
-    };
-    profiles.${namespace}.my.nixos = {
-      bundles = {
-      };
-      features = {
-      };
-      programs = {
-      };
-    };
     services = {
       # Enable CUPS to print documents.
       printing = {

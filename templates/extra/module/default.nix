@@ -19,21 +19,23 @@ in {
     enable = mkEnableOption "Enable custom 'xxplatformxx', module 'xxmodulexx', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    profiles.${namespace}.my.home = {
-      bundles = {
-      };
-      features = {
-      };
-      programs = {
-      };
-    };
-    profiles.${namespace}.my.nixos = {
-      bundles = {
-      };
-      features = {
-      };
-      programs = {
-      };
-    };
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
   };
 }

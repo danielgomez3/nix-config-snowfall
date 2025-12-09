@@ -65,6 +65,24 @@
       inherit inputs;
       src = ./.;
 
+      # The attribute set specified here will be passed directly to NixPkgs when
+      # instantiating the package set.
+      channels-config = {
+        # Allow unfree packages.
+        allowUnfree = true;
+
+        # Allow certain insecure packages
+        permittedInsecurePackages = [
+          # "firefox-100.0.0"
+        ];
+
+        # Additional configuration for specific packages.
+        config = {
+          # For example, enable smartcard support in Firefox.
+          firefox.smartcardSupport = true;
+        };
+      };
+
       # # Add modules to all homes.
       homes.modules = with inputs; [
         # my-input.homeModules.my-module

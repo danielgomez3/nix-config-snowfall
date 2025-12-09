@@ -23,17 +23,17 @@
   };
 
   # Optional: DHCP server to automate network boot
-  services.dhcpd4 = {
-    enable = true;
-    interfaces = ["eth0"];
-    extraConfig = ''
-      subnet 192.168.1.0 netmask 255.255.255.0 {
-        range 192.168.1.100 192.168.1.200;
-        option routers 192.168.1.1;
-        # Point to netboot.xyz
-        filename "ipxe.efi";
-        next-server 192.168.1.50;  # Your server's IP
-      }
-    '';
-  };
+  # services.dhcpd4 = {
+  #   enable = true;
+  #   interfaces = ["eth0"];
+  #   extraConfig = ''
+  #     subnet 192.168.1.0 netmask 255.255.255.0 {
+  #       range 192.168.1.100 192.168.1.200;
+  #       option routers 192.168.1.1;
+  #       # Point to netboot.xyz
+  #       filename "ipxe.efi";
+  #       next-server 192.168.1.50;  # Your server's IP
+  #     }
+  #   '';
+  # };
 }

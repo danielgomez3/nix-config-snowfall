@@ -20,25 +20,16 @@ in {
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.nixos = {
-      bundles = {
-      };
+      # bundles = {
+      # };
       features = {
         gui-apps.enable = true;
         music.enable = true;
-        gnome.enable = true;
         cosmic-desktop.enable = true;
         printing.enable = true;
       };
       programs = {
-      };
-    };
-    profiles.${namespace}.my.home = {
-      bundles = {
-        desktop-environment.enable = true;
-      };
-      features = {
-      };
-      programs = {
+        gnome.enable = true;
       };
     };
   };

@@ -19,15 +19,14 @@ in {
     extraGroups = ["wheel"];
   };
 
-  nixpkgs.config.allowUnfree = true;
-
   # profiles.${namespace} = {
   #   bitwarden.enable = true;
   #   programs.tailscale.enable = true;
   # };
   profiles.${namespace}.my.nixos = {
-    # bundles = {
-    # };
+    bundles = {
+      desktop-environment.enable = true;
+    };
     # features = {
     # };
     programs = {
