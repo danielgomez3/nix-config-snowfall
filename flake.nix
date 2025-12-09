@@ -104,6 +104,11 @@
       #   # my-input.nixosModules.my-module
       # ];
 
+      systems.hosts = {
+        laptop = {
+        };
+      };
+
       # # Add overlays for the `nixpkgs` channel.
       # overlays = with inputs; [
       #   # my-inputs.overlays.my-overlay
@@ -160,12 +165,12 @@
           shellHook = ''alias d="deploy"'';
         };
 
-      deploy.nodes.test = {
-        hostname = "test";
+      deploy.nodes.laptop = {
+        hostname = "laptop";
         interactiveSudo = true;
         profiles.system = {
           user = "root";
-          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.test;
+          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.laptop;
         };
       };
     };

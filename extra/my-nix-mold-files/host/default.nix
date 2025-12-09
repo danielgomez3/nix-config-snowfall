@@ -1,10 +1,14 @@
-# WIP
 {
   lib,
   pkgs,
-  config,
   inputs,
   namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
 }: let
   inherit (lib.${namespace}) enabled;
@@ -18,7 +22,7 @@ in {
   myVars.username = "daniel";
   myVars.hostname = "laptop";
 
-  users.users.${"daniel"} = {
+  users.users.${config.myVars.username} = {
     isNormalUser = true;
     extraGroups = ["wheel"];
   };
@@ -29,12 +33,12 @@ in {
   # };
   profiles.${namespace}.my.nixos = {
     bundles = {
-      x86-64-uefi-boot.
-      core-minimal-nixos.enable = true;
-      gui-desktop-environment.enable = true;
+      x86-64-uefi-boot = enabled;
+      core-minimal-nixos = enabled;
+      gui-desktop-environment = enabled;
     };
-    # features = {
-    # };
+    features = {
+    };
     # programs = {
     #   plex.enable = true;
     # };

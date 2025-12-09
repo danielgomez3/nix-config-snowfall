@@ -27,6 +27,7 @@ list:
 
 [default]
 show:
+    git add -A :/
     nix flake show --all-systems
 
 build-configuration host: pre-command-hooks
@@ -110,8 +111,10 @@ commit:
 
 
 # TODO
-create-system:
+create-system platform host:
     echo "hello"
+    mkdir -p ./modules/{{platform}}/{{host}}/
+    cp ./extra/my-nix-mold-files/host/default.nix ./system/{{platform}}/default.nix
 
 
 # Module created under /modules/nixos/{{category}}. Create category first!
@@ -187,6 +190,26 @@ check:
     
 check-system system:
     nix flake check --system {{system}}
+
+# 
+#
+# virtualisation
+# 
+# 
+
+# Run any config in a headless vm.
+# TODO: Doesn't work, needs to copy age keys into build closure
+run-configuration-in-headless-vm host:
+    nixos-rebuild build-vm --flake .#{{host}}
+    QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-{{host}}-vm -nographic 
+    
+
+run-isoConfigurations host:
+    nix build .#install-isoConfigurations.{{host}}
+    nix run nixpkgs#qemu -- -cdrom result/iso/*.iso -m 4096 -enable-kvm -vnc :1 & \
+    nix run nixpkgs#novnc -- --vnc localhost:5901 
+
+
 # 
 #
 # _

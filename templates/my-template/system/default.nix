@@ -26,6 +26,6 @@
   # ];
 
   # ======================== DO NOT CHANGE THIS ========================
-  system.stateVersion = "22.11";
+  system.stateVersion = "25.11";
   # ======================== DO NOT CHANGE THIS ========================
 }

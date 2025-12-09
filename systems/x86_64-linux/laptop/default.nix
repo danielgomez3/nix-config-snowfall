@@ -1,9 +1,14 @@
 {
   lib,
   pkgs,
-  config,
   inputs,
   namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
 }: let
   inherit (lib.${namespace}) enabled;
@@ -17,7 +22,7 @@ in {
   myVars.username = "daniel";
   myVars.hostname = "laptop";
 
-  users.users.${"daniel"} = {
+  users.users.${config.myVars.username} = {
     isNormalUser = true;
     extraGroups = ["wheel"];
   };
