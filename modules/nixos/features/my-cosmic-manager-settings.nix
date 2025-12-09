@@ -1,4 +1,4 @@
-# xxmodulexx.nix
+# my-cosmic-manager-settings.nix
 {
   lib,
   pkgs,
@@ -12,11 +12,11 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx;
+  cfg = config.profiles.${namespace}.my.nixos.features.my-cosmic-manager-settings;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx = {
-    enable = mkEnableOption "Enable custom 'xxplatformxx', module 'xxmodulexx', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.nixos.features.my-cosmic-manager-settings = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'my-cosmic-manager-settings', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.home = {

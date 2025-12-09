@@ -19,11 +19,6 @@ in {
     enable = mkEnableOption "Enable custom 'nixos', module 'music', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-
-  environment.systemPackages = [
-    pkgs.musescore
-    pkgs.muse-sounds-manager
-  ];
     environment.systemPackages = [
       pkgs.musescore
       pkgs.muse-sounds-manager

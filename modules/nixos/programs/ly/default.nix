@@ -18,7 +18,9 @@ in {
   options.profiles.${namespace}.my.nixos.programs.ly = {
     enable = mkEnableOption "Enable custom 'nixos', module 'ly', for namespace '${namespace}'.";
   };
-  config =
-    mkIf cfg.enable {
+  config = mkIf cfg.enable {
+    services.displayManager.ly = {
+      enable = true;
     };
+  };
 }

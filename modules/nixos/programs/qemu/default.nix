@@ -1,9 +1,45 @@
-{pkgs,...}:{
-  environment = {
-    systemPackages = [ pkgs.qemu ];
+# qemu.nix
+{
+  lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
+  ...
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.programs.qemu;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.programs.qemu = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'qemu', for namespace '${namespace}'.";
   };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
 
-  # virtualisation.qemu = {
-  #   enable = true;
-  # };
+    environment = {
+      systemPackages = [pkgs.qemu];
+    };
+  };
 }
