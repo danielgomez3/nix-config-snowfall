@@ -121,7 +121,7 @@ create-category platform category:
 # Module created under /modules/nixos/{{category}}. Create category first!
 create-module platform category module: 
     cp ./templates/extra/module/default.nix ./modules/{{platform}}/{{category}}/{{module}}/default.nix
-    t="{{module}}/default.nix" && sed -i "/];/i ./$t" "./modules/{{platform}}/{{category}}/default.nix"
+    t="{{module}}/default.nix" && sed -i "/];/i ./$t" "./modules/{{platform}}/{{category}}/{{module}}/default.nix"
     sed -i -E 's/\bxxcategoryxx\b/{{category}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix
     sed -i -E 's/\bxxmodulexx\b/{{module}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix
     sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix

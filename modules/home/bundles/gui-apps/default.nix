@@ -1,4 +1,4 @@
-# xxmodulexx.nix
+# gui-apps.nix
 {
   lib,
   pkgs,
@@ -12,11 +12,11 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx;
+  cfg = config.profiles.${namespace}.my.home.bundles.gui-apps;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx = {
-    enable = mkEnableOption "Enable custom 'xxplatformxx', module 'xxmodulexx', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.home.bundles.gui-apps = {
+    enable = mkEnableOption "Enable custom 'home', module 'gui-apps', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.home = {

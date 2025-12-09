@@ -1,20 +1,45 @@
 # desktop-environment.nix
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
-}: {
-  myNixOS = {
-    gui-apps.enable = lib.mkDefault true;
-    music.enable = lib.mkDefault true;
-    gnome.enable = lib.mkDefault true;
-    cosmic-desktop.enable = lib.mkDefault false;
-    printing.enable = lib.mkDefault true;
-    allow-sleep-then-hibernate.enable = lib.mkDefault false;
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.bundles.desktop-environment;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.bundles.desktop-environment = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'desktop-environment', for namespace '${namespace}'.";
   };
-
-  home-manager.users.${config.myVars.username}.myHomeManager = {
-    bundles.desktop-environment.enable = true;
+  config = mkIf cfg.enable {
+    profiles.${namespace}.my.nixos = {
+      bundles = {
+      };
+      features = {
+        gui-apps.enable = true;
+        music.enable = true;
+        gnome.enable = true;
+        cosmic-desktop.enable = true;
+        printing.enable = true;
+      };
+      programs = {
+      };
+    };
+    profiles.${namespace}.my.home = {
+      bundles = {
+        desktop-environment.enable = true;
+      };
+      features = {
+      };
+      programs = {
+      };
+    };
   };
 }

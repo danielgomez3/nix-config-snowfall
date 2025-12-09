@@ -1,14 +1,32 @@
+# cosmic-desktop.nix
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
-}: {
-  myNixOS = {
-    cosmic.enable = true;
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.features.cosmic-desktop;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.features.cosmic-desktop = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'cosmic-desktop', for namespace '${namespace}'.";
   };
-
-  home-manager.users.${config.myVars.username}.myHomeManager = {
-    my-cosmic-manager-settings.enable = true;
+  config = mkIf cfg.enable {
+    profiles.${namespace}.my.home = {
+      bundles = {
+      };
+      features = {
+        my-cosmic-manager-settings.enable = true;
+      };
+      programs = {
+      };
+    };
   };
 }
