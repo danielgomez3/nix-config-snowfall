@@ -201,20 +201,20 @@ check-system system:
 # 
 # 
 
-# Run any config in a headless vm.
+# Run any config in a headless vm, here in your window.
 # TODO: Doesn't work, needs to copy age keys into build closure
 run-configuration-in-vm-headless host: pre-command-hooks
     nixos-rebuild build-vm --flake .#{{host}}
     QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-{{host}}-vm -nographic 
     # QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-{{host}}-vm -nographic; reset 
     
+
+# Run any config in a headless vm as a background web service to view via noVNC.
 run-configuration-in-vm-gui host: pre-command-hooks
     nixos-rebuild build-vm --flake .#{{host}}
     ./result/bin/run-{{host}}-vm -vnc :1 & \
     nix run nixpkgs#novnc -- --vnc localhost:5901 
-
-    
-
+  
 run-isoConfigurations host:
     nix build .#install-isoConfigurations.{{host}}
     nix run nixpkgs#qemu -- -cdrom result/iso/*.iso -m 4096 -enable-kvm -vnc :1 & \
