@@ -1,3 +1,4 @@
+# WIP
 {
   lib,
   pkgs,
@@ -28,12 +29,12 @@ in {
   # };
   profiles.${namespace}.my.nixos = {
     bundles = {
-      x86-64-uefi-boot = enabled;
-      core-minimal-nixos = enabled;
-      gui-desktop-environment = enabled;
+      x86-64-uefi-boot.
+      core-minimal-nixos.enable = true;
+      gui-desktop-environment.enable = true;
     };
-    features = {
-    };
+    # features = {
+    # };
     # programs = {
     #   plex.enable = true;
     # };

@@ -168,15 +168,5 @@
           path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.test;
         };
       };
-
-      deploy.nodes.snowfall-machine = {
-        hostname = "snowfall-machine";
-        sshUser = "root"; # username of the target machine
-        fastConnection = true; # Enable pipelined copying
-        profiles.system = {
-          user = "root"; # The user that the profile will be deployed to
-          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.snowfall-machine;
-        };
-      };
     };
 }

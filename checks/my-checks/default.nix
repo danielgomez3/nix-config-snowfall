@@ -6,6 +6,9 @@
   pkgs,
   ...
 }:
+# pkgs.runCommand "my-check" {src = ./.;} ''
+#   make test
+# ''
 pkgs.runCommand "test-modules" {
   # Dependencies available during the check
   buildInputs = [pkgs.jq pkgs.nix];
