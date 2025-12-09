@@ -1,3 +1,4 @@
+# systems/xxplatformxx/xxhostxx/default.nix
 {
   lib,
   pkgs,
@@ -19,8 +20,8 @@ in {
     # {config.facter.reportPath = ./facter.json;}
   ];
 
-  myVars.username = "daniel";
-  myVars.hostname = "laptop";
+  myVars.username = "xxusernamexx";
+  myVars.hostname = "xxhostxx";
 
   users.users.${config.myVars.username} = {
     isNormalUser = true;

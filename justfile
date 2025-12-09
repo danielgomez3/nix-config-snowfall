@@ -111,10 +111,13 @@ commit:
 
 
 # TODO
-create-system platform host:
-    echo "hello"
-    mkdir -p ./modules/{{platform}}/{{host}}/
-    cp ./extra/my-nix-mold-files/host/default.nix ./system/{{platform}}/default.nix
+create-system platform host username:
+    mkdir -p ./systems/{{platform}}/{{host}}/
+    cp ./extra/my-nix-mold-files/host/default.nix ./systems/{{platform}}/default.nix
+    sed -i -E 's/\bxxhostxx\b/{{host}}/g' ./systems/{{platform}}/default.nix
+    sed -i -E 's/\bxxusernamexx\b/{{username}}/g' ./systems/{{platform}}/default.nix
+    sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./systems/{{platform}}/default.nix
+
 
 
 # Module created under /modules/nixos/{{category}}. Create category first!
