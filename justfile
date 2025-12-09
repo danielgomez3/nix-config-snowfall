@@ -165,3 +165,17 @@ repl:
     nix repl --extra-experimental-features pipe-operators
 
 
+[confirm("You are about to nuke everything dude..")]
+_migrate:
+    #!usr/bin/env bash
+
+    # First migrate files to default.nix files
+    find modules -type f -name "*.nix" | while read -r file; do
+      dir="${file%.nix}" # strip .nix → modules/.../btop
+      mkdir -p "$dir"    # create modules/.../btop
+      mv "$file" "$dir/default.nix"
+    done
+
+    # Now, wrap them in conditional configuration
+
+    
