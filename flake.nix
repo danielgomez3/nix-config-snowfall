@@ -122,6 +122,9 @@
       # Add modules to all NixOS systems.
       systems.modules.nixos = with inputs; [
         inputs.sops-nix.nixosModules.sops
+        inputs.disko.nixosModules.disko
+        inputs.stylix.nixosModules.stylix
+        inputs.nixos-facter-modules.nixosModules.facter
       ];
 
       # specialArgs = {
