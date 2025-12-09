@@ -1,33 +1,41 @@
+# starship.nix
 {
-  pkgs,
-  config,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
-}: {
-  programs.starship = {
-    enable = true;
-    enableBashIntegration = false;
-    enableZshIntegration = true;
-    enableNushellIntegration = true;
-    settings = {
-      format = "$time\n$all";
-      # right_format = lib.concatStrings [
-      #   "$time"
-      # ];
-      time = {
-        disabled = false;
-        format = "🕒 [$time]($style)";
-        use_12hr = true;
-        # time_format = "%H:%M:%S";
-        style = "bold dimmed white";
-      };
-      cmd_duration = {
-        format = "took [$duration](bold yellow)";
-        disabled = false;
-        min_time = 0;
-        show_milliseconds = false;
-        # style = accent_style;
-      };
-    };
+}: let
+  cfg = config.profiles.${namespace}.my.home.programs.starship;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.home.programs.starship = {
+    enable = mkEnableOption "Enable custom 'home', module 'starship', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
   };
 }

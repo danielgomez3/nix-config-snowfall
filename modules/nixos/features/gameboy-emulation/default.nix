@@ -1,14 +1,41 @@
+# gameboy-emulation.nix
 {
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
-}: {
-  environment.systemPackages = with pkgs; [
-    (retroarch.withCores (cores:
-      with cores; [
-        genesis-plus-gx
-        snes9x
-        beetle-psx-hw
-      ]))
-  ];
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.features.gameboy-emulation;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.features.gameboy-emulation = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'gameboy-emulation', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
+  };
 }

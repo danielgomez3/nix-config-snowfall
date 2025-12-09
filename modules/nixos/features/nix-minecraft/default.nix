@@ -1,4 +1,4 @@
-# xxmodulexx.nix
+# nix-minecraft.nix
 {
   lib,
   pkgs,
@@ -12,7 +12,7 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx;
+  cfg = config.profiles.${namespace}.my.nixos.features.nix-minecraft;
   inherit (lib) mkEnableOption mkIf;
 
   modpack = pkgs.fetchPackwizModpack {
@@ -20,8 +20,8 @@
     packHash = "sha256-sHw1MAGg+m0654LvATknwDkZHE4h1GrGK8ZNzhsXwVc="; # Replace with actual hash after first build
   };
 in {
-  options.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx = {
-    enable = mkEnableOption "Enable custom 'xxplatformxx', module 'xxmodulexx', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.nixos.features.nix-minecraft = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'nix-minecraft', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
     # profiles.${namespace}.my = {

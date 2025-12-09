@@ -1,16 +1,41 @@
-{pkgs, ...}: {
-  # Enable the GNOME RDP components
-  services.gnome.gnome-remote-desktop.enable = true;
-
-  # Ensure the service starts automatically at boot so the settings panel appears
-  systemd.services.gnome-remote-desktop = {
-    wantedBy = ["graphical.target"];
+# rdp-client-gnome.nix
+{
+  lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
+  ...
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.features.rdp-client-gnome;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.features.rdp-client-gnome = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'rdp-client-gnome', for namespace '${namespace}'.";
   };
-
-  # Open the default RDP port (3389)
-  networking.firewall.allowedTCPPorts = [3389];
-
-  # Disable autologin to avoid session conflicts
-  services.displayManager.autoLogin.enable = false;
-  services.getty.autologinUser = null;
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
+  };
 }

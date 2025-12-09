@@ -1,36 +1,41 @@
-{ osConfig, pkgs, lib, ... }: {
-
-  # For debugging:
-  # systemctl --user status swayidle
-  services.swayidle = {
-    enable = true;
-    timeouts = lib.mkMerge [  # Command to run after 'timeout-seconds' of inactivity
-      (lib.mkIf osConfig.myVars.isHardwareLimited [
-        {
-          timeout = 220;
-          command = "${pkgs.swaylock}/bin/swaylock -fF";
-        }
-        {
-          timeout = 320;
-          command = "${pkgs.systemd}/bin/systemctl suspend";
-        }
-      ])
-      # Default settings if condition not true:
-      [
-        {
-          timeout = 250;
-          command = "${pkgs.swaylock}/bin/swaylock -fF";
-        }
-        {
-          timeout = 300;
-          command = "${pkgs.systemd}/bin/systemctl suspend";
-        }
-      ]
-    ];
-
-    events = [
-      { event = "lock"; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
-    ];
+# swayidle.nix
+{
+  lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
+  ...
+}: let
+  cfg = config.profiles.${namespace}.my.home.programs.swayidle;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.home.programs.swayidle = {
+    enable = mkEnableOption "Enable custom 'home', module 'swayidle', for namespace '${namespace}'.";
   };
-
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
+  };
 }

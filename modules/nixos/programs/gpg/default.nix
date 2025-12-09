@@ -1,7 +1,41 @@
-{...}:{
-  # services.pcscd.enable = true;
-  # programs.gnupg.agent = {
-  #    enable = true;
-  #    enableSSHSupport = true;
-  # };
+# gpg.nix
+{
+  lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
+  ...
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.programs.gpg;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.programs.gpg = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'gpg', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
+  };
 }

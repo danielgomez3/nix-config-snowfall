@@ -1,10 +1,41 @@
+# embedded-dev-environment.nix
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
 }: let
-  username = config.myVars.username;
+  cfg = config.profiles.${namespace}.my.nixos.bundles.embedded-dev-environment;
+  inherit (lib) mkEnableOption mkIf;
 in {
-  environment.systemPackages = [pkgs.platformio-core pkgs.openocd];
+  options.profiles.${namespace}.my.nixos.bundles.embedded-dev-environment = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'embedded-dev-environment', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
+  };
 }

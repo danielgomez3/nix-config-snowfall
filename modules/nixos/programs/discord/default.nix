@@ -1,9 +1,41 @@
+# discord.nix
 {
-  config,
+  lib,
   pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
-}: {
-  users.users.${config.myVars.username}.packages = with pkgs; [
-    legcord
-  ];
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.programs.discord;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.programs.discord = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'discord', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
+  };
 }

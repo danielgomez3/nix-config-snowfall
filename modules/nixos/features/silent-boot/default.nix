@@ -1,16 +1,41 @@
+# silent-boot.nix
 {
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
-}: {
-  # Boot
-  boot = {
-    # Plymouth
-    consoleLogLevel = 0;
-    initrd.verbose = false;
-    plymouth.enable = true; # Visually appealing splash screen
-    kernelParams = ["quiet" "splash" "rd.systemd.show_status=false" "rd.udev.log_level=3" "udev.log_priority=3" "boot.shell_on_fail"];
-
-    # Boot Loader
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.features.silent-boot;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.features.silent-boot = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'silent-boot', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
   };
 }

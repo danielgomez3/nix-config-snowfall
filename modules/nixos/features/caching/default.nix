@@ -1,22 +1,41 @@
+# caching.nix
 {
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
-}: {
-  environment.systemPackages = with pkgs; [
-    cachix
-  ];
-
-  # For some reason couldn't use cachix unless I was a 'trust-user'
-  nix.settings.trusted-users = ["daniel" "root"];
-
-  nix.settings.substituters = [
-    "https://cachix.cachix.org"
-    # "https://deploy-rs.cachix.org"
-  ];
-
-  nix.settings.trusted-public-keys = [
-    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-on-droid.cachix.org-1:56snoMJTXmDRC1Ei24CmKoUqvHJ9XCp+nidK7qkMQrU="
-    # "deploy-rs.cachix.org-1:xfNobmiwF/vzvK1gpfediPwpdIP0rpDV2rYqx40zdSI="
-  ];
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.features.caching;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.features.caching = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'caching', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
+  };
 }

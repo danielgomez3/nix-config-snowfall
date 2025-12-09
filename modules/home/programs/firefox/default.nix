@@ -1,17 +1,41 @@
+# firefox.nix
 {
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
-}: {
-  # NixOS agnostic, but not implemented for now
-
-  programs.firefox = {
-    enable = false;
-    # NOTE For any theming to be applied, you need to tell this module which profiles you're using:
-    profiles = {
-      daniel = {
-        # bookmarks, extensions, search engines...
-      };
-    };
+}: let
+  cfg = config.profiles.${namespace}.my.home.programs.firefox;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.home.programs.firefox = {
+    enable = mkEnableOption "Enable custom 'home', module 'firefox', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
   };
 }

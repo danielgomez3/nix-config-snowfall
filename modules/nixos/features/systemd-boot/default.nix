@@ -1,12 +1,41 @@
+# systemd-boot.nix
 {
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
-}: {
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-    systemd-boot.configurationLimit = 3;
-    timeout = lib.mkForce 8;
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.features.systemd-boot;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.features.systemd-boot = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'systemd-boot', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
   };
 }

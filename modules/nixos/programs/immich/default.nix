@@ -1,17 +1,41 @@
+# immich.nix
 {
-  pkgs,
   lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
   config,
   ...
-}: {
-  environment.systemPackages = with pkgs; [
-    immich-cli
-  ];
-
-  services.immich = {
-    enable = true;
-    port = 2283;
-    host = "0.0.0.0";
-    mediaLocation = "/var/lib/immich"; # Ensure this has enough space
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.programs.immich;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.nixos.programs.immich = {
+    enable = mkEnableOption "Enable custom 'nixos', module 'immich', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    # };
   };
 }

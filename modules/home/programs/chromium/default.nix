@@ -1,24 +1,41 @@
-{pkgs, ...}: {
-  # nixpkgs.config.allowUnfreePredicate = _: true;
-  # home.packages = [
-  #   pkgs.google-chrome
-  # ];
-  programs.chromium = {
-    enable = true;
-    # homepageLocation = "https://www.startpage.com/";
-    # extensions = [
-    #   "eimadpbcbfnmbkopoojfekhnkhdbieeh;https://clients2.google.com/service/update2/crx" # dark reader
-    #   "aapbdbdomjkkjkaonfhkkikfgjllcleb;https://clients2.google.com/service/update2/crx" # google translate
-    # ];
-    # extraOpts = {
-    #   "WebAppInstallForceList" = [
-    #     {
-    #       "custom_name" = "Youtube";
-    #       "create_desktop_shortcut" = false;
-    #       "default_launch_container" = "window";
-    #       "url" = "https://youtube.com";
-    #     }
-    #   ];
+# chromium.nix
+{
+  lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
+  ...
+}: let
+  cfg = config.profiles.${namespace}.my.home.programs.chromium;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.home.programs.chromium = {
+    enable = mkEnableOption "Enable custom 'home', module 'chromium', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my = {
+    #   nixos = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
+    #   home = {
+    #     bundles = {
+    #     };
+    #     features = {
+    #     };
+    #     programs = {
+    #     };
+    #   };
     # };
   };
 }
