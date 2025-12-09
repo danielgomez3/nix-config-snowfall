@@ -16,6 +16,9 @@ currentHost := "`hostname`"
 none := ""
 
 
+list:
+    just --list
+
 # 
 # 
 # Building, evaluation, diagnostic
@@ -23,8 +26,8 @@ none := ""
 # 
 
 [default]
-list:
-    just --list
+show:
+    nix flake show --all-systems
 
 build-configuration host: pre-command-hooks
     nix build .#nixosConfigurations.test.config.system.build.toplevel
