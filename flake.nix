@@ -115,8 +115,9 @@
       # };
 
       # Add modules to all NixOS systems.
-      # systems.modules.nixos = with inputs; [
-      # ];
+      systems.modules.nixos = with inputs; [
+        inputs.sops-nix.nixosModules.sops
+      ];
 
       # specialArgs = {
       #   username = "daniel";

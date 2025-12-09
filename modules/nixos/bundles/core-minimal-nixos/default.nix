@@ -13,22 +13,26 @@
   ...
 }: let
   cfg = config.profiles.${namespace}.my.nixos.bundles.core-minimal-nixos;
-  inherit (lib) mkEnableOption mkIf;
+
+  inherit (lib) mkIf;
+  inherit (lib.${namespace}) enabled mkBoolOpt;
 in {
   options.profiles.${namespace}.my.nixos.bundles.core-minimal-nixos = {
-    enable = mkEnableOption "Enable custom module for platform 'nixos', of category 'bundles', of module 'core-minimal-nixos', for namespace '${namespace}'.";
+    enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'bundles', of module 'core-minimal-nixos', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.nixos = {
       # bundles = {
       # };
       features = {
-        myVars.enable = true; # TODO: think about making this inside of base-config.nix
-        base-nixos-config.enable = true;
+        myVars = enabled; # TODO: think about making this inside of base-config.nix
+        base-nixos-config = enabled;
       };
-      # programs = {
-      #   plex.enable = true;
-      # };
+      programs = {
+        openssh = enabled;
+        sops = enabled;
+        stylix = enabled;
+      };
     };
   };
 }
