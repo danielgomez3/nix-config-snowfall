@@ -38,9 +38,11 @@ in {
       gui-desktop-environment = enabled;
     };
     features = {
+      laptop-device-settings = enabled;
     };
-    # programs = {
-    #   plex.enable = true;
-    # };
+    programs = {
+      #   plex.enable = true;
+      nix-software-center = enabled;
+    };
   };
 }
