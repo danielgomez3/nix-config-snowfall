@@ -25,6 +25,7 @@ list:
 # 
 # 
 
+
 [default]
 show:
     git add -A :/
@@ -202,7 +203,7 @@ check-system system:
 
 # Run any config in a headless vm.
 # TODO: Doesn't work, needs to copy age keys into build closure
-run-configuration-in-headless-vm host:
+run-configuration-in-headless-vm host: pre-command-hooks
     nixos-rebuild build-vm --flake .#{{host}}
     QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-{{host}}-vm -nographic 
     
