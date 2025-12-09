@@ -11,7 +11,7 @@ format_default_nix() {
   # Find the first occurrence of '}:'
   if [[ "$content" =~ }: ]]; then
     # Split at the first '}:'
-    local before="${content%%}:*}:"
+    local before="${content%%}:}:"
     local after="${content#*}:}"
 
     # Construct the new content
