@@ -21,13 +21,13 @@ in {
   config = mkIf cfg.enable {
     profiles.${namespace}.my.home = {
       bundles = {
-        # gui-apps.enable = true;
-        # sway-desktop.enable = true;
-        # zed.enable = true;
+        gui-apps.enable = true;
       };
       features = {
+        sway-desktop.enable = true;
       };
       programs = {
+        zed.enable = true;
       };
     };
   };

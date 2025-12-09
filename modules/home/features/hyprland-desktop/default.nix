@@ -19,14 +19,15 @@ in {
     enable = mkEnableOption "Enable custom 'home', module 'hyprland-desktop', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    # profiles.${namespace}.my.home = {
-    #   bundles = {
-    #   };
-    #   features = {
-    #   };
-    #   programs = {
-    #   };
-    # };
+    profiles.${namespace}.my.home = {
+      bundles = {
+      };
+      features = {
+      };
+      programs = {
+        hyprland.enable = true;
+      };
+    };
     # profiles.${namespace}.my.nixos = {
     #   bundles = {
     #   };

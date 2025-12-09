@@ -1,0 +1,55 @@
+# doom-emacs.nix
+{
+  lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
+  ...
+}: let
+  cfg = config.profiles.${namespace}.my.home.programs.doom-emacs;
+  inherit (lib) mkEnableOption mkIf;
+in {
+  options.profiles.${namespace}.my.home.programs.doom-emacs = {
+    enable = mkEnableOption "Enable custom 'home', module 'doom-emacs', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+
+  imports = [
+    inputs.nix-doom-emacs-unstraightened.hmModule
+  ];
+  home.packages = with pkgs; [
+    coreutils
+    findutils
+    fd
+    ripgrep
+    rsync
+    openssh
+    scrot
+    ormolu
+    emacsPackages.lsp-haskell
+    # haskellPackages.ghc-mod
+    # haskellPackages.brittany
+    # profiles.${namespace}.my.home = {
+    #   bundles = {
+    #   };
+    #   features = {
+    #   };
+    #   programs = {
+    #   };
+    # };
+    # profiles.${namespace}.my.nixos = {
+    #   bundles = {
+    #   };
+    #   features = {
+    #   };
+    #   programs = {
+    #   };
+    # };
+  };
+}

@@ -19,14 +19,23 @@ in {
     enable = mkEnableOption "Enable custom 'home', module 'cli-apps', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    # profiles.${namespace}.my.home = {
-    #   bundles = {
-    #   };
-    #   features = {
-    #   };
-    #   programs = {
-    #   };
-    # };
+    profiles.${namespace}.my.home = {
+      bundles = {
+      };
+      features = {
+      };
+      programs = {
+        zsh.enable = true;
+        nushell.enable = false;
+        starship.enable = true;
+        ssh.enable = true;
+        git.enable = true;
+        neovim.enable = true;
+        zellij.enable = true;
+        rclone.enable = true;
+        btop.enable = true;
+      };
+    };
     # profiles.${namespace}.my.nixos = {
     #   bundles = {
     #   };

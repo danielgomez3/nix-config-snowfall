@@ -1,4 +1,4 @@
-# gui-apps.nix
+# helix.nix
 {
   lib,
   pkgs,
@@ -12,11 +12,11 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.home.features.gui-apps;
+  cfg = config.profiles.${namespace}.my.home.programs.helix;
   inherit (lib) mkEnableOption mkIf;
 in {
-  options.profiles.${namespace}.my.home.features.gui-apps = {
-    enable = mkEnableOption "Enable custom 'home', module 'gui-apps', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.home.programs.helix = {
+    enable = mkEnableOption "Enable custom 'home', module 'helix', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
     # profiles.${namespace}.my.home = {
