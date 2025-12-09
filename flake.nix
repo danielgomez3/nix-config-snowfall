@@ -2,7 +2,7 @@
 {
   description = "Daniel's Nix Flake ⛰️";
   nixConfig = {
-    extra-experimental-features = ["nix-command" "flakes" "pipe-operators"];
+    extra-experimental-features = ["nix-command" "flakes" "pipe-operators" "nix-command"];
   };
   inputs = {
     # Nix flake development/structure. Core inputs.
@@ -141,7 +141,14 @@
         };
       };
 
-      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks inputs.self.deploy) inputs.deploy-rs.lib;
+      templates = {
+        my-template = {
+          description = "This is my template created with Snowfall Lib!";
+          path = ./templates/my-template;
+        };
+      };
+
+      # checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks inputs.self.deploy) inputs.deploy-rs.lib;
 
       devShells.x86_64-linux.default = let
         pkgs = import inputs.nixpkgs {system = "x86_64-linux";};
