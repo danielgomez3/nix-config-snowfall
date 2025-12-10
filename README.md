@@ -1,5 +1,7 @@
 # TODO
 
+- create justfile recipe that will 'cat' all the related files in a system
+- wrap emacs to run in the cloud with 'emacs --daemon'
 - Look at jakehamilton and how he wrapsObs with overlay
 - ability to ssh into vms
 - make gnome use xorg, wayland buggin

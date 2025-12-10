@@ -93,6 +93,7 @@
       homes.modules = with inputs; [
         # my-input.homeModules.my-module
         spicetify-nix.homeManagerModules.default
+        impermanence.homeManagerModules.impermanence
       ];
 
       # # Add modules to a specific home.
