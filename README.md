@@ -1,5 +1,7 @@
 # TODO
 
+- change zsh prompt to always say host
+- fix btop to work with any graphics card
 - factor jovian so boot is inheriting from my modules
 - create justfile recipe that will 'cat' all the related files in a system
 - wrap emacs to run in the cloud with 'emacs --daemon'

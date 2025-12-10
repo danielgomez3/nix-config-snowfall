@@ -26,10 +26,19 @@ in {
       # };
       features = {
         base-home-config = enabled;
-        # persistence = enabled;
+        persistence = enabled;
       };
-      # programs = {
-      # };
+      programs = {
+        zsh = enabled;
+        starship = enabled;
+        ssh = enabled;
+        git = enabled;
+        neovim = enabled;
+        zellij = enabled;
+        rclone = enabled;
+        btop = enabled;
+        eza = enabled;
+      };
     };
   };
 }
