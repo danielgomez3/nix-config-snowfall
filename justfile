@@ -243,7 +243,7 @@ run-configuration-in-vm-headless host: pre-command-hooks
 # Run any config in a headless vm as a background web service to view via noVNC.
 # 8GB RAM, 8 CPU cores, hardware virtualization, fast virtio gpu.
 run-configuration-in-vm-gui host: pre-command-hooks
-    -rm ./*.qcow2
+    # -rm ./*.qcow2
     nixos-rebuild build-vm --flake .#{{host}}
     # ./result/bin/run-{{host}}-vm -vnc :1 \
     # -m 8192 -smp 8 -enable-kvm -cpu host -vga virtio &

@@ -26,7 +26,7 @@ in {
       # };
       features = {
         base-home-config = enabled;
-        persistence = enabled;
+        # persistence = enabled;
       };
       # programs = {
       # };
