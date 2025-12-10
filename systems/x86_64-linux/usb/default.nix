@@ -1,3 +1,4 @@
+# systems/x86_64-linux/usb/default.nix
 {
   lib,
   pkgs,
@@ -14,35 +15,44 @@
   inherit (lib.${namespace}) enabled;
 in {
   imports = [
+    (import "${inputs.self.outPath}/disko/luks/disko-config.nix" {
+      inherit config;
+      block-device = "sda";
+    })
     # ./hardware-configuration.nix
     # inputs.nixos-facter-modules.nixosModules.facter
     # {config.facter.reportPath = ./facter.json;}
   ];
 
   myVars.username = "daniel";
-  myVars.hostname = "laptop";
+  myVars.hostname = "usb";
 
   users.users.${config.myVars.username} = {
     isNormalUser = true;
     extraGroups = ["wheel"];
   };
 
+  # profiles.${namespace} = {
+  #   bitwarden.enable = true;
+  #   programs.tailscale.enable = true;
+  # };
   profiles.${namespace}.my.nixos = {
-    disko.luks-lvm-gpt = {
-      enable = true;
-      blockDevice = "/dev/sda";
-    };
     bundles = {
       x86-64-uefi-boot = enabled;
       core-minimal-nixos = enabled;
-      gui-desktop-environment = enabled;
     };
     features = {
-      laptop-device-settings = enabled;
     };
-    programs = {
-      #   plex.enable = true;
-      nix-software-center = enabled;
+    # programs = {
+    #   plex.enable = true;
+    # };
+  };
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = lib.mkForce true; # ← CHANGE TO TRUE
+      KbdInteractiveAuthentication = lib.mkForce true; # ← CHANGE TO TRUE
     };
   };
 }

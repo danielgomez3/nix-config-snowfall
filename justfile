@@ -111,15 +111,16 @@ commit:
 
 
 
-# TODO
-create-system platform host username:
+# Provide full path of block device
+create-system platform host username block_device:
     echo "creating nixos system.."
     mkdir -p ./systems/{{platform}}/{{host}}/
     cp ./extra/my-nix-mold-files/host/default.nix ./systems/{{platform}}/{{host}}/default.nix
-    cp ./extra/my-nix-mold-files/host/hardware-configuration.nix ./systems/{{platform}}/{{host}}/hardware-configuration.nix
+    # cp ./extra/my-nix-mold-files/host/hardware-configuration.nix ./systems/{{platform}}/{{host}}/hardware-configuration.nix
     cp ./extra/my-nix-mold-files/host/default.nix ./systems/{{platform}}/{{host}}/default.nix
     sed -i -E 's/\bxxhostxx\b/{{host}}/g' ./systems/{{platform}}/{{host}}/default.nix
     sed -i -E 's/\bxxusernamexx\b/{{username}}/g' ./systems/{{platform}}/{{host}}/default.nix
+    sed -i -E "s|\\bxxblock_devicexx\\b|{{block_device}}|g" ./systems/{{platform}}/{{host}}/default.nix
     sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./systems/{{platform}}/{{host}}/default.nix
 
     echo "creating its home module.."
@@ -139,6 +140,10 @@ create-module platform category module:
     sed -i -E 's/\bxxcategoryxx\b/{{category}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix
     sed -i -E 's/\bxxmodulexx\b/{{module}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix
     sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix
+
+create-overlay package:
+    mkdir -p ./overlays/{{package}}/
+    cp ./extra/my-nix-mold-files/overlays/default.nix ./overlays/{{package}}/default.nix
 
 [confirm("Are you sure you want to nuke this directory?")]
 delete-category platform category:
@@ -205,6 +210,16 @@ check:
 check-system system:
     nix flake check --system {{system}}
 
+# NOTE: example:
+# nix eval .#nixosConfigurations.laptop.config.services.openssh.enable
+check-if-enabled host module-path:
+    nix eval .#nixosConfigurations.{{host}}.config.{{module-path}}.enable
+
+# NOTE don't understand this
+# example:
+# nix eval .#nixosConfigurations.laptop.config.myVars
+check-values-json option:
+    nix eval .#nixosConfigurations.laptop.config.{{option}} --apply 'cfg: builtins.attrNames cfg' --json
 # 
 #
 # virtualisation
@@ -222,7 +237,7 @@ run-configuration-in-vm-headless host: pre-command-hooks
 # Run any config in a headless vm as a background web service to view via noVNC.
 # 8GB RAM, 8 CPU cores, hardware virtualization, fast virtio gpu.
 run-configuration-in-vm-gui host: pre-command-hooks
-    rm *.qcow2
+    -rm ./*.qcow2
     nixos-rebuild build-vm --flake .#{{host}}
     # ./result/bin/run-{{host}}-vm -vnc :1 \
     # -m 8192 -smp 8 -enable-kvm -cpu host -vga virtio &
@@ -231,11 +246,14 @@ run-configuration-in-vm-gui host: pre-command-hooks
   
 run-isoConfigurations host:
     nix build .#install-isoConfigurations.{{host}}
-    nix run nixpkgs#qemu -- -cdrom result/iso/*.iso -m 4096 -enable-kvm -vnc :1 & \
-    _run-novnc:
+    just _run-vm {{host}}
+    just _run-novnc
 
 _run-vm host:
-    ./result/bin/run-{{host}}-vm -vnc :1 
+    # Port forwarding. Port 2222 on host -> 22 in VM. Access via ssh -p 2222 my@machine
+    ./result/bin/run-{{host}}-vm -vnc :1 \
+      -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+      -device virtio-net-pci,netdev=net0
 
 _run-novnc:
     nix run nixpkgs#novnc -- --vnc localhost:5901 

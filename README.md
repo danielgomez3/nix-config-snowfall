@@ -1,5 +1,9 @@
 # TODO
 
+- Look at jakehamilton and how he wrapsObs with overlay
+- ability to ssh into vms
+- make gnome use xorg, wayland buggin
+- ⭐ make disko a module under modules to enable conditionally???
 - create 'program' top level arg so you can dynamically ref the name in  the module desc
 - create a justfile recipe that will rename a module to whatever, then put it into the correct dir with the correct naming convention, leaving contents undisturbed
 - incorporate autoimpoprts to your library under 'lib' or however snowfall does it. This code specifically, than use it in your default.nix ubiquitously:

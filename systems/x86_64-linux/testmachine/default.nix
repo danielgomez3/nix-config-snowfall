@@ -1,4 +1,4 @@
-# systems/xxplatformxx/xxhostxx/default.nix
+# systems/x86_64-linux/testmachine/default.nix
 {
   lib,
   pkgs,
@@ -20,8 +20,8 @@ in {
     # {config.facter.reportPath = ./facter.json;}
   ];
 
-  myVars.username = "xxusernamexx";
-  myVars.hostname = "xxhostxx";
+  myVars.username = "daniel";
+  myVars.hostname = "testmachine";
 
   users.users.${config.myVars.username} = {
     isNormalUser = true;
@@ -31,7 +31,7 @@ in {
   profiles.${namespace}.my.nixos = {
     disko.bios-uefi-gpt = {
       enable = true;
-      blockDevice = "xxblock_devicexx";
+      blockDevice = "/dev/sda";
     };
     bundles = {
       x86-64-uefi-boot = enabled;

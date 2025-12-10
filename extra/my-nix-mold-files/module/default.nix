@@ -1,4 +1,4 @@
-# xxmodulexx.nix
+# modules/xxplatformxx/xxcategoryxx/xxmodulexx/default.nix
 {
   lib,
   pkgs,

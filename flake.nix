@@ -21,6 +21,7 @@
     impermanence.url = "github:nix-community/impermanence"; # make custom iso data impermanent
 
     # Nix flake systems
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     nix-darwin.url = "github:nix-darwin/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs"; # Add this to your flake inputs
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
@@ -60,11 +61,16 @@
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
   };
 
-  outputs = inputs:
-    inputs.snowfall-lib.mkFlake {
+  outputs = inputs: let
+    lib = inputs.snowfall-lib.mkLib {
       inherit inputs;
       src = ./.;
-
+      # # You can optionally place your Snowfall-related files in another
+      # # directory.
+      # snowfall.root = ./nix;
+    };
+  in
+    lib.mkFlake {
       # The attribute set specified here will be passed directly to NixPkgs when
       # instantiating the package set.
       channels-config = {
@@ -168,13 +174,6 @@
           shellHook = ''alias d="deploy"'';
         };
 
-      deploy.nodes.laptop = {
-        hostname = "laptop";
-        interactiveSudo = true;
-        profiles.system = {
-          user = "root";
-          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.laptop;
-        };
-      };
+      deploy = lib.mkDeploy {inherit (inputs) self;};
     };
 }

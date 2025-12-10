@@ -28,6 +28,12 @@ in {
     # };
     # profiles.${namespace}.my.home = {
     # };
+    networking.firewall = {
+      enable = true;
+      allowedTCPPorts = [22]; # SSH port inside VM
+      # Or disable firewall entirely for testing:
+      # enable = false;
+    };
     virtualisation.vmVariant = {
       virtualisation.diskSize = 100000; # 100GB in MB
       virtualisation.memorySize = 8192; # 8GB
