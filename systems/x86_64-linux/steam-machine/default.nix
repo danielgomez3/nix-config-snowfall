@@ -29,7 +29,7 @@ in {
   };
 
   profiles.${namespace}.my.nixos = {
-    disko.bios-uefi-gpt = {
+    disko.dual-boot-generic = {
       enable = true;
       blockDevice = "/dev/nvme0n1";
     };

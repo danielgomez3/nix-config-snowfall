@@ -147,8 +147,8 @@ create-overlay package:
 
 create-disko module: 
     mkdir -p ./modules/nixos/disko/{{module}}/
-    cp ./extra/my-nix-mold-files/disko/disko-config.nix ./modules/nixos/disko/{{module}}/disko-config.nix
-    sed -i -E 's/\bxxmodulexx\b/{{module}}/g' ./modules/nixos/disko/{{module}}/disko-config.nix
+    cp ./extra/my-nix-mold-files/disko/default.nix ./modules/nixos/disko/{{module}}/default.nix
+    sed -i -E 's/\bxxmodulexx\b/{{module}}/g' ./modules/nixos/disko/{{module}}/default.nix
 
 
 [confirm("Are you sure you want to nuke this directory?")]
