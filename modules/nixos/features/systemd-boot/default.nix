@@ -27,10 +27,10 @@ in {
     # };
 
     boot.loader = {
-      systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
       systemd-boot.configurationLimit = 3;
-      timeout = lib.mkForce 8;
+      timeout = 8;
     };
   };
 }

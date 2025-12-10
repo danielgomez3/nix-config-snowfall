@@ -1,4 +1,5 @@
 # modules/nixos/features/myVars/default.nix
+# TODO: you're not really enabling anything
 {
   lib,
   pkgs,

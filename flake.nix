@@ -28,7 +28,7 @@
     nix-on-droid.url = "github:nix-community/nix-on-droid/release-24.05";
     nix-on-droid.inputs.nixpkgs.follows = "nixpkgs";
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
-    jovian.inputs.nixpkgs.follows = "nixpkgs";
+    jovian.inputs.nixpkgs.follows = "nixpkgs-stable";
 
     # Nix flake deployment
     deploy-rs.url = "github:serokell/deploy-rs";

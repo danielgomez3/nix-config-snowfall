@@ -115,9 +115,9 @@ commit:
 create-system platform host username block_device:
     echo "creating nixos system.."
     mkdir -p ./systems/{{platform}}/{{host}}/
-    cp ./extra/my-nix-mold-files/host/default.nix ./systems/{{platform}}/{{host}}/default.nix
-    # cp ./extra/my-nix-mold-files/host/hardware-configuration.nix ./systems/{{platform}}/{{host}}/hardware-configuration.nix
-    cp ./extra/my-nix-mold-files/host/default.nix ./systems/{{platform}}/{{host}}/default.nix
+    cp ./extra/my-nix-mold-files/system/default.nix ./systems/{{platform}}/{{host}}/default.nix
+    # cp ./extra/my-nix-mold-files/system/hardware-configuration.nix ./systems/{{platform}}/{{host}}/hardware-configuration.nix
+    cp ./extra/my-nix-mold-files/system/default.nix ./systems/{{platform}}/{{host}}/default.nix
     sed -i -E 's/\bxxhostxx\b/{{host}}/g' ./systems/{{platform}}/{{host}}/default.nix
     sed -i -E 's/\bxxusernamexx\b/{{username}}/g' ./systems/{{platform}}/{{host}}/default.nix
     sed -i -E "s|\\bxxblock_devicexx\\b|{{block_device}}|g" ./systems/{{platform}}/{{host}}/default.nix
@@ -144,6 +144,12 @@ create-module platform category module:
 create-overlay package:
     mkdir -p ./overlays/{{package}}/
     cp ./extra/my-nix-mold-files/overlays/default.nix ./overlays/{{package}}/default.nix
+
+create-disko module: 
+    mkdir -p ./modules/nixos/disko/{{module}}/
+    cp ./extra/my-nix-mold-files/disko/disko-config.nix ./modules/nixos/disko/{{module}}/disko-config.nix
+    sed -i -E 's/\bxxmodulexx\b/{{module}}/g' ./modules/nixos/disko/{{module}}/disko-config.nix
+
 
 [confirm("Are you sure you want to nuke this directory?")]
 delete-category platform category:
