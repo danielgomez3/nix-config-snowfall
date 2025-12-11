@@ -29,15 +29,10 @@ in {
   };
 
   profiles.${namespace}.my.nixos = {
-    disko.dual-boot-generic = {
+    disko.luks-encrypted = {
       enable = true;
       blockDevice = "/dev/nvme0n1";
     };
-    # disko.dual-boot-impermanence = {
-    #   enable = true;
-    #   blockDevice = "/dev/nvme0n1";
-    #   persistentStorageSize = "50G"; # Adjust based on your needs
-    # };
     bundles = {
       x86-64-uefi-boot = enabled;
       core-minimal-nixos = enabled;
