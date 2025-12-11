@@ -29,7 +29,7 @@ in {
   };
 
   profiles.${namespace}.my.nixos = {
-    disko.luks-encrypted = {
+    disko.luks-ephemeral-btrfs = {
       enable = true;
       dualBoot = enabled;
       linuxPartSize = "300G";

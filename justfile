@@ -25,6 +25,10 @@ list:
 # 
 # 
 
+[confirm("Hey, you're about to nuke a file or dir! (y/n)")]
+nuke:
+    echo "continuing.."
+    
 
 [default]
 show:
@@ -34,7 +38,7 @@ show:
 build-configuration host: pre-command-hooks
     nix build .#nixosConfigurations.{{host}}.config.system.build.toplevel
 
-eval-configuration host: pre-command-hooks
+eval-configuration host: nuke pre-command-hooks
     nix eval .#nixosConfigurations.{{host}}.config.system.build.toplevel.drvPath
 
 # observe built closure for a package, etc. Requires build-configuration
@@ -151,7 +155,7 @@ create-system platform host username block_device:
 
 
 # Module created under /modules/nixos/{{category}}. Create category first!
-create-module platform category module: 
+create-module platform category module: nuke
     mkdir -p ./modules/{{platform}}/{{category}}/{{module}}/
     cp ./extra/my-nix-mold-files/module/default.nix ./modules/{{platform}}/{{category}}/{{module}}/default.nix
     t="{{module}}/default.nix" && sed -i "/];/i ./$t" "./modules/{{platform}}/{{category}}/{{module}}/default.nix"
@@ -159,18 +163,17 @@ create-module platform category module:
     sed -i -E 's/\bxxmodulexx\b/{{module}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix
     sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix
 
-create-overlay package:
+create-overlay package: nuke
     mkdir -p ./overlays/{{package}}/
     cp ./extra/my-nix-mold-files/overlays/default.nix ./overlays/{{package}}/default.nix
 
-create-disko module: 
+create-disko module: nuke
     mkdir -p ./modules/nixos/disko/{{module}}/
     cp ./extra/my-nix-mold-files/disko/default.nix ./modules/nixos/disko/{{module}}/default.nix
     sed -i -E 's/\bxxmodulexx\b/{{module}}/g' ./modules/nixos/disko/{{module}}/default.nix
 
 
-[confirm("Are you sure you want to nuke this directory?")]
-delete-category platform category:
+delete-category platform category: nuke
     rm -rf ./modules/{{platform}}/{{category}}
 
 
