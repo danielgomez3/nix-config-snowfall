@@ -1,4 +1,6 @@
 # luks-lvm-gpt.nix
+# NOTE
+# not sure it works anymore.. untested
 {
   lib,
   pkgs,

@@ -29,10 +29,17 @@ in {
   };
 
   profiles.${namespace}.my.nixos = {
-    disko.bios-uefi-gpt = {
+    disko.luks-ephemeral-btrfs = {
       enable = true;
+      dualBoot = false;
+      linuxPartSize = "100%";
+      swapPart = {
+        enable = true;
+        size = "16G";
+      };
       blockDevice = "xxblock_devicexx";
     };
+
     bundles = {
       x86-64-uefi-boot = enabled;
       core-minimal-nixos = enabled;

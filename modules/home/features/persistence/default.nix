@@ -17,28 +17,28 @@
   inherit (lib) mkIf;
   inherit (lib.${namespace}) enabled mkBoolOpt;
 in {
-  options.profiles.${namespace}.my.home.features.persistence = {
-    enable = mkBoolOpt false "Enable custom module for platform 'home', of category 'features', of module 'persistence', for namespace '${namespace}'.";
-  };
-  config = mkIf cfg.enable {
-    home.persistence."/home/${config.snowfallorg.user.name}" = {
-      directories = [
-        ".steam"
-        ".local/share/Steam"
-        ".cache/Steam"
-      ];
-      files = [
-        ".steam/steamid"
-        ".steam/registry.vdf"
-      ];
-      # allowOther allows other users, such as root, to access files through the bind mounted directories listed in directories. Useful for sudo operations, Docker, etc.
-      # Making this 'true' eequires the NixOS configuration programs.fuse.userAllowOther = true
-      allowOther = false;
-    };
+  # options.profiles.${namespace}.my.home.features.persistence = {
+  #   enable = mkBoolOpt false "Enable custom module for platform 'home', of category 'features', of module 'persistence', for namespace '${namespace}'.";
+  # };
+  # config = mkIf cfg.enable {
+  #   home.persistence."/home/${config.snowfallorg.user.name}" = {
+  #     directories = [
+  #       ".steam"
+  #       ".local/share/Steam"
+  #       ".cache/Steam"
+  #     ];
+  #     files = [
+  #       ".steam/steamid"
+  #       ".steam/registry.vdf"
+  #     ];
+  #     # allowOther allows other users, such as root, to access files through the bind mounted directories listed in directories. Useful for sudo operations, Docker, etc.
+  #     # Making this 'true' eequires the NixOS configuration programs.fuse.userAllowOther = true
+  #     allowOther = false;
+  #   };
 
-    # # Option 2: Using systemd tmpfiles (simpler)
-    # systemd.tmpfiles.rules = [
-    #   "L+ /home/your-username/.steam - - - - ${config.users.users.your-username.home}/.steam"
-    # ];
-  };
+  #   # # Option 2: Using systemd tmpfiles (simpler)
+  #   # systemd.tmpfiles.rules = [
+  #   #   "L+ /home/your-username/.steam - - - - ${config.users.users.your-username.home}/.steam"
+  #   # ];
+  # };
 }

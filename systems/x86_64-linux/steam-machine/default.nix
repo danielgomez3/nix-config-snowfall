@@ -29,21 +29,35 @@ in {
   };
 
   profiles.${namespace}.my.nixos = {
-    disko.luks-ephemeral-btrfs = {
+    # disko.bios-uefi-gpt = {
+    #   enable = true;
+    #   dualBoot = enabled;
+    #   linuxPartSize = "300G";
+    #   swapPart = {
+    #     enable = true;
+    #     size = "16G";
+    #   };
+    #   blockDevice = "/dev/nvme0n1";
+    # };
+    # disko.luks-ephemeral-btrfs = {
+    #   enable = true;
+    #   dualBoot = enabled;
+    #   linuxPartSize = "300G";
+    #   swapPart = {
+    #     enable = true;
+    #     size = "16G";
+    #   };
+    #   blockDevice = "/dev/nvme0n1";
+    # };
+    disko.zfs-ephemeral = {
       enable = true;
-      dualBoot = enabled;
-      linuxPartSize = "300G";
-      swapPart = {
-        enable = true;
-        size = "16G";
-      };
-      blockDevice = "/dev/nvme0n1";
     };
     bundles = {
       x86-64-uefi-boot = enabled;
       core-minimal-nixos = enabled;
       # gui-desktop-environment = enabled;
     };
+    # EXPLICITLY disable persistence if not needed
     features = {
       jovian-nixos = enabled;
       netbootxyz = enabled;

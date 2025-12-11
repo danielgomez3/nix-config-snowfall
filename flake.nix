@@ -97,7 +97,7 @@
       homes.modules = with inputs; [
         # my-input.homeModules.my-module
         spicetify-nix.homeManagerModules.default
-        impermanence.homeManagerModules.impermanence
+        # impermanence.homeManagerModules.impermanence
       ];
 
       # # Add modules to a specific home.
@@ -113,6 +113,10 @@
       # # Add modules to a specific system.
       # systems.hosts.my-host = with inputs; [
       #   # my-input.nixosModules.my-module
+      # ];
+      # systems.hosts.steam-machine.modules = with inputs; [
+      #   impermanence.nixosModules.impermanence
+      #   persist-retro.nixosModules.persist-retro
       # ];
 
       systems.hosts = {

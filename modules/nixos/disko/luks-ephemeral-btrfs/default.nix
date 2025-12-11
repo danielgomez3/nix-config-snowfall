@@ -40,12 +40,12 @@ in {
       mkOpt lib.types.str "" "e.g.: 16G.";
   };
   config = mkIf cfg.enable {
+    myVars.isEphemeral = true;
     profiles.${namespace}.my.nixos = {
       features = {
         persistence = enabled;
       };
     };
-    myVars.isEphemeral = true;
 
     assertions = [
       {
@@ -102,6 +102,7 @@ in {
                 mountpoint = "/boot";
                 mountOptions = [
                   "defaults"
+                  "umask=0077"
                 ];
               };
             };

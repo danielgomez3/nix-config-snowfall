@@ -33,6 +33,30 @@ in {
       mkOpt lib.types.str "" "e.g.: 16G.";
   };
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = !(cfg.dualBoot.enable && cfg.linuxPartSize == "100%");
+        message = ''
+          When dualBoot.enable = true, an exact linuxPartSize must be specified!
+          Example: linuxPartSize = "500G"
+          This leaves space for Windows installation.
+        '';
+      }
+      {
+        assertion = cfg.blockDevice != "";
+        message = ''
+          blockDevice = "";
+          Must specify block device!
+        '';
+      }
+      {
+        assertion = !(cfg.swapPart.enable && cfg.swapPart.size == "");
+        message = ''
+          when swapPart.enable, you Must specify swaPart.size!
+        '';
+      }
+    ];
+
     disko.devices = {
       disk = {
         main = {
@@ -43,12 +67,10 @@ in {
             partitions =
               (lib.optionalAttrs cfg.swapPart.enable {
                 swap = {
-                  size = "${cfg.swapPart.size}"; # Takes all remaining space
+                  size = "${cfg.swapPart.size}";
+                  type = "8200"; # GPT type code for Linux swap
                   content = {
-                    type = "filesystem";
-                    format = "bcachefs";
-                    mountpoint = "/";
-                    mountOptions = ["compress=zstd"];
+                    type = "swap";
                   };
                 };
               })
