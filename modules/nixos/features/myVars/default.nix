@@ -38,6 +38,11 @@ in {
       default = false;
       description = "Is the machine hardware limited?";
     };
+    isEphemeral = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Is the machine ephemeral?";
+    };
     isSyncthingServer = lib.mkOption {
       type = lib.types.bool;
       default = false;

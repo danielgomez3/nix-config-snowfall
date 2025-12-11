@@ -38,7 +38,7 @@ show:
 build-configuration host: pre-command-hooks
     nix build .#nixosConfigurations.{{host}}.config.system.build.toplevel
 
-eval-configuration host: nuke pre-command-hooks
+eval-configuration host: pre-command-hooks
     nix eval .#nixosConfigurations.{{host}}.config.system.build.toplevel.drvPath
 
 # observe built closure for a package, etc. Requires build-configuration
@@ -72,7 +72,7 @@ apply target: pre-command-hooks
     done
 
 
-[confirm("You are about to completelyl wipe a device! Continue? (Y/N)")]
+[confirm("You are about to completely wipe a device! Continue? (Y/N)")]
 deploy host ip_address:
     root_dir=$(mktemp -d) && \
     trap 'rm -rf "$root_dir"' EXIT && \
@@ -132,24 +132,28 @@ commit:
     git commit
 
 
+r phrase path:
+    sed -i -E 's/\bxx{{phrase}}xx\b/{{phrase}}/g' {{path}}
+
 
 # Provide full path of block device
 create-system platform host username block_device:
+    #!/usr/bin/env bash
     echo "creating nixos system.."
     mkdir -p ./systems/{{platform}}/{{host}}/
     cp ./extra/my-nix-mold-files/system/default.nix ./systems/{{platform}}/{{host}}/default.nix
-    # cp ./extra/my-nix-mold-files/system/hardware-configuration.nix ./systems/{{platform}}/{{host}}/hardware-configuration.nix
     cp ./extra/my-nix-mold-files/system/default.nix ./systems/{{platform}}/{{host}}/default.nix
-    sed -i -E 's/\bxxhostxx\b/{{host}}/g' ./systems/{{platform}}/{{host}}/default.nix
-    sed -i -E 's/\bxxusernamexx\b/{{username}}/g' ./systems/{{platform}}/{{host}}/default.nix
-    sed -i -E "s|\\bxxblock_devicexx\\b|{{block_device}}|g" ./systems/{{platform}}/{{host}}/default.nix
-    sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./systems/{{platform}}/{{host}}/default.nix
+    path="./systems/{{platform}}/{{host}}/default.nix"
+    just r {{host}} $path
+    just r {{username}} $path
+    just r {{block_device}} $path
+    just r {{platform}} $path
 
     echo "creating its home module.."
-    mkdir -p ./homes/{{platform}}/{{username}}@{{host}}/
-    cp ./extra/my-nix-mold-files/home/default.nix ./homes/{{platform}}/{{username}}@{{host}}/default.nix
-    sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./homes/{{platform}}/{{username}}@{{host}}/default.nix
-    sed -i -E 's/\bxxusernamexx\b/{{username}}/g' ./homes/{{platform}}/{{username}}@{{host}}/default.nix
+    path="./homes/{{platform}}/{{username}}@{{host}}/default.nix"
+    just r {{platform}} $path
+    just r {{username}} $path
+
 
 
 

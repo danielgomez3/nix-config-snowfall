@@ -30,6 +30,13 @@ in {
       mkOpt lib.types.str "1G" "e.g.: '500M'. Default is best";
   };
   config = mkIf cfg.enable {
+    profiles.${namespace}.my.nixos = {
+      features = {
+        persistence = enabled;
+      };
+    };
+    myVars.isEphemeral = true;
+
     assertions = [
       {
         assertion = !(cfg.dualBoot.enable && cfg.linuxPartSize == "100%");

@@ -43,7 +43,6 @@ in {
     features = {
       jovian-nixos = enabled;
       netbootxyz = enabled;
-      # persistence = enabled;
     };
     programs = {
     };
