@@ -59,6 +59,24 @@ metadata input=(none):
 # 
 # 
 
+apply target: pre-command-hooks
+    #!/usr/bin/env bash
+    input="{{target}}"
+    IFS=',' read -r -a devices <<< "$input"
+    for i in "${devices[@]}"; do
+      nix run github:serokell/deploy-rs --show-trace -- --skip-checks ".#$i"
+    done
+
+
+[confirm("You are about to completelyl wipe a device! Continue? (Y/N)")]
+deploy host ip_address:
+    root_dir=$(mktemp -d) && \
+    trap 'rm -rf "$root_dir"' EXIT && \
+    mkdir -p "${root_dir}/root/.config/sops/age" && \
+    cp ~/.config/sops/age/keys.txt "${root_dir}/root/.config/sops/age/keys.txt" && \
+    nix run github:nix-community/nixos-anywhere/main -- --extra-files "$root_dir" --copy-host-keys --flake .#{{host}} --target-host root@{{ip_address}}
+
+
 deploy-rs target=(currentHost): pre-command-hooks
       nix run github:serokell/deploy-rs --show-trace -- --skip-checks ".#{{target}}"
 

@@ -18,7 +18,7 @@ in {
     };
     features = {
       # gui-desktop-environment = false; # For non-nix machines only!
-      gui-desktop-apps = enabled;
+      # gui-desktop-apps = enabled;
     };
     programs = {
     };

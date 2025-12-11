@@ -24,16 +24,6 @@ in {
     enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'features', of module 'vm-boot-compatible', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    # profiles.${namespace}.my.nixos = {
-    # };
-    # profiles.${namespace}.my.home = {
-    # };
-    networking.firewall = {
-      enable = true;
-      allowedTCPPorts = [22]; # SSH port inside VM
-      # Or disable firewall entirely for testing:
-      # enable = false;
-    };
     virtualisation.vmVariant = {
       virtualisation.diskSize = 100000; # 100GB in MB
       virtualisation.memorySize = 8192; # 8GB

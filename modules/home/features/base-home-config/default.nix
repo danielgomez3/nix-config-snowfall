@@ -19,7 +19,7 @@ in {
     enable = mkEnableOption "Enable custom module for platform 'home', of category 'features', of module 'base-home-config', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    home.stateVersion = "24.05";
-    home.activationGenerateGcRoot = false; # HACK: VM wouldn't use home manager, this fixed it. Look up why!
+    home.stateVersion = "25.11";
+    # home.activationGenerateGcRoot = false; # HACK: VM wouldn't use home manager, this fixed it. Look up why!
   };
 }

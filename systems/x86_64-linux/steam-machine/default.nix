@@ -15,7 +15,7 @@
   inherit (lib.${namespace}) enabled;
 in {
   imports = [
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
     # inputs.nixos-facter-modules.nixosModules.facter
     # {config.facter.reportPath = ./facter.json;}
   ];
@@ -33,14 +33,20 @@ in {
       enable = true;
       blockDevice = "/dev/nvme0n1";
     };
+    # disko.dual-boot-impermanence = {
+    #   enable = true;
+    #   blockDevice = "/dev/nvme0n1";
+    #   persistentStorageSize = "50G"; # Adjust based on your needs
+    # };
     bundles = {
       x86-64-uefi-boot = enabled;
       core-minimal-nixos = enabled;
-      gui-desktop-environment = enabled;
+      # gui-desktop-environment = enabled;
     };
     features = {
       jovian-nixos = enabled;
       netbootxyz = enabled;
+      # persistence = enabled;
     };
     programs = {
     };

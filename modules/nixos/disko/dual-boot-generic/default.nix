@@ -1,4 +1,6 @@
 # modules/nixos/disko/dual-boot-generic/disko-config.nix
+# NOTE
+# This is a hacky way of doing this. Research more elegant method.
 {
   lib,
   pkgs,
@@ -20,38 +22,43 @@ in {
   options.profiles.${namespace}.my.nixos.disko.dual-boot-generic = {
     enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'disko', of module 'dual-boot-generic', for namespace '${namespace}'.";
     blockDevice =
-      mkOpt lib.types.str "/dev/sda" "specify block device";
+      mkOpt lib.types.str "/dev/sda" "specify block device. Could be disk-by-id as well.";
+    windowsPartSize =
+      mkOpt lib.types.str "150G" "e.g.: '250G'. This part is imperative, because linux will take rest if default. Otherwise, you will have calculate and provision.";
+    linuxPartSize =
+      mkOpt lib.types.str "100%" "e.g.: '250G'. Default is best";
+    efiPartSize =
+      mkOpt lib.types.str "1G" "e.g.: '500M'. Default is best";
   };
   config = mkIf cfg.enable {
     disko.devices = {
       disk = {
         main = {
-          device = "/dev/nvme0n1"; # Change this to your actual disk
+          device = "${cfg.blockDevice}";
           type = "disk";
           content = {
             type = "gpt";
             partitions = {
-              # EFI System Partition (shared by both OSes)
+              # EFI System Partition
               ESP = {
                 type = "EF00";
-                # size = "500M";
-                size = "1G";
+                size = "${cfg.efiPartSize}";
                 content = {
                   type = "filesystem";
                   format = "vfat";
-                  mountpoint = "/boot"; # or "/efi"
+                  mountpoint = "/boot";
                   mountOptions = ["umask=0077"];
                 };
               };
 
-              # Linux root partition - starts after Windows space
+              # Linux root partition (ideally, rest of space)
               root = {
-                # Reserve 100GB at the beginning for Windows
-                start = "230G"; # Adjust this size based on your needs
-                size = "100%"; # Take all remaining space for whatever you want (NixOS installation)
+                start = "${cfg.windowsPartSize}"; # Leave this much empty for windows before you create Linux Part.
+
+                size = "${cfg.linuxPartSize}"; # Takes all remaining space
                 content = {
                   type = "filesystem";
-                  format = "bcachefs"; # or ext4, btrfs, etc.
+                  format = "bcachefs";
                   mountpoint = "/";
                   mountOptions = ["compress=zstd"];
                 };

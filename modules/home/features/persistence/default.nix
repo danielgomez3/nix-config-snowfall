@@ -32,8 +32,8 @@ in {
         ".steam/registry.vdf"
       ];
       # allowOther allows other users, such as root, to access files through the bind mounted directories listed in directories. Useful for sudo operations, Docker, etc.
-      # Requires the NixOS configuration programs.fuse.userAllowOther = true
-      # allowOther = true;
+      # Making this 'true' eequires the NixOS configuration programs.fuse.userAllowOther = true
+      allowOther = false;
     };
 
     # # Option 2: Using systemd tmpfiles (simpler)

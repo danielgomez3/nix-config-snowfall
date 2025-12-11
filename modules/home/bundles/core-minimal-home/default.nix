@@ -21,12 +21,8 @@ in {
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.home = {
-      # bundles = {
-      #   core-minimal-home = enabled;
-      # };
       features = {
         base-home-config = enabled;
-        persistence = enabled;
       };
       programs = {
         zsh = enabled;
@@ -35,7 +31,6 @@ in {
         git = enabled;
         neovim = enabled;
         zellij = enabled;
-        rclone = enabled;
         btop = enabled;
         eza = enabled;
       };

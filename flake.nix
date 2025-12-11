@@ -18,7 +18,8 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    impermanence.url = "github:nix-community/impermanence"; # make custom iso data impermanent
+    impermanence.url = "github:nix-community/impermanence";
+    persist-retro.url = "github:geometer1729/persist-retro";
 
     # Nix flake systems
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -27,8 +28,10 @@
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     nix-on-droid.url = "github:nix-community/nix-on-droid/release-24.05";
     nix-on-droid.inputs.nixpkgs.follows = "nixpkgs";
+    # nixpkgs-jovian.url = "github:nixos/nixpkgs/c5ae371f1a6a7fd27823bc500d9390b38c05fa55";
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
-    jovian.inputs.nixpkgs.follows = "nixpkgs-stable";
+    # jovian.inputs.nixpkgs.url = "github:nixos/nixpkgs/c5ae371f1a6a7fd27823bc500d9390b38c05fa55";
+    jovian.inputs.nixpkgs.follows = "nixpkgs";
 
     # Nix flake deployment
     deploy-rs.url = "github:serokell/deploy-rs";
@@ -74,6 +77,7 @@
       # The attribute set specified here will be passed directly to NixPkgs when
       # instantiating the package set.
       channels-config = {
+        # nixpkgs = inputs.nixpkgs-jovian;
         # Allow unfree packages.
         allowUnfree = true;
 
@@ -117,9 +121,10 @@
       };
 
       # # Add overlays for the `nixpkgs` channel.
-      # overlays = with inputs; [
-      #   # my-inputs.overlays.my-overlay
-      # ];
+      overlays = with inputs; [
+        # deploy-rs.overlays.deploy-rs
+        # jovian.overlay
+      ];
 
       # # Add a custom value to `specialArgs`.
       # systems.hosts.laptop.specialArgs = {
@@ -175,6 +180,27 @@
           shellHook = ''alias d="deploy"'';
         };
 
-      deploy = lib.mkDeploy {inherit (inputs) self;};
+      # deploy = lib.mkDeploy {
+      #   inherit (inputs) self;
+      #   overrides = {
+      #     "steam-machine" = {
+      #       hostname = "steam-machine"; # or specific IP
+      #       profiles.system = {
+      #         sshUser = "root";
+      #         user = "root";
+      #       };
+      #     };
+      #   };
+      # };
+
+      deploy.nodes.steam-machine = {
+        hostname = "steam-machine";
+        sshUser = "root";
+        fastConnection = true; # Enable pipelined copying
+        profiles.system = {
+          user = "root";
+          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.steam-machine;
+        };
+      };
     };
 }

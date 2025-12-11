@@ -28,6 +28,7 @@ in {
         myVars = enabled; # TODO: think about making this inside of base-config.nix
         base-nixos-config = enabled;
         vm-boot-compatible = enabled;
+        # persistence = enabled; # TODO: make this available everywhere, impermanence is what we want to be selective about.
       };
       programs = {
         openssh = enabled;
