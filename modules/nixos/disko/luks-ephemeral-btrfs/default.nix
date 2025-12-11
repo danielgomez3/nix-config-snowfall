@@ -1,4 +1,11 @@
 # modules/nixos/disko/luks-ephemeral-btrfs/disko-config.nix
+# TODO
+# - Remove all the excess persistent directories tha you THINK are helping you log in with sops. I think the only like I needed was:
+# age.keyFile =
+#     if config.myVars.isEphemeral
+#     then "/persistent/root/.config/sops/age/keys.txt" # Ephemeral: use persistent location
+#     else "/root/.config/sops/age/keys.txt"; # Non-ephemeral: normal location
+# To enabled persistence and log in across boots.
 {
   lib,
   pkgs,
@@ -28,6 +35,9 @@ in {
       mkOpt lib.types.str "100%" "e.g.: '250G'. Default is best";
     efiPartSize =
       mkOpt lib.types.str "1G" "e.g.: '500M'. Default is best";
+    swapPart.enable = mkBoolOpt false "Enable manual swap partition";
+    swapPart.size =
+      mkOpt lib.types.str "" "e.g.: 16G.";
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.nixos = {
@@ -51,6 +61,19 @@ in {
         message = ''
           blockDevice = "";
           Must specify block device!
+        '';
+      }
+      {
+        assertion = !(cfg.swapPart.enable);
+        message = ''
+          swapPart.enable = ${cfg.swapPart.enable}.
+          You must specify a physical swap partition!
+        '';
+      }
+      {
+        assertion = !(cfg.swapPart.enable && cfg.swapPart.size == "");
+        message = ''
+          when swapPart.enable, you Must specify swaPart.size!
         '';
       }
     ];
@@ -118,48 +141,51 @@ in {
                 content = {
                   type = "btrfs";
                   extraArgs = ["-f"]; # Force override existing partition
-                  subvolumes = {
-                    # mount the top-level subvolume at /btr_pool
-                    # it will be used by btrbk to create snapshots
-                    "/" = {
-                      mountpoint = "/btr_pool";
-                      # btrfs's top-level subvolume, internally has an id 5
-                      # we can access all other subvolumes from this subvolume.
-                      mountOptions = ["subvolid=5"];
+                  subvolumes =
+                    (lib.optionalAttrs cfg.swapPart.enable {
+                      "@swap" = {
+                        mountpoint = "/swap";
+                        swap.swapfile.size = "${cfg.swapPart.size}";
+                      };
+                    })
+                    // {
+                      # mount the top-level subvolume at /btr_pool
+                      # it will be used by btrbk to create snapshots
+                      "/" = {
+                        mountpoint = "/btr_pool";
+                        # btrfs's top-level subvolume, internally has an id 5
+                        # we can access all other subvolumes from this subvolume.
+                        mountOptions = ["subvolid=5"];
+                      };
+                      "@nix" = {
+                        mountpoint = "/nix";
+                        mountOptions = [
+                          "compress-force=zstd:1"
+                          "noatime"
+                        ];
+                      };
+                      "@persistent" = {
+                        mountpoint = "/persistent";
+                        mountOptions = [
+                          "compress-force=zstd:1"
+                          "noatime"
+                        ];
+                      };
+                      "@tmp" = {
+                        mountpoint = "/tmp";
+                        mountOptions = [
+                          "compress-force=zstd:1"
+                          "noatime"
+                        ];
+                      };
+                      "@snapshots" = {
+                        mountpoint = "/snapshots";
+                        mountOptions = [
+                          "compress-force=zstd:1"
+                          "noatime"
+                        ];
+                      };
                     };
-                    "@nix" = {
-                      mountpoint = "/nix";
-                      mountOptions = [
-                        "compress-force=zstd:1"
-                        "noatime"
-                      ];
-                    };
-                    "@persistent" = {
-                      mountpoint = "/persistent";
-                      mountOptions = [
-                        "compress-force=zstd:1"
-                        "noatime"
-                      ];
-                    };
-                    "@tmp" = {
-                      mountpoint = "/tmp";
-                      mountOptions = [
-                        "compress-force=zstd:1"
-                        "noatime"
-                      ];
-                    };
-                    "@snapshots" = {
-                      mountpoint = "/snapshots";
-                      mountOptions = [
-                        "compress-force=zstd:1"
-                        "noatime"
-                      ];
-                    };
-                    "@swap" = {
-                      mountpoint = "/swap";
-                      swap.swapfile.size = "16384M";
-                    };
-                  };
                 };
               };
             };

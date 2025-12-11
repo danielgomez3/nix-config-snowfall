@@ -1,5 +1,8 @@
 # TODO
 
+- make all disko assertions in a different file
+- change deploy recipe to 'just eval' before deploy
+- Make systemd style services to all deployment
 - change zsh prompt to always say host
 - fix btop to work with any graphics card
 - factor jovian so boot is inheriting from my modules

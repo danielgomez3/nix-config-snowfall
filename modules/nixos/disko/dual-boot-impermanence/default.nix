@@ -1,4 +1,6 @@
 # modules/nixos/disko/dual-boot-impermanence/disko-config.nix
+# NOTE
+# WIP
 {
   lib,
   pkgs,

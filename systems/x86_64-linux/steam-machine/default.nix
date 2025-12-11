@@ -33,6 +33,10 @@ in {
       enable = true;
       dualBoot = enabled;
       linuxPartSize = "300G";
+      swapPart = {
+        enable = true;
+        size = "16G";
+      };
       blockDevice = "/dev/nvme0n1";
     };
     bundles = {

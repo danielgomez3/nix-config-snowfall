@@ -40,7 +40,9 @@ in {
     environment.persistence."/persistent" = {
       hideMounts = true;
       directories = [
-        "/root/.config/sops/age" # <-- Add this!
+        "/etc/ssh"
+        # "/run" # TODO is this completely secure?
+        # "/root/.config/sops/age" # <-- Add this!
         "/var/lib/nixos"
         "/var/lib/systemd"
         "/var/log"
@@ -70,7 +72,6 @@ in {
       };
       files = [
         "/etc/machine-id"
-        config.sops.secrets.user_password.path
         # ... other files
       ];
     };
