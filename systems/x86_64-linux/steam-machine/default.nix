@@ -31,6 +31,8 @@ in {
   profiles.${namespace}.my.nixos = {
     disko.luks-encrypted = {
       enable = true;
+      dualBoot = enabled;
+      linuxPartSize = "300G";
       blockDevice = "/dev/nvme0n1";
     };
     bundles = {

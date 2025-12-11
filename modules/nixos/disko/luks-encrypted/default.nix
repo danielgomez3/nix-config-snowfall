@@ -19,16 +19,41 @@
 in {
   options.profiles.${namespace}.my.nixos.disko.luks-encrypted = {
     enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'disko', of module 'luks-encrypted', for namespace '${namespace}'.";
+    dualBoot.enable = mkBoolOpt false "leave space in disk for dual boot (windows only tested)";
     blockDevice =
-      mkOpt lib.types.str "/dev/sda" "specify block device";
+      mkOpt lib.types.str "" "specify block device. e.g. /dev/sda. device-by-id is valid too.";
     windowsPartSize =
       mkOpt lib.types.str "250G" "e.g.: '250G'. This part is imperative, because linux will take rest if default. Otherwise, you will have calculate and provision.";
     linuxPartSize =
       mkOpt lib.types.str "100%" "e.g.: '250G'. Default is best";
     efiPartSize =
-      mkOpt lib.types.str "1G" "e.g.: '50M'. Default is best";
+      mkOpt lib.types.str "1G" "e.g.: '500M'. Default is best";
   };
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = !(cfg.dualBoot.enable && cfg.linuxPartSize == "100%");
+        message = ''
+          When dualBoot.enable = true, an exact linuxPartSize must be specified!
+          Example: linuxPartSize = "500G"
+          This leaves space for Windows installation.
+        '';
+      }
+      {
+        assertion = cfg.blockDevice != "";
+        message = ''
+          blockDevice = "";
+          Must specify block device!
+        '';
+      }
+      # {
+      #   assertion = !cfg.dualBoot.enable || cfg.windowsPartSize != "";
+      #   message = ''
+      #     When dualBoot.enable = true, windowsPartSize must be specified.
+      #     Example: windowsPartSize = "250G"
+      #   '';
+      # }
+    ];
     disko.devices = {
       disk = {
         nvme0n1 = {
@@ -52,8 +77,7 @@ in {
                 };
               };
               luks = {
-                start = "${cfg.windowsPartSize}";
-                size = "100%";
+                size = "${cfg.linuxPartSize}";
                 label = "luks";
                 content = {
                   type = "luks";
