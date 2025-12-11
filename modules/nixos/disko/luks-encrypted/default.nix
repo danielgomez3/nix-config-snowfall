@@ -46,13 +46,6 @@ in {
           Must specify block device!
         '';
       }
-      # {
-      #   assertion = !cfg.dualBoot.enable || cfg.windowsPartSize != "";
-      #   message = ''
-      #     When dualBoot.enable = true, windowsPartSize must be specified.
-      #     Example: windowsPartSize = "250G"
-      #   '';
-      # }
     ];
     disko.devices = {
       disk = {
@@ -65,7 +58,7 @@ in {
               ESP = {
                 label = "boot";
                 name = "ESP";
-                size = "512M";
+                size = "${cfg.efiPartSize}";
                 type = "EF00";
                 content = {
                   type = "filesystem";
