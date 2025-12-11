@@ -64,13 +64,6 @@ in {
         '';
       }
       {
-        assertion = !(cfg.swapPart.enable);
-        message = ''
-          swapPart.enable = ${cfg.swapPart.enable}.
-          You must specify a physical swap partition!
-        '';
-      }
-      {
         assertion = !(cfg.swapPart.enable && cfg.swapPart.size == "");
         message = ''
           when swapPart.enable, you Must specify swaPart.size!

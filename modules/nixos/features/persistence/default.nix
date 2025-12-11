@@ -41,8 +41,9 @@ in {
       hideMounts = true;
       directories = [
         "/etc/ssh"
-        # "/run" # TODO is this completely secure?
-        # "/root/.config/sops/age" # <-- Add this!
+        "/etc"
+        "/run" # TODO is this completely secure?
+        "/root/.config/sops/age" # <-- Add this!
         "/var/lib/nixos"
         "/var/lib/systemd"
         "/var/log"
