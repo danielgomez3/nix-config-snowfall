@@ -54,7 +54,7 @@ in {
     # };
     disko.zfs-only-ephemeral = {
       enable = true;
-      blockDevice = "/dev/nvme0n1p1";
+      blockDevice = "/dev/nvme0n1";
     };
     bundles = {
       x86-64-uefi-boot = enabled;

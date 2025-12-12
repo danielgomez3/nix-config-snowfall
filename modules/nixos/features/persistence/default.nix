@@ -47,7 +47,6 @@ in {
         "/root/.config/sops/age" # <-- Add this!
         "/var/lib/nixos"
         "/var/lib/systemd"
-        "/var/log"
         "/var/lib/bluetooth"
         "/var/lib/systemd/coredump"
         # FIXME better way? Add more sops passwords?

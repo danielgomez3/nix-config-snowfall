@@ -15,7 +15,7 @@
   cfg = config.profiles.${namespace}.my.nixos.disko.zfs-only-ephemeral;
 
   inherit (lib) mkIf;
-  inherit (lib.${namespace}) enabled mkBoolOpt mkOpt;
+  inherit (lib.${namespace}) enabled mkBoolOpt mkOpt genHostId;
 in {
   options.profiles.${namespace}.my.nixos.disko.zfs-only-ephemeral = {
     enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'disko', of module 'zfs-only-ephemeral', for namespace '${namespace}'.";
@@ -34,7 +34,9 @@ in {
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.nixos = {
+      features.persistence = enabled;
     };
+    myVars.isEphemeral = true;
 
     assertions = [
       {
@@ -59,100 +61,7 @@ in {
         '';
       }
     ];
-    # boot.initrd.systemd = {
-    #   enable = true;
-    #   services.initrd-rollback-root = {
-    #     after = ["zfs-import-rpool.service"];
-    #     wantedBy = ["initrd.target"];
-    #     before = [
-    #       "sysroot.mount"
-    #     ];
-    #     path = [pkgs.zfs];
-    #     description = "Rollback root fs";
-    #     unitConfig.DefaultDependencies = "no";
-    #     serviceConfig.Type = "oneshot";
-    #     script = "zfs rollback -r rpool/nixos/empty@start && echo '  >> >> rollback complete << <<'";
-    #   };
-    # };
-    # fileSystems."/" = lib.mkForce {
-    #   device = "rpool/nixos/empty";
-    #   fsType = "zfs";
-    # };
-
-    # fileSystems."/nix" = {
-    #   device = "rpool/nixos/nix";
-    #   fsType = "zfs";
-    #   neededForBoot = true;
-    # };
-
-    # fileSystems."/etc/nixos" = {
-    #   device = "rpool/nixos/config";
-    #   fsType = "zfs";
-    #   neededForBoot = true;
-    # };
-
-    # fileSystems."/boot" = {
-    #   device = "bpool/nixos/root";
-    #   fsType = "zfs";
-    # };
-
-    # fileSystems."/var/log" = {
-    #   device = "rpool/nixos/var/log";
-    #   fsType = "zfs";
-    #   neededForBoot = true;
-    # };
-
-    # fileSystems."/var/lib" = {
-    #   device = "rpool/nixos/var/lib";
-    #   fsType = "zfs";
-    #   neededForBoot = true;
-    # };
-    # disko.devices = {
-    #   zpool = {
-    #     rpool = {
-    #       datasets = {
-    #         "nixos/empty" = {
-    #           type = "zfs_fs";
-    #           options.mountpoint = "legacy";
-    #           mountpoint = "/";
-    #           postCreateHook = "zfs snapshot rpool/nixos/empty@start";
-    #         };
-    #         nixos = {
-    #           type = "zfs_fs";
-    #           options.mountpoint = "none";
-    #         };
-    #         "nixos/var" = {
-    #           type = "zfs_fs";
-    #           options.mountpoint = "none";
-    #         };
-    #         "nixos/var/log" = {
-    #           type = "zfs_fs";
-    #           options.mountpoint = "legacy";
-    #           mountpoint = "/var/log";
-    #         };
-    #         "nixos/var/lib" = {
-    #           type = "zfs_fs";
-    #           options.mountpoint = "legacy";
-    #           mountpoint = "/var/lib";
-    #         };
-    #         "nixos/nix" = {
-    #           type = "zfs_fs";
-    #           options.mountpoint = "legacy";
-    #           mountpoint = "/nix";
-    #         };
-    #         "nixos/config" = {
-    #           type = "zfs_fs";
-    #           options.mountpoint = "legacy";
-    #           mountpoint = "/etc/nixos";
-    #         };
-    #       };
-    #     };
-    #   };
-    # };
-    #
-    networking.hostId =
-      builtins.substring 0 8
-      (builtins.hashString "sha256" config.myVars.hostname);
+    networking.hostId = genHostId config.myVars.hostname;
 
     disko.devices = {
       disk = {
@@ -161,6 +70,11 @@ in {
           device = "${cfg.blockDevice}";
           content = {
             type = "gpt";
+            preCreateHook = ''              # Might not be necessary, for good measure
+               echo "Wiping disk ${cfg.blockDevice}..."
+               wipefs -a ${cfg.blockDevice}
+               sgdisk -Z ${cfg.blockDevice}
+            '';
             partitions = {
               efi = {
                 size = "1G";
@@ -277,10 +191,10 @@ in {
               options.mountpoint = "legacy";
               mountpoint = "/etc/nixos";
             };
-            "nixos/persist" = {
+            "nixos/persistent" = {
               type = "zfs_fs";
               options.mountpoint = "legacy";
-              mountpoint = "/persist";
+              mountpoint = "/persistent";
             };
             "nixos/nix" = {
               type = "zfs_fs";
@@ -300,6 +214,10 @@ in {
         };
       };
     };
+    boot.loader.efi.efiSysMountPoint = "/boot/esp";
+    # NOTE: not sure why this is needed..
+    boot.initrd.systemd.enable = true;
+
     boot.initrd.systemd = {
       services.initrd-rollback-root = {
         after = ["zfs-import-rpool.service"];
@@ -313,6 +231,10 @@ in {
         serviceConfig.Type = "oneshot";
         script = "zfs rollback -r rpool/nixos/empty@start && echo '  >> >> rollback complete << <<'";
       };
+    };
+    fileSystems."/" = {
+      device = "rpool/nixos/empty";
+      fsType = "zfs";
     };
     fileSystems."/nix" = {
       device = "rpool/nixos/nix";
@@ -337,8 +259,8 @@ in {
       neededForBoot = true;
     };
 
-    fileSystems."/persist" = {
-      device = "rpool/nixos/persist";
+    fileSystems."/persistent" = {
+      device = "rpool/nixos/persistent";
       fsType = "zfs";
       neededForBoot = true;
     };

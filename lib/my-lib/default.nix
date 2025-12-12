@@ -15,6 +15,10 @@ in {
       map toString (filter (p: p != (dir + "/default.nix")) (listFilesRecursive dir))
     );
 
+  genHostId = hostname:
+    builtins.substring 0 8
+    (builtins.hashString "sha256" hostname);
+
   # Takes a full file path, extracts just the name without suffix
   # _fileNameNoSuffix = fullFilePath:
   #   baseNameOf fullFilePath
