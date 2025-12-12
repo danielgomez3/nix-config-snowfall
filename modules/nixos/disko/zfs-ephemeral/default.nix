@@ -1,6 +1,10 @@
 # modules/nixos/disko/zfs-ephemeral/default.nix
 # NOTE
-# working but generally untested as of 2025-12-11
+# runs, but not working properly.
+# Overly complex and complicated.
+# FIXME
+# The idea was to create zfs filesystem, and creating a whitelist of 'persisting' directories I cared about, and the rest being ephemeral. For some reason, /home and /root are persistent. I'm not sure why yet..
+# The idea is Whitelist whatever you want to keep, and snapshot it. Dump everything else at every reboot.
 
 {
   lib,

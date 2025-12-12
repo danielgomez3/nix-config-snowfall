@@ -1,4 +1,6 @@
 # modules/nixos/disko/luks-ephemeral-btrfs/disko-config.nix
+# NOTE
+# works!
 # TODO
 # - Remove all the excess persistent directories tha you THINK are helping you log in with sops. I think the only like I needed was:
 # age.keyFile =

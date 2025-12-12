@@ -33,7 +33,6 @@ in {
       mkOpt lib.types.str "" "e.g.: 16G.";
   };
   config = mkIf cfg.enable {
-    config = mkIf cfg.enable {
       profiles.${namespace}.my.nixos = {
       };
 
@@ -62,6 +61,6 @@ in {
       ];
 
       # Unique disko-config.nix code:
-    };
+      
   };
 }

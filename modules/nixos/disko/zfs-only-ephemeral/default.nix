@@ -1,0 +1,356 @@
+# modules/nixos/disko/zfs-only-ephemeral/disko-config.nix
+{
+  lib,
+  pkgs,
+  inputs,
+  namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
+  ...
+}: let
+  cfg = config.profiles.${namespace}.my.nixos.disko.zfs-only-ephemeral;
+
+  inherit (lib) mkIf;
+  inherit (lib.${namespace}) enabled mkBoolOpt mkOpt;
+in {
+  options.profiles.${namespace}.my.nixos.disko.zfs-only-ephemeral = {
+    enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'disko', of module 'zfs-only-ephemeral', for namespace '${namespace}'.";
+    dualBoot.enable = mkBoolOpt false "leave space in disk for dual boot (windows only tested)";
+    blockDevice =
+      mkOpt lib.types.str "" "specify block device. e.g. /dev/sda. device-by-id is valid too.";
+    windowsPartSize =
+      mkOpt lib.types.str "250G" "e.g.: '250G'. This part is imperative, because linux will take rest if default. Otherwise, you will have calculate and provision.";
+    linuxPartSize =
+      mkOpt lib.types.str "100%" "e.g.: '250G'. Default is best";
+    efiPartSize =
+      mkOpt lib.types.str "1G" "e.g.: '500M'. Default is best";
+    swapPart.enable = mkBoolOpt false "Enable manual swap partition";
+    swapPart.size =
+      mkOpt lib.types.str "" "e.g.: 16G.";
+  };
+  config = mkIf cfg.enable {
+    profiles.${namespace}.my.nixos = {
+    };
+
+    assertions = [
+      {
+        assertion = !(cfg.dualBoot.enable && cfg.linuxPartSize == "100%");
+        message = ''
+          When dualBoot.enable = true, an exact linuxPartSize must be specified!
+          Example: linuxPartSize = "500G"
+          This leaves space for Windows installation.
+        '';
+      }
+      {
+        assertion = cfg.blockDevice != "";
+        message = ''
+          blockDevice = "";
+          Must specify block device!
+        '';
+      }
+      {
+        assertion = !(cfg.swapPart.enable && cfg.swapPart.size == "");
+        message = ''
+          when swapPart.enable, you Must specify swaPart.size!
+        '';
+      }
+    ];
+    # boot.initrd.systemd = {
+    #   enable = true;
+    #   services.initrd-rollback-root = {
+    #     after = ["zfs-import-rpool.service"];
+    #     wantedBy = ["initrd.target"];
+    #     before = [
+    #       "sysroot.mount"
+    #     ];
+    #     path = [pkgs.zfs];
+    #     description = "Rollback root fs";
+    #     unitConfig.DefaultDependencies = "no";
+    #     serviceConfig.Type = "oneshot";
+    #     script = "zfs rollback -r rpool/nixos/empty@start && echo '  >> >> rollback complete << <<'";
+    #   };
+    # };
+    # fileSystems."/" = lib.mkForce {
+    #   device = "rpool/nixos/empty";
+    #   fsType = "zfs";
+    # };
+
+    # fileSystems."/nix" = {
+    #   device = "rpool/nixos/nix";
+    #   fsType = "zfs";
+    #   neededForBoot = true;
+    # };
+
+    # fileSystems."/etc/nixos" = {
+    #   device = "rpool/nixos/config";
+    #   fsType = "zfs";
+    #   neededForBoot = true;
+    # };
+
+    # fileSystems."/boot" = {
+    #   device = "bpool/nixos/root";
+    #   fsType = "zfs";
+    # };
+
+    # fileSystems."/var/log" = {
+    #   device = "rpool/nixos/var/log";
+    #   fsType = "zfs";
+    #   neededForBoot = true;
+    # };
+
+    # fileSystems."/var/lib" = {
+    #   device = "rpool/nixos/var/lib";
+    #   fsType = "zfs";
+    #   neededForBoot = true;
+    # };
+    # disko.devices = {
+    #   zpool = {
+    #     rpool = {
+    #       datasets = {
+    #         "nixos/empty" = {
+    #           type = "zfs_fs";
+    #           options.mountpoint = "legacy";
+    #           mountpoint = "/";
+    #           postCreateHook = "zfs snapshot rpool/nixos/empty@start";
+    #         };
+    #         nixos = {
+    #           type = "zfs_fs";
+    #           options.mountpoint = "none";
+    #         };
+    #         "nixos/var" = {
+    #           type = "zfs_fs";
+    #           options.mountpoint = "none";
+    #         };
+    #         "nixos/var/log" = {
+    #           type = "zfs_fs";
+    #           options.mountpoint = "legacy";
+    #           mountpoint = "/var/log";
+    #         };
+    #         "nixos/var/lib" = {
+    #           type = "zfs_fs";
+    #           options.mountpoint = "legacy";
+    #           mountpoint = "/var/lib";
+    #         };
+    #         "nixos/nix" = {
+    #           type = "zfs_fs";
+    #           options.mountpoint = "legacy";
+    #           mountpoint = "/nix";
+    #         };
+    #         "nixos/config" = {
+    #           type = "zfs_fs";
+    #           options.mountpoint = "legacy";
+    #           mountpoint = "/etc/nixos";
+    #         };
+    #       };
+    #     };
+    #   };
+    # };
+    #
+    networking.hostId =
+      builtins.substring 0 8
+      (builtins.hashString "sha256" config.myVars.hostname);
+
+    disko.devices = {
+      disk = {
+        main = {
+          type = "disk";
+          device = "${cfg.blockDevice}";
+          content = {
+            type = "gpt";
+            partitions = {
+              efi = {
+                size = "1G";
+                type = "EF00";
+                content = {
+                  type = "filesystem";
+                  format = "vfat";
+                  mountpoint = "/boot/esp";
+                };
+              };
+              bpool = {
+                size = "4G";
+                content = {
+                  type = "zfs";
+                  pool = "bpool";
+                };
+              };
+              rpool = {
+                end = "-1M";
+                content = {
+                  type = "zfs";
+                  pool = "rpool";
+                };
+              };
+              bios = {
+                size = "100%";
+                type = "EF02";
+              };
+            };
+          };
+        };
+      };
+      zpool = {
+        bpool = {
+          type = "zpool";
+          options = {
+            ashift = "12";
+            autotrim = "on";
+            compatibility = "grub2";
+          };
+          rootFsOptions = {
+            acltype = "posixacl";
+            canmount = "off";
+            compression = "lz4";
+            devices = "off";
+            normalization = "formD";
+            relatime = "on";
+            xattr = "sa";
+            "com.sun:auto-snapshot" = "false";
+          };
+          mountpoint = "/boot";
+          datasets = {
+            nixos = {
+              type = "zfs_fs";
+              options.mountpoint = "none";
+            };
+            "nixos/root" = {
+              type = "zfs_fs";
+              options.mountpoint = "legacy";
+              mountpoint = "/boot";
+            };
+          };
+        };
+
+        rpool = {
+          type = "zpool";
+          options = {
+            ashift = "12";
+            autotrim = "on";
+          };
+          rootFsOptions = {
+            acltype = "posixacl";
+            canmount = "off";
+            compression = "zstd";
+            dnodesize = "auto";
+            normalization = "formD";
+            relatime = "on";
+            xattr = "sa";
+            "com.sun:auto-snapshot" = "false";
+          };
+          mountpoint = "/";
+
+          datasets = {
+            nixos = {
+              type = "zfs_fs";
+              options.mountpoint = "none";
+            };
+            "nixos/var" = {
+              type = "zfs_fs";
+              options.mountpoint = "none";
+            };
+            "nixos/empty" = {
+              type = "zfs_fs";
+              options.mountpoint = "legacy";
+              mountpoint = "/";
+              postCreateHook = "zfs snapshot rpool/nixos/empty@start";
+            };
+            "nixos/home" = {
+              type = "zfs_fs";
+              options.mountpoint = "legacy";
+              mountpoint = "/home";
+            };
+            "nixos/var/log" = {
+              type = "zfs_fs";
+              options.mountpoint = "legacy";
+              mountpoint = "/var/log";
+            };
+            "nixos/var/lib" = {
+              type = "zfs_fs";
+              options.mountpoint = "none";
+            };
+            "nixos/config" = {
+              type = "zfs_fs";
+              options.mountpoint = "legacy";
+              mountpoint = "/etc/nixos";
+            };
+            "nixos/persist" = {
+              type = "zfs_fs";
+              options.mountpoint = "legacy";
+              mountpoint = "/persist";
+            };
+            "nixos/nix" = {
+              type = "zfs_fs";
+              options.mountpoint = "legacy";
+              mountpoint = "/nix";
+            };
+            docker = {
+              type = "zfs_volume";
+              size = "50G";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/var/lib/containers";
+              };
+            };
+          };
+        };
+      };
+    };
+    boot.initrd.systemd = {
+      services.initrd-rollback-root = {
+        after = ["zfs-import-rpool.service"];
+        wantedBy = ["initrd.target"];
+        before = [
+          "sysroot.mount"
+        ];
+        path = [pkgs.zfs];
+        description = "Rollback root fs";
+        unitConfig.DefaultDependencies = "no";
+        serviceConfig.Type = "oneshot";
+        script = "zfs rollback -r rpool/nixos/empty@start && echo '  >> >> rollback complete << <<'";
+      };
+    };
+    fileSystems."/nix" = {
+      device = "rpool/nixos/nix";
+      fsType = "zfs";
+      neededForBoot = true;
+    };
+
+    fileSystems."/etc/nixos" = {
+      device = "rpool/nixos/config";
+      fsType = "zfs";
+      neededForBoot = true;
+    };
+
+    fileSystems."/boot" = {
+      device = "bpool/nixos/root";
+      fsType = "zfs";
+    };
+
+    fileSystems."/home" = {
+      device = "rpool/nixos/home";
+      fsType = "zfs";
+      neededForBoot = true;
+    };
+
+    fileSystems."/persist" = {
+      device = "rpool/nixos/persist";
+      fsType = "zfs";
+      neededForBoot = true;
+    };
+
+    fileSystems."/var/log" = {
+      device = "rpool/nixos/var/log";
+      fsType = "zfs";
+    };
+
+    fileSystems."/var/lib/containers" = {
+      device = "/dev/zvol/rpool/docker";
+      fsType = "ext4";
+    };
+  };
+}
