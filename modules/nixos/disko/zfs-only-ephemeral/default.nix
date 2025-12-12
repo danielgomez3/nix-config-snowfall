@@ -35,7 +35,7 @@ in {
       swapPartSize =
         mkOpt lib.types.str "" "e.g.: 16G.";
     };
-    encrypted = mkBoolOpt false "Enable encryption. Depends on sops configured key.";
+    encryption = mkBoolOpt false "Enable encryption. Depends on sops configured key.";
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.nixos = {
@@ -152,16 +152,24 @@ in {
             ashift = "12";
             autotrim = "on";
           };
-          rootFsOptions = {
-            acltype = "posixacl";
-            canmount = "off";
-            compression = "zstd";
-            dnodesize = "auto";
-            normalization = "formD";
-            relatime = "on";
-            xattr = "sa";
-            "com.sun:auto-snapshot" = "false";
-          };
+          rootFsOptions =
+            (lib.optionalAttrs cfg.encryption {
+              "com.sun:auto-snapshot" = "false";
+              # encryption
+              encryption = "aes-256-gcm"; # Add encryption algorithm
+              keyformat = "passphrase"; # or "hex" or "raw" for key files
+              keylocation = "prompt";
+              # keylocation = "file://${config.sops.secrets.generic-pass.path}"; # IMPORTANT: Update this
+            })
+            // {
+              acltype = "posixacl";
+              canmount = "off";
+              compression = "zstd";
+              dnodesize = "auto";
+              normalization = "formD";
+              relatime = "on";
+              xattr = "sa";
+            };
           mountpoint = "/";
 
           datasets = {

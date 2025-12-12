@@ -31,7 +31,7 @@ in {
   profiles.${namespace}.my.nixos = {
     disko.zfs-only-ephemeral = {
       enable = true;
-      encrypted = false;
+      encryption = false;
       blockDevice = "/dev/nvme0n1";
       swap = {
         enable = true;
