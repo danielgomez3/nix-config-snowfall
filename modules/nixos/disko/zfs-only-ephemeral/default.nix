@@ -1,4 +1,6 @@
 # modules/nixos/disko/zfs-only-ephemeral/disko-config.nix
+# NOTE
+# /home is decidedly not ephemeral here. Maybe change that.
 {
   lib,
   pkgs,
@@ -28,9 +30,12 @@ in {
       mkOpt lib.types.str "100%" "e.g.: '250G'. Default is best";
     efiPartSize =
       mkOpt lib.types.str "1G" "e.g.: '500M'. Default is best";
-    swapPart.enable = mkBoolOpt false "Enable manual swap partition";
-    swapPart.size =
-      mkOpt lib.types.str "" "e.g.: 16G.";
+    swap = {
+      enable = mkBoolOpt false "Enable manual swap partition";
+      swapPartSize =
+        mkOpt lib.types.str "" "e.g.: 16G.";
+    };
+    encrypted = mkBoolOpt false "Enable encryption. Depends on sops configured key.";
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.nixos = {
@@ -55,12 +60,13 @@ in {
         '';
       }
       {
-        assertion = !(cfg.swapPart.enable && cfg.swapPart.size == "");
+        assertion = !(cfg.swap.enable && cfg.swap.swapPartSize == "");
         message = ''
           when swapPart.enable, you Must specify swaPart.size!
         '';
       }
     ];
+
     networking.hostId = genHostId config.myVars.hostname;
 
     disko.devices = {
@@ -83,6 +89,7 @@ in {
                   type = "filesystem";
                   format = "vfat";
                   mountpoint = "/boot/esp";
+                  mountOptions = ["umask=0077"];
                 };
               };
               bpool = {
@@ -100,7 +107,7 @@ in {
                 };
               };
               bios = {
-                size = "100%";
+                size = "1M";
                 type = "EF02";
               };
             };

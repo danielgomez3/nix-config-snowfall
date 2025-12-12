@@ -29,32 +29,14 @@ in {
   };
 
   profiles.${namespace}.my.nixos = {
-    # disko.bios-uefi-gpt = {
-    #   enable = true;
-    #   dualBoot = enabled;
-    #   linuxPartSize = "300G";
-    #   swapPart = {
-    #     enable = true;
-    #     size = "16G";
-    #   };
-    #   blockDevice = "/dev/nvme0n1";
-    # };
-    # disko.luks-ephemeral-btrfs = {
-    #   enable = true;
-    #   dualBoot = enabled;
-    #   linuxPartSize = "300G";
-    #   swapPart = {
-    #     enable = true;
-    #     size = "16G";
-    #   };
-    #   blockDevice = "/dev/nvme0n1";
-    # };
-    # disko.zfs-ephemeral = {
-    #   enable = true;
-    # };
     disko.zfs-only-ephemeral = {
       enable = true;
+      encrypted = false;
       blockDevice = "/dev/nvme0n1";
+      swap = {
+        enable = true;
+        swapPartSize = "16G";
+      };
     };
     bundles = {
       x86-64-uefi-boot = enabled;
