@@ -1,24 +1,29 @@
-# __platform__/__username__/default.nix
+# modules/__platform__/__category__/__module__/default.nix
 {
   lib,
   pkgs,
+  inputs,
   namespace,
+  system,
+  target,
+  format,
+  virtual,
+  systems,
+  config,
   ...
 }: let
-  inherit (lib.${namespace}) enabled;
-in {
-  snowfallorg.user = {
-    enable = true;
-    name = "__username__";
-  };
+  cfg = config.profiles.${namespace}.my.__platform__.__category__.__module__;
 
-  profiles.${namespace}.my.home = {
-    bundles = {
-      core-minimal-home = enabled;
-    };
-    features = {
-    };
-    programs = {
-    };
+  inherit (lib) mkIf;
+  inherit (lib.${namespace}) enabled mkBoolOpt;
+in {
+  options.profiles.${namespace}.my.__platform__.__category__.__module__ = {
+    enable = mkBoolOpt false "Enable custom module for platform '__platform__', of category '__category__', of module '__module__', for namespace '${namespace}'.";
+  };
+  config = mkIf cfg.enable {
+    # profiles.${namespace}.my.nixos = {
+    # };
+    # profiles.${namespace}.my.home = {
+    # };
   };
 }

@@ -15,6 +15,7 @@ default := "default"
 currentHost := "`hostname`"
 none := ""
 delim := "__"
+tdir := "./extra/my-nix-mold-files" # template dir
 
 
 list:
@@ -141,19 +142,19 @@ sed search replace file:
 create-system platform host username block_device: nuke
     #!/usr/bin/env bash
     echo "creating nixos system.."
-    path="./systems/{{platform}}/{{host}}/"
+    path="./systems/{{platform}}/{{host}}"
     file="$path/default.nix"
     mkdir -p $path
-    cp ./extra/my-nix-mold-files/system/default.nix $file
+    cp {{tdir}}/system/default.nix $file
     just sed host {{host}} $file
     just sed username {{username}} $file
     just sed block_device {{block_device}} $file
     just sed platform {{platform}} $file
 
     echo "creating its home module.."
-    path="./homes/{{platform}}/{{username}}@{{host}}/"
+    path="./homes/{{platform}}/{{username}}@{{host}}"
     mkdir -p $path
-    cp ./extra/my-nix-mold-files/home/default.nix "$path/default.nix"
+    cp {{tdir}}/module/default.nix "$path/default.nix"
     just sed platform {{platform}} $file
     just sed username {{username}} $file
 
