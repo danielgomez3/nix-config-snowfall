@@ -137,9 +137,6 @@ commit:
 sed search replace file:
     sed -i -E 's|\b__{{search}}__\b|{{replace}}|g' {{file}}
 
-
-
-
 # Provide full path of block device
 create-system platform host username block_device: nuke
     #!/usr/bin/env bash
@@ -152,7 +149,6 @@ create-system platform host username block_device: nuke
     just sed username {{username}} $file
     just sed block_device {{block_device}} $file
     just sed platform {{platform}} $file
-
     echo "creating its home module..."
     path="./homes/{{platform}}/{{username}}@{{host}}"
     file="$path/default.nix"
@@ -161,22 +157,14 @@ create-system platform host username block_device: nuke
     just sed platform {{platform}} $file
     just sed username {{username}} $file
 
-
-
-
-
 # Module created under /modules/nixos/{{category}}. Create category first!
 create-module platform category module: nuke
     #!/usr/bin/env bash
-    echo "creating module..."
-    
-    # Create directory and copy template
+    echo "creating module..."   
     path="./modules/{{platform}}/{{category}}/{{module}}"
     file="$path/default.nix"
     mkdir -p $path
     cp {{tdir}}/module/default.nix $file
-    
-    # Replace placeholders using sed recipe
     just sed category {{category}} $file
     just sed module {{module}} $file
     just sed platform {{platform}} $file
@@ -197,7 +185,7 @@ create-overlay overlay: nuke
     path="./overlays/{{overlay}}"
     file="$path/default.nix"
     mkdir -p $path
-    cp {{tdir}}/overlays/default.nix ./overlays/{{overlay}}/default.nix
+    cp {{tdir}}/overlays/default.nix $file
     just sed "overlay" {{overlay}} $file
 
 create-package package: nuke
