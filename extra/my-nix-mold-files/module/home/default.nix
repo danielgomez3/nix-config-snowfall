@@ -21,8 +21,6 @@ in {
     enable = mkBoolOpt false "Enable custom module for platform '__platform__', of category '__category__', of module '__module__', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    # profiles.${namespace}.my.nixos = {
-    # };
     # profiles.${namespace}.my.home = {
     # };
   };

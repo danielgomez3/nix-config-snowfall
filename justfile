@@ -149,11 +149,11 @@ create-system platform host username block_device: nuke
     just sed username {{username}} $file
     just sed block_device {{block_device}} $file
     just sed platform {{platform}} $file
-    echo "creating its home module..."
+    echo "creating its 'homes' module..."
     path="./homes/{{platform}}/{{username}}@{{host}}"
     file="$path/default.nix"
     mkdir -p $path
-    cp {{tdir}}/home/default.nix $file
+    cp {{tdir}}/homes/default.nix $file
     just sed platform {{platform}} $file
     just sed username {{username}} $file
 
@@ -164,7 +164,7 @@ create-module platform category module: nuke
     path="./modules/{{platform}}/{{category}}/{{module}}"
     file="$path/default.nix"
     mkdir -p $path
-    cp {{tdir}}/module/default.nix $file
+    cp {{tdir}}/{{platform}}/default.nix $file
     just sed category {{category}} $file
     just sed module {{module}} $file
     just sed platform {{platform}} $file
