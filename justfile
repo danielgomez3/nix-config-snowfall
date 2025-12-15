@@ -186,18 +186,18 @@ create-disko module: nuke
     path="./modules/nixos/disko/{{module}}"
     file="$path/default.nix"
     mkdir -p $path
-    cp ./extra/my-nix-mold-files/disko/default.nix $file
+    cp {{tdir}}/disko/default.nix $file
     just sed module {{module}} $file
     
 
 
 create-overlay package: nuke
     mkdir -p ./overlays/{{package}}/
-    cp ./extra/my-nix-mold-files/overlays/default.nix ./overlays/{{package}}/default.nix
+    cp {{tdir}}/overlays/default.nix ./overlays/{{package}}/default.nix
 
 create-package package: nuke
     mkdir -p ./packages/{{package}}/
-    cp ./extra/my-nix-mold-files/packages/default.nix ./packages/{{package}}/default.nix
+    cp {{tdir}}/packages/default.nix ./packages/{{package}}/default.nix
 
 delete-category platform category: nuke
     rm -rf ./modules/{{platform}}/{{category}}
