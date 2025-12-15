@@ -1,4 +1,4 @@
-# systems/__platform__/__host__/default.nix
+# systems/x86_64-linux/desktop/default.nix
 {
   lib,
   pkgs,
@@ -20,8 +20,8 @@ in {
     # {config.facter.reportPath = ./facter.json;}
   ];
 
-  myVars.username = "__username__";
-  myVars.hostname = "__host__";
+  myVars.username = "daniel";
+  myVars.hostname = "desktop";
 
   users.users.${config.myVars.username} = {
     isNormalUser = true;
@@ -37,7 +37,7 @@ in {
         enable = true;
         size = "16G";
       };
-      blockDevice = "__block_device__";
+      blockDevice = "/dev/nvme0n1";
     };
 
     bundles = {

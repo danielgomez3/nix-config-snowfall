@@ -14,6 +14,7 @@
 default := "default"
 currentHost := "`hostname`"
 none := ""
+delim := "__"
 
 
 list:
@@ -132,27 +133,28 @@ commit:
     git commit
 
 
-r phrase path:
-    sed -i -E 's/\bxx{{phrase}}xx\b/{{phrase}}/g' {{path}}
+sed search replace path:
+    sed -i -E 's|\b__{{search}}__\b|{{replace}}|g' {{path}}
 
 
 # Provide full path of block device
-create-system platform host username block_device:
+create-system platform host username block_device: nuke
     #!/usr/bin/env bash
     echo "creating nixos system.."
     mkdir -p ./systems/{{platform}}/{{host}}/
     cp ./extra/my-nix-mold-files/system/default.nix ./systems/{{platform}}/{{host}}/default.nix
-    cp ./extra/my-nix-mold-files/system/default.nix ./systems/{{platform}}/{{host}}/default.nix
     path="./systems/{{platform}}/{{host}}/default.nix"
-    just r {{host}} $path
-    just r {{username}} $path
-    just r {{block_device}} $path
-    just r {{platform}} $path
+    just sed host {{host}} $path
+    just sed username {{username}} $path
+    just sed block_device {{block_device}} $path
+    just sed platform {{platform}} $path
 
     echo "creating its home module.."
     path="./homes/{{platform}}/{{username}}@{{host}}/default.nix"
-    just r {{platform}} $path
-    just r {{username}} $path
+    mkdir -p ./homes/{{platform}}/{{username}}@{{host}}/
+    cp ./extra/my-nix-mold-files/home/default.nix ./homes/{{platform}}/{{username}}@{{host}}/default.nix
+    just sed platform {{platform}} $path
+    just sed username {{username}} $path
 
 
 
@@ -162,7 +164,9 @@ create-system platform host username block_device:
 create-module platform category module: nuke
     mkdir -p ./modules/{{platform}}/{{category}}/{{module}}/
     cp ./extra/my-nix-mold-files/module/default.nix ./modules/{{platform}}/{{category}}/{{module}}/default.nix
-    t="{{module}}/default.nix" && sed -i "/];/i ./$t" "./modules/{{platform}}/{{category}}/{{module}}/default.nix"
+    path="./modules/{{platform}}/{{category}}/{{module}}/default.nix"
+    # t="{{module}}/default.nix" && sed -i "/];/i ./$t" "./modules/{{platform}}/{{category}}/{{module}}/default.nix"
+    just sed "module" {{module}} $path
     sed -i -E 's/\bxxcategoryxx\b/{{category}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix
     sed -i -E 's/\bxxmodulexx\b/{{module}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix
     sed -i -E 's/\bxxplatformxx\b/{{platform}}/g' ./modules/{{platform}}/{{category}}/{{module}}/default.nix
@@ -170,6 +174,10 @@ create-module platform category module: nuke
 create-overlay package: nuke
     mkdir -p ./overlays/{{package}}/
     cp ./extra/my-nix-mold-files/overlays/default.nix ./overlays/{{package}}/default.nix
+
+create-package package: nuke
+    mkdir -p ./packages/{{package}}/
+    cp ./extra/my-nix-mold-files/packages/default.nix ./packages/{{package}}/default.nix
 
 create-disko module: nuke
     mkdir -p ./modules/nixos/disko/{{module}}/

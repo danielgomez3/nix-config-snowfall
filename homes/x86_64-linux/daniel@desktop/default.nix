@@ -1,4 +1,4 @@
-# __platform__/__username__/default.nix
+# x86_64-linux/daniel/default.nix
 {
   lib,
   pkgs,
@@ -9,7 +9,7 @@
 in {
   snowfallorg.user = {
     enable = true;
-    name = "__username__";
+    name = "daniel";
   };
 
   profiles.${namespace}.my.home = {

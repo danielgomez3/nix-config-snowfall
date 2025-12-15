@@ -1,4 +1,4 @@
-# modules/xxplatformxx/xxcategoryxx/xxmodulexx/default.nix
+# modules/__platform__/__category__/__module__/default.nix
 {
   lib,
   pkgs,
@@ -12,13 +12,13 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx;
+  cfg = config.profiles.${namespace}.my.__platform__.__category__.__module__;
 
   inherit (lib) mkIf;
   inherit (lib.${namespace}) enabled mkBoolOpt;
 in {
-  options.profiles.${namespace}.my.xxplatformxx.xxcategoryxx.xxmodulexx = {
-    enable = mkBoolOpt false "Enable custom module for platform 'xxplatformxx', of category 'xxcategoryxx', of module 'xxmodulexx', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.__platform__.__category__.__module__ = {
+    enable = mkBoolOpt false "Enable custom module for platform '__platform__', of category '__category__', of module '__module__', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
     # profiles.${namespace}.my.nixos = {

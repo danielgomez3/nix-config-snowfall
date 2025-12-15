@@ -1,4 +1,4 @@
-# modules/nixos/disko/xxmodulexx/disko-config.nix
+# modules/nixos/disko/__module__/disko-config.nix
 {
   lib,
   pkgs,
@@ -12,13 +12,13 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.nixos.disko.xxmodulexx;
+  cfg = config.profiles.${namespace}.my.nixos.disko.__module__;
 
   inherit (lib) mkIf;
   inherit (lib.${namespace}) enabled mkBoolOpt mkOpt;
 in {
-  options.profiles.${namespace}.my.nixos.disko.xxmodulexx = {
-    enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'disko', of module 'xxmodulexx', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.nixos.disko.__module__ = {
+    enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'disko', of module '__module__', for namespace '${namespace}'.";
     dualBoot.enable = mkBoolOpt false "leave space in disk for dual boot (windows only tested)";
     blockDevice =
       mkOpt lib.types.str "" "specify block device. e.g. /dev/sda. device-by-id is valid too.";
