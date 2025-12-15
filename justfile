@@ -155,8 +155,9 @@ create-system platform host username block_device: nuke
 
     echo "creating its home module..."
     path="./homes/{{platform}}/{{username}}@{{host}}"
+    file="$path/default.nix"
     mkdir -p $path
-    cp {{tdir}}/module/default.nix "$path/default.nix"
+    cp {{tdir}}/home/default.nix $file
     just sed platform {{platform}} $file
     just sed username {{username}} $file
 

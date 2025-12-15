@@ -29,15 +29,14 @@ in {
   };
 
   profiles.${namespace}.my.nixos = {
-    disko.luks-ephemeral-btrfs = {
+    disko.zfs-only-ephemeral = {
       enable = true;
-      dualBoot = false;
-      linuxPartSize = "100%";
-      swapPart = {
-        enable = true;
-        size = "16G";
-      };
+      encryption = false;
       blockDevice = "/dev/nvme0n1";
+      swap = {
+        enable = true;
+        swapPartSize = "16G";
+      };
     };
 
     bundles = {

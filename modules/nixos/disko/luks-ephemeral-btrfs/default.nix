@@ -1,4 +1,6 @@
 # modules/nixos/disko/luks-ephemeral-btrfs/disko-config.nix
+# XXX
+# this is apparently broken! Do not use!
 # NOTE
 # works!
 # TODO
