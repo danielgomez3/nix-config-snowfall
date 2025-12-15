@@ -46,10 +46,15 @@ in {
       desktop-gaming = enabled;
     };
     features = {
+      amd-gpu = enabled;
       yubikey-gui-functionality = enabled;
       embedded-dev-environment = enabled;
+      rdp-client-gnome = enabled;
     };
     programs = {
+      discord = enabled;
+      docker = enabled;
+      retroarch = enabled;
     };
   };
 }
