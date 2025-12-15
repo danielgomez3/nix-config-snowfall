@@ -133,28 +133,29 @@ commit:
     git commit
 
 
-sed search replace path:
-    sed -i -E 's|\b__{{search}}__\b|{{replace}}|g' {{path}}
+sed search replace file:
+    sed -i -E 's|\b__{{search}}__\b|{{replace}}|g' {{file}}
 
 
 # Provide full path of block device
 create-system platform host username block_device: nuke
     #!/usr/bin/env bash
     echo "creating nixos system.."
-    mkdir -p ./systems/{{platform}}/{{host}}/
-    cp ./extra/my-nix-mold-files/system/default.nix ./systems/{{platform}}/{{host}}/default.nix
-    path="./systems/{{platform}}/{{host}}/default.nix"
-    just sed host {{host}} $path
-    just sed username {{username}} $path
-    just sed block_device {{block_device}} $path
-    just sed platform {{platform}} $path
+    path="./systems/{{platform}}/{{host}}/"
+    file="$path/default.nix"
+    mkdir -p $path
+    cp ./extra/my-nix-mold-files/system/default.nix $file
+    just sed host {{host}} $file
+    just sed username {{username}} $file
+    just sed block_device {{block_device}} $file
+    just sed platform {{platform}} $file
 
     echo "creating its home module.."
-    path="./homes/{{platform}}/{{username}}@{{host}}/default.nix"
-    mkdir -p ./homes/{{platform}}/{{username}}@{{host}}/
-    cp ./extra/my-nix-mold-files/home/default.nix ./homes/{{platform}}/{{username}}@{{host}}/default.nix
-    just sed platform {{platform}} $path
-    just sed username {{username}} $path
+    path="./homes/{{platform}}/{{username}}@{{host}}/"
+    mkdir -p $path
+    cp ./extra/my-nix-mold-files/home/default.nix "$path/default.nix"
+    just sed platform {{platform}} $file
+    just sed username {{username}} $file
 
 
 
