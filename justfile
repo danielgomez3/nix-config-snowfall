@@ -191,10 +191,14 @@ create-disko module: nuke
     just sed module {{module}} $file
     
 
-
-create-overlay package: nuke
-    mkdir -p ./overlays/{{package}}/
-    cp {{tdir}}/overlays/default.nix ./overlays/{{package}}/default.nix
+create-overlay overlay: nuke
+    #!/usr/bin/env bash
+    echo "creating overlay..."
+    path="./overlays/{{overlay}}"
+    file="$path/default.nix"
+    mkdir -p $path
+    cp {{tdir}}/overlays/default.nix ./overlays/{{overlay}}/default.nix
+    just sed "overlay" {{overlay}} $file
 
 create-package package: nuke
     mkdir -p ./packages/{{package}}/

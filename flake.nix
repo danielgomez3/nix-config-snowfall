@@ -62,6 +62,7 @@
     # cosmic-manager.inputs.home-manager.follows = "home-manager";
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    zjstatus.url = "github:dj95/zjstatus";
   };
 
   outputs = inputs: let

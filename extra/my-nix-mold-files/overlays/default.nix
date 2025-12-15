@@ -1,5 +1,4 @@
-# Snowfall Lib provides access to additional information via a primary argument of
-# your overlay.
+# overlay/__overlay__/default.nix
 {
   # Channels are named after NixPkgs instances in your flake inputs. For example,
   # with the input `nixpkgs` there will be a channel available at `channels.nixpkgs`.
@@ -12,9 +11,4 @@
   inputs,
   ...
 }: final: prev: {
-  # For example, to pull a package from unstable NixPkgs make sure you have the
-  # input `unstable = "github:nixos/nixpkgs/nixos-unstable"` in your flake.
-  inherit (channels.unstable) chromium;
-
-  my-package = inputs.my-input.packages.${prev.system}.my-package;
 }
