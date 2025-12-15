@@ -1,4 +1,4 @@
-# gui-desktop-apps.nix
+# modules/home/features/gui-desktop-pkgs/default.nix
 {
   lib,
   pkgs,
@@ -12,27 +12,15 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.home.features.gui-desktop-apps;
+  cfg = config.profiles.${namespace}.my.home.features.gui-desktop-pkgs;
 
   inherit (lib) mkIf;
   inherit (lib.${namespace}) enabled mkBoolOpt;
 in {
-  options.profiles.${namespace}.my.home.features.gui-desktop-apps = {
-    enable = mkBoolOpt false "Enable custom module for platform 'home', of category 'features', of module 'gui-desktop-apps', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.home.features.gui-desktop-pkgs = {
+    enable = mkBoolOpt false "Enable custom module for platform 'home', of category 'features', of module 'gui-desktop-pkgs', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    profiles.${namespace}.my.home = {
-      programs = {
-        wezterm = enabled;
-        kitty = enabled;
-        zathura = enabled;
-        obs-studio = enabled;
-        kdeconnect = enabled;
-        mangohud = enabled;
-        thunderbird = enabled;
-      };
-    };
-
     home.packages = with pkgs; [
       # Sway/Wayland/Hyprland
       grim

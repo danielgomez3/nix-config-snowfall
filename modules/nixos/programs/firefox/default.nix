@@ -33,10 +33,12 @@ in {
     enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'programs', of module 'firefox', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    # profiles.${namespace}.my.nixos = {
-    # };
-    # profiles.${namespace}.my.home = {
-    # };
+    # assertions = [
+    #   {
+    #     assertion = config.profiles.${namespace}.my.home.firefox;
+    #     message = "enable either hm or nixos module, not both";
+    #   }
+    # ];
     programs.firefox = {
       enable = true;
       preferences =

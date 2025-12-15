@@ -195,6 +195,17 @@ create-package package: nuke
 delete-category platform category: nuke
     rm -rf ./modules/{{platform}}/{{category}}
 
+# Takes the full module/file-path name, renames the file, fixes the module path in the file, and does so across all files that depend on it!
+# Caveats:
+# - Does not change category or platform, you're better off creating a new file.
+# rename-module platform category old-module-name new-module-name:
+#     #/usr/bin/env bash
+#     path="./{{platform}}/{{category}}/{{old-module-name}}"
+#     file="$path/default.nix"
+#     newfile="./{{platform}}/{{category}}/{{new-module-name}}/default.nix"
+#     just sed {{module-path}} {{rename}} 
+#     # fixes the module path as dep.
+#     find ./modules -type f -exec sed -i 's|{{module-path}}|{{new-module-name}}|g' {} +
 
 # 
 #
@@ -205,7 +216,7 @@ delete-category platform category: nuke
 
 [private]
 pre-command-hooks:
-    nix flake update mysecrets
+    # nix flake update mysecrets
     git add -A :/
 
 # TODO: WIP, doesn't work

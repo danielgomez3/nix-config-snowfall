@@ -41,9 +41,13 @@ in {
 
     bundles = {
       x86-64-uefi-boot = enabled;
-      core-minimal-nixos = enabled;
+      base-minimal-nixos = enabled;
+      gui-desktop-environment = enabled;
+      desktop-gaming = enabled;
     };
     features = {
+      yubikey-gui-functionality = enabled;
+      embedded-dev-environment = enabled;
     };
     programs = {
     };

@@ -23,9 +23,14 @@ in {
     enable = mkBoolOpt false "Enable custom module for platform 'home', of category 'bundles', of module 'gui-desktop-environment', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    # profiles.${namespace}.my.nixos = {
-    # };
-    # profiles.${namespace}.my.home = {
-    # };
+    profiles.${namespace}.my.home = {
+      bundles = {
+        gui-desktop-apps = enabled;
+      };
+      features = {
+        gui-desktop-pkgs = enabled;
+        # cosmic-desktop-manager = enabled;
+      };
+    };
   };
 }

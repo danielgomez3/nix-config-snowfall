@@ -39,7 +39,7 @@ in {
   profiles.${namespace}.my.nixos = {
     bundles = {
       x86-64-uefi-boot = enabled;
-      core-minimal-nixos = enabled;
+      base-minimal-nixos = enabled;
     };
     features = {
     };

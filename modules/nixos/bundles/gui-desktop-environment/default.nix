@@ -21,8 +21,14 @@ in {
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.nixos = {
+      # bundles = {
+      # };
+      features = {
+        printing = enabled;
+      };
       programs = {
         gnome = enabled;
+        cosmic-desktop = enabled;
         firefox = enabled;
       };
     };

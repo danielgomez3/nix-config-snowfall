@@ -1,4 +1,4 @@
-# core-minimal-home.nix
+# base-minimal-home.nix
 {
   lib,
   pkgs,
@@ -12,17 +12,18 @@
   config,
   ...
 }: let
-  cfg = config.profiles.${namespace}.my.home.bundles.core-minimal-home;
+  cfg = config.profiles.${namespace}.my.home.bundles.base-minimal-home;
   inherit (lib) mkEnableOption mkIf;
   inherit (lib.${namespace}) enabled;
 in {
-  options.profiles.${namespace}.my.home.bundles.core-minimal-home = {
-    enable = mkEnableOption "Enable custom module for platform 'home', of category 'bundles', of module 'core-minimal-home', for namespace '${namespace}'.";
+  options.profiles.${namespace}.my.home.bundles.base-minimal-home = {
+    enable = mkEnableOption "Enable custom module for platform 'home', of category 'bundles', of module 'base-minimal-home', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
     profiles.${namespace}.my.home = {
       features = {
         base-home-config = enabled;
+        base-home-pkgs = enabled;
       };
       programs = {
         zsh = enabled;

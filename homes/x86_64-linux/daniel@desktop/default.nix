@@ -14,7 +14,8 @@ in {
 
   profiles.${namespace}.my.home = {
     bundles = {
-      core-minimal-home = enabled;
+      base-minimal-home = enabled;
+      gui-desktop-environment = enabled;
     };
     features = {
     };
