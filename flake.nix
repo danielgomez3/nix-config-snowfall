@@ -18,8 +18,28 @@
   in
     lib.mkFlake {
       # Add apps
+      # TODO: Take another argument 'block_device' to pass to the nix expression dynamically, so it can be deployed off rip, but not necessarily rebuilt unless customized? Or MAYBE make a rebuild command so you can rebuild any profile as long as you pass in the correct argument!
+      # NOTE untested, not working?
       apps.${"x86_64-linux"} = {
-        deploy-disk = {
+        deploy-remote = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "deploy-disk" ''
+            set -euo pipefail
+
+            HOST="$1"
+            IP_ADDRESS="$2"
+
+            ROOT_DIR=$(mktemp -d) && \
+            trap 'rm -rf "$root_dir"' EXIT && \
+            mkdir -p "$ROOT_DIR/root/.config/sops/age" && \
+            cp ~/.config/sops/age/keys.txt "$ROOT_DIR/root/.config/sops/age/keys.txt" && \
+            nix run github:nix-community/nixos-anywhere/main -- --extra-files "$ROOT_DIR" --copy-host-keys --flake .#{{host}} --target-host root@{{ip_address}}
+
+          ''}/bin/deploy-disk";
+        };
+      };
+      apps.${"x86_64-linux"} = {
+        deploy-local-disk = {
           type = "app";
           program = "${pkgs.writeShellScriptBin "deploy-disk" ''
             set -euo pipefail

@@ -55,6 +55,7 @@ in {
       discord = enabled;
       docker = enabled;
       retroarch = enabled;
+      flatpak = enabled;
     };
   };
 }

@@ -23,7 +23,7 @@ in {
   config = mkIf cfg.enable {
     services.flatpak.enable = true;
     # dep
-    xdg.portal.enable = true;
+    # xdg.portal.enable = true;
     # xdg.portal.extraPortals =;;
   };
 }

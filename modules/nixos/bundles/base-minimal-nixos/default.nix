@@ -33,7 +33,6 @@ in {
         openssh = enabled;
         sops = enabled;
         stylix = enabled;
-        flatpak = enabled;
       };
     };
   };
