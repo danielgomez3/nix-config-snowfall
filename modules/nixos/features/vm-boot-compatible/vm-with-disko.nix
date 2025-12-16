@@ -7,21 +7,19 @@
   namespace,
   ...
 }: {
-  profiles.${namespace}.my.nixos = {
-    disko.zfs-only-ephemeral = {
-      blockDevice = lib.mkForce "/dev/vda";
-      swap = {
-        enable = lib.mkForce false;
-      };
-    };
-  };
-  virtualisation.vmVariantWithDisko = {
-    virtualisation.graphics = true;
-    virtualisation.fileSystems."/persistent".neededForBoot = true;
-    # For running VM on macos: https://www.tweag.io/blog/2023-02-09-nixos-vm-on-macos/
-    # virtualisation.host.pkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
-    disko.devices.disk.main.imageSize = "20G";
-    users.users.root.hashedPassword = lib.mkForce "";
-    services.getty.autologinUser = lib.mkForce "root";
-  };
+  # profiles.${namespace}.my.nixos = {
+  #   disko.zfs-only-ephemeral = {
+  #     blockDevice = lib.mkForce "/dev/vda";
+  #     swap = {
+  #       enable = lib.mkForce false;
+  #     };
+  #   };
+  # };
+  # virtualisation.vmVariantWithDisko = {
+  #   virtualisation.graphics = false;
+  #   # virtualisation.fileSystems."/persistent".neededForBoot = true;
+  #   # For running VM on macos: https://www.tweag.io/blog/2023-02-09-nixos-vm-on-macos/
+  #   # virtualisation.host.pkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
+  #   disko.devices.disk.main.imageSize = "20G";
+  # };
 }

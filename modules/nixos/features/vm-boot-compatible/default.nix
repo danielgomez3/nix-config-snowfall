@@ -23,7 +23,7 @@ in {
   options.profiles.${namespace}.my.nixos.features.vm-boot-compatible = {
     enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'features', of module 'vm-boot-compatible', for namespace '${namespace}'.";
   };
-  imports = [./vm-with-disko.nix];
+  # imports = [./vm-with-nixosrebuild.nix];
   config =
     mkIf cfg.enable {
     };
