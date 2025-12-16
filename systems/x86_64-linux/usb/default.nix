@@ -15,10 +15,6 @@
   inherit (lib.${namespace}) enabled;
 in {
   imports = [
-    (import "${inputs.self.outPath}/disko/luks/disko-config.nix" {
-      inherit config;
-      block-device = "sda";
-    })
     # ./hardware-configuration.nix
     # inputs.nixos-facter-modules.nixosModules.facter
     # {config.facter.reportPath = ./facter.json;}
@@ -32,27 +28,24 @@ in {
     extraGroups = ["wheel"];
   };
 
-  # profiles.${namespace} = {
-  #   bitwarden.enable = true;
-  #   programs.tailscale.enable = true;
-  # };
   profiles.${namespace}.my.nixos = {
+    disko.zfs-only-ephemeral = {
+      enable = true;
+      encryption = true;
+      blockDevice = "/dev/sda";
+      swap = {
+        enable = true;
+        swapPartSize = "16G";
+      };
+    };
+
     bundles = {
       x86-64-uefi-boot = enabled;
       base-minimal-nixos = enabled;
     };
     features = {
     };
-    # programs = {
-    #   plex.enable = true;
-    # };
-  };
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = lib.mkForce true; # ← CHANGE TO TRUE
-      KbdInteractiveAuthentication = lib.mkForce true; # ← CHANGE TO TRUE
+    programs = {
     };
   };
 }

@@ -14,7 +14,7 @@ in {
 
   profiles.${namespace}.my.home = {
     bundles = {
-      base-minimal-home.enable = true;
+      base-minimal-home = enabled;
     };
     features = {
     };

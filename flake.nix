@@ -47,7 +47,7 @@
             HOST="$1"
             BLOCK_DEVICE="$2"
 
-            nix run github:nix-community/disko/latest#disko-install -- \
+            sudo nix run github:nix-community/disko/latest#disko-install -- \
               --extra-files /root/.config/sops/age/keys.txt /run/secrets/luks_password \
               --flake "github:danielgomez3/nix-config-snowfall/main#$HOST" \
               --write-efi-boot-entries \
