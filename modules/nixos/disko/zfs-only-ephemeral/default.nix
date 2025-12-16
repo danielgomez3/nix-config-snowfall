@@ -78,11 +78,11 @@ in {
           device = "${cfg.blockDevice}";
           content = {
             type = "gpt";
-            preCreateHook = ''              # Might not be necessary, for good measure
-               echo "Wiping disk ${cfg.blockDevice}..."
-               wipefs -a ${cfg.blockDevice}
-               sgdisk -Z ${cfg.blockDevice}
-            '';
+            # preCreateHook = ''              # Might not be necessary, for good measure
+            #    echo "Wiping disk ${cfg.blockDevice}..."
+            #    wipefs -a ${cfg.blockDevice}
+            #    sgdisk -Z ${cfg.blockDevice}
+            # '';
             partitions = {
               efi = {
                 size = "1G";
