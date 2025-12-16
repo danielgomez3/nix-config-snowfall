@@ -47,9 +47,13 @@
             HOST="$1"
             BLOCK_DEVICE="$2"
 
+            ROOT_DIR=$(mktemp -d) && \
+            trap 'rm -rf "$ROOT_DIR"' EXIT && \
+            mkdir -p "$ROOT_DIR/root/.config/sops/age" && \
+            cp ~/.config/sops/age/keys.txt "$ROOT_DIR/root/.config/sops/age/keys.txt" && \
             sudo nix run --refresh github:nix-community/disko/latest#disko-install -- \
               --extra-files /root/.config/sops/age/keys.txt /run/secrets/luks_password \
-              --flake "github:danielgomez3/nix-config-snowfall/main#$HOST" \
+              --flake ".#$HOST" \
               --write-efi-boot-entries \
               --disk main "$BLOCK_DEVICE"
           ''}/bin/deploy-disk";

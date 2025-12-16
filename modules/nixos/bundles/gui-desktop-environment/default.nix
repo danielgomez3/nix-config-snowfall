@@ -28,7 +28,6 @@ in {
       };
       programs = {
         gnome = enabled;
-        cosmic-desktop = enabled;
         firefox = enabled;
       };
     };

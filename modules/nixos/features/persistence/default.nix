@@ -68,7 +68,6 @@ in {
           ".config"
           ".local/share/keyrings"
           ".local/share/direnv"
-          ".nixops"
         ];
       };
       files = [

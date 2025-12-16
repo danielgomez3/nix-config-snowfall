@@ -25,18 +25,47 @@ in {
   };
   # imports = [./vm-with-nixosrebuild.nix];
   config = mkIf cfg.enable {
-    virtualisation.vmVariant = {
+    fileSystems."/persistent/run" = {
+      device = "secrets"; # This must match the key in sharedDirectories
+      fsType = "9p";
+      options = ["trans=virtio" "version=9p2000.L" "ro" "cache=loose"];
+      neededForBoot = true;
+    };
+
+    virtualisation.vmVariant = {lib, ...}: {
+      # HACK can't log in to system!
+      users = {
+        users.root = {
+          hashedPasswordFile = lib.mkForce null;
+          initialPassword = "123";
+        };
+        users.${config.myVars.username} = {
+          hashedPasswordFile = lib.mkForce null;
+          # hashedPassword = lib.mkForce null; # Clear any hashed password
+          initialPassword = "123";
+          # password = lib.mkForce null; # Also clear password if set
+          # isNormalUser = true;
+          # extraGroups = ["wheel"];
+          # shell = pkgs.zsh;
+          # ignoreShellProgramCheck = true;
+        };
+      };
+
       virtualisation.diskSize = 100000; # 100GB in MB
       virtualisation.memorySize = 8192; # 8GB
       virtualisation.cores = 8;
-      virtualisation.sharedDirectories = lib.mkForce {
-        keys = {
-          source = "/home/${config.myVars.username}/.config/sops/age";
-          target = "/root/.config/sops/age";
-        };
-      };
       virtualisation.graphics = false;
       disko.devices.disk.main.imageSize = "20G";
+
+      # TODO: can't log in to system, maybe implement something like this:
+      # virtualisation = {
+      #   sharedDirectories = {
+      #     secrets = {
+      #       source = "/run";
+      #       target = lib.mkForce "/persistent/run";
+      #     };
+      #   };
+      # };
     };
   };
 }

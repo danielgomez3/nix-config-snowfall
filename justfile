@@ -103,7 +103,11 @@ deploy-rs-all: pre-command-hooks
 # Deploy NixOS on a connected usb
 deploy-usb flake block_device:
     -sudo wipefs -a {{block_device}}
-    sudo nix run 'github:nix-community/disko/latest#disko-install' -- --extra-files ~/.config/sops/age/keys.txt /root/.config/sops/age/keys.txt --flake '.#{{flake}}' --disk main {{block_device}}
+    root_dir=$(mktemp -d) && \
+    trap 'rm -rf "$root_dir"' EXIT && \
+    mkdir -p "${root_dir}/root/.config/sops/age" && \
+    cp ~/.config/sops/age/keys.txt "${root_dir}/root/.config/sops/age/keys.txt" && \
+    sudo nix run 'github:nix-community/disko/latest#disko-install' -- --extra-files ${root_dir} /persistent/root/ --flake '.#{{flake}}' --disk main {{block_device}}
 
 # Deploy NixOS on remote disk. Assumes you have a NixOS usb mounted on a device to 'infect' a hard drive (disk) on that computer.
 deploy-usb-remote-disk flake network_target block_device:

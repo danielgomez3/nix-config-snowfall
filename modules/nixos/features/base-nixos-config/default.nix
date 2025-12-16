@@ -19,6 +19,7 @@ in {
     enable = mkEnableOption "Enable custom module for platform 'nixos', of category 'features', of module 'base-nixos-config', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
+    boot.supportedFilesystems = ["zfs"];
     time.hardwareClockInLocalTime = true; # TODO this is in desktop too.
     time.timeZone = "America/New_York";
 
