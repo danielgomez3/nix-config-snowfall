@@ -22,13 +22,14 @@
         deploy-disk = {
           type = "app";
           program = "${pkgs.writeShellScriptBin "deploy-disk" ''
-            FLAKE="$1"
+            set -euo pipefail
+
+            HOST="$1"
             BLOCK_DEVICE="$2"
 
-            sudo nix run \
-              'github:nix-community/disko/latest#disko-install' -- \
+            nix run github:nix-community/disko/latest#disko-install -- \
               --extra-files /root/.config/sops/age/keys.txt /run/secrets/luks_password \
-              --flake ".#$FLAKE" \
+              --flake "github:danielgomez3/nix-config-snowfall/main#$HOST" \
               --write-efi-boot-entries \
               --disk main "$BLOCK_DEVICE"
           ''}/bin/deploy-disk";
