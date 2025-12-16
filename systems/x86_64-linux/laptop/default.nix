@@ -28,9 +28,14 @@ in {
   };
 
   profiles.${namespace}.my.nixos = {
-    disko.luks-lvm-gpt = {
+    disko.zfs-only-ephemeral = {
       enable = true;
+      encryption = true;
       blockDevice = "/dev/sda";
+      swap = {
+        enable = true;
+        swapPartSize = "8G";
+      };
     };
     bundles = {
       x86-64-uefi-boot = enabled;
@@ -39,10 +44,12 @@ in {
     };
     features = {
       laptop-device-settings = enabled;
+      rdp-client-gnome = enabled;
     };
     programs = {
       #   plex.enable = true;
       nix-software-center = enabled;
+      discord = enabled;
     };
   };
 }

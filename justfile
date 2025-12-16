@@ -156,6 +156,7 @@ create-system platform host username block_device: nuke
     cp {{tdir}}/homes/default.nix $file
     just sed platform {{platform}} $file
     just sed username {{username}} $file
+    just sed block_device {{block_device}} $file
 
 # Module created under /modules/nixos/{{category}}. Create category first!
 create-module platform category module: nuke
