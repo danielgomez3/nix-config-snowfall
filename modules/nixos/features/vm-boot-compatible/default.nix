@@ -23,17 +23,8 @@ in {
   options.profiles.${namespace}.my.nixos.features.vm-boot-compatible = {
     enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'features', of module 'vm-boot-compatible', for namespace '${namespace}'.";
   };
-  config = mkIf cfg.enable {
-    virtualisation.vmVariant = {
-      virtualisation.diskSize = 100000; # 100GB in MB
-      virtualisation.memorySize = 8192; # 8GB
-      virtualisation.cores = 8;
-      virtualisation.sharedDirectories = {
-        keys = {
-          source = "/home/${config.myVars.username}/.config/sops/age";
-          target = "/root/.config/sops/age";
-        };
-      };
+  imports = [./vm-with-disko.nix];
+  config =
+    mkIf cfg.enable {
     };
-  };
 }

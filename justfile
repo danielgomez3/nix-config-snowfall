@@ -165,7 +165,7 @@ create-module platform category module: nuke
     path="./modules/{{platform}}/{{category}}/{{module}}"
     file="$path/default.nix"
     mkdir -p $path
-    cp {{tdir}}/{{platform}}/default.nix $file
+    cp {{tdir}}/module/{{platform}}/default.nix $file
     just sed category {{category}} $file
     just sed module {{module}} $file
     just sed platform {{platform}} $file

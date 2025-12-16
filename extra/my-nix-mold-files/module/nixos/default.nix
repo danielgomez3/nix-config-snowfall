@@ -23,5 +23,6 @@ in {
   config = mkIf cfg.enable {
     # profiles.${namespace}.my.nixos = {
     # };
+    # assertions = [{assertion = true; message = "";}];
   };
 }

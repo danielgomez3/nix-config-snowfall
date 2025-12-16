@@ -32,7 +32,7 @@ in {
     disko.zfs-only-ephemeral = {
       enable = true;
       encryption = false;
-      blockDevice = "/dev/nvme0n1";
+      blockDevice = "/dev/vda";
       swap = {
         enable = true;
         swapPartSize = "16G";

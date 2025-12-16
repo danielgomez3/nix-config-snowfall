@@ -1,6 +1,8 @@
 # modules/nixos/disko/zfs-only-ephemeral/disko-config.nix
 # NOTE
 # /home is decidedly not ephemeral here. Maybe change that.
+# TODO
+# re-enable the docker pool for server machine so docker persists (?)!
 {
   lib,
   pkgs,
@@ -216,15 +218,15 @@ in {
               options.mountpoint = "legacy";
               mountpoint = "/nix";
             };
-            docker = {
-              type = "zfs_volume";
-              size = "50G";
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/var/lib/containers";
-              };
-            };
+            # docker = {
+            #   type = "zfs_volume";
+            #   size = "50G";
+            #   content = {
+            #     type = "filesystem";
+            #     format = "ext4";
+            #     mountpoint = "/var/lib/containers";
+            #   };
+            # };
           };
         };
       };
@@ -285,9 +287,9 @@ in {
       fsType = "zfs";
     };
 
-    fileSystems."/var/lib/containers" = {
-      device = "/dev/zvol/rpool/docker";
-      fsType = "ext4";
-    };
+    # fileSystems."/var/lib/containers" = {
+    #   device = "/dev/zvol/rpool/docker";
+    #   fsType = "ext4";
+    # };
   };
 }
