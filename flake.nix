@@ -28,7 +28,7 @@
             sudo nix run \
               'github:nix-community/disko/latest#disko-install' -- \
               --extra-files /root/.config/sops/age/keys.txt /run/secrets/luks_password \
-              --flake "github:danielgomez3/nix-config-snowfall/main#$FLAKE" \
+              --flake ".#$FLAKE" \
               --write-efi-boot-entries \
               --disk main "$BLOCK_DEVICE"
           ''}/bin/deploy-disk";
