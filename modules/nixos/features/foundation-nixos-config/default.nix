@@ -39,7 +39,6 @@ in {
     nix.settings.auto-optimise-store = true; # Optimize store every build. May slow down rebuilds
     nix.settings.download-buffer-size = 9024288000; # 9 GB
 
-    boot.supportedFilesystems = ["zfs"];
     time.hardwareClockInLocalTime = true; # TODO this is in desktop too.
     time.timeZone = "America/New_York";
 

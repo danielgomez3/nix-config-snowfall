@@ -47,6 +47,18 @@ eval-configuration host: pre-command-hooks
 query-configuration package:
     nix-store --query --requisites ./result | grep {{package}}
 
+build-isoConfiguration host: pre-command-hooks
+    nix build .#isoConfigurations.{{host}}
+
+eval-isoConfiguration host: pre-command-hooks
+    nix eval .#isoConfigurations.{{host}}
+
+build-rawConfiguration host: pre-command-hooks
+    nix build .#rawConfigurations.{{host}}
+
+eval-rawConfiguration host: pre-command-hooks
+    nix eval .#rawConfigurations.{{host}}
+
 # 
 #
 # Development
@@ -319,6 +331,7 @@ _run-vm host:
 
 _run-novnc:
     nix run nixpkgs#novnc -- --vnc localhost:5901 
+
 
 
 # 

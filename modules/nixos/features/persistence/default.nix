@@ -37,6 +37,7 @@ in {
       }
     ];
 
+    boot.supportedFilesystems = ["zfs"];
     fileSystems."/persistent".neededForBoot = true;
     environment.persistence."/persistent" = {
       hideMounts = true;
