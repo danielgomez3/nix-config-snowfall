@@ -41,7 +41,12 @@ in {
         wireguard-tools
         arp-scan # this one is sick: arp-scan --localnet
         nmap # even better: nmap -sn <ip>/24
+      ];
+      nixCliPkgs = with pkgs; [
         just
+        nix-tree
+        disko
+        nixos-anywhere
       ];
       cliPkgs = with pkgs; [
         procs # view processes, cpu usage, and memory. Like btop and ps aux had a baby
@@ -53,7 +58,6 @@ in {
         uutils-coreutils-noprefix # updated version of 'dd' with progress param.
         grc # colorize a cmd: grc nmap
         nushell
-        nix-tree
       ];
       hardwarePkgs = with pkgs; [
         jmtpfs # For interfacing with my OP-1 Field.
@@ -72,6 +76,7 @@ in {
         networkPkgs
         cliPkgs
         hardwarePkgs
+        nixCliPkgs
         funPkgs
       ];
   };

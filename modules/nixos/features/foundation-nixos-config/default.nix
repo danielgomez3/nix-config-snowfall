@@ -33,6 +33,9 @@ in {
       };
     };
 
+    # HACK disables persist-retro when not using ephemeral disko setups
+    system.activationScripts.createPersistentStorageDirs.text =
+      lib.mkIf (!config.myVars.isEphemeral) "";
     system.stateVersion = "25.11";
 
     nixpkgs.config.allowUnfree = true;

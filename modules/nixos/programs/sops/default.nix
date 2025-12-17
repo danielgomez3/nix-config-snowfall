@@ -76,6 +76,10 @@ in {
           "syncthing/gui_password" = {};
           "generic-pass" = {};
           "minecraft/CF_API_KEY" = {};
+          "wireguard-private-key-file/${hostname}" = {
+            owner = config.users.users.${username}.name;
+            mode = "0700";
+          };
         }
         # # TODO: maybe put this in only syncthing.nix?
         # (lib.mkIf config.myNixOS.syncthing.enable {

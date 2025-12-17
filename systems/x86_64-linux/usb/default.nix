@@ -28,8 +28,6 @@ in {
     extraGroups = ["wheel"];
   };
 
-  system.activationScripts.createPersistentStorageDirs.text = "";
-
   profiles.${namespace}.my.nixos = {
     disko.luks-lvm-gpt = {
       enable = true;

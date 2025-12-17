@@ -1,4 +1,6 @@
 # bios-uefi-gpt.nix
+# NOTE
+# This is a basic ext4 filesystem setup! No encryption, nor any bells an whistles.
 {
   lib,
   pkgs,
@@ -25,9 +27,9 @@ in {
     windowsPartSize =
       mkOpt lib.types.str "250G" "e.g.: '250G'. This part is imperative, because linux will take rest if default. Otherwise, you will have calculate and provision.";
     linuxPartSize =
-      mkOpt lib.types.str "100%" "e.g.: '250G'. Default is best";
+      mkOpt lib.types.str "100%" "e.g.: '250G'. Default is 100%";
     efiPartSize =
-      mkOpt lib.types.str "1G" "e.g.: '500M'. Default is best";
+      mkOpt lib.types.str "1G" "e.g.: '500M'. Default is 1G";
     swapPart.enable = mkBoolOpt false "Enable manual swap partition";
     swapPart.size =
       mkOpt lib.types.str "" "e.g.: 16G.";
