@@ -37,7 +37,7 @@ in {
       base-minimal-nixos = enabled;
     };
     features = {
-      # wireguard-client.enable = true; # Maybe add to base-system.nix
+      wireguard-client.enable = true; # Maybe add to base-system.nix
       # minecraft-server-docker.enable = true;
       # macos-emulation.enable = false;
     };

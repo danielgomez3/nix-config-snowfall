@@ -1,5 +1,6 @@
 # TODO
 
+- Make wezterm fonts load correctly
 - make all disko assertions in a different file
 - change deploy recipe to 'just eval' before deploy
 - Make systemd style services to all deployment

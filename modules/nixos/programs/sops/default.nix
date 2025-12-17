@@ -29,11 +29,11 @@ in {
     sops = {
       defaultSopsFile = "${secretspath}/secrets.yaml";
       defaultSopsFormat = "yaml";
-      # age.keyFile =
-      #   if config.myVars.isEphemeral
-      #   then "/persistent/root/.config/sops/age/keys.txt" # Ephemeral: use persistent location
-      #   else "/root/.config/sops/age/keys.txt"; # Non-ephemeral: normal location
-      age.keyFile = "/root/.config/sops/age/keys.txt"; # Non-ephemeral: normal location
+      age.keyFile =
+        if config.myVars.isEphemeral
+        then "/persistent/root/.config/sops/age/keys.txt" # Ephemeral: use persistent location
+        else "/root/.config/sops/age/keys.txt"; # Non-ephemeral: normal location
+      # age.keyFile = "/root/.config/sops/age/keys.txt"; # Non-ephemeral: normal location
       templates = {
         "minecraft-cf-api-key".content = ''
           CF_API_KEY=${config.sops.placeholder."minecraft/CF_API_KEY"}
@@ -76,10 +76,6 @@ in {
           "syncthing/gui_password" = {};
           "generic-pass" = {};
           "minecraft/CF_API_KEY" = {};
-          "wireguard-private-key-file/${hostname}" = {
-            owner = config.users.users.${username}.name;
-            mode = "0700";
-          };
         }
         # # TODO: maybe put this in only syncthing.nix?
         # (lib.mkIf config.myNixOS.syncthing.enable {
@@ -103,12 +99,13 @@ in {
         # #     };
         # #   })
 
-        # (lib.mkIf (config.myNixOS.wireguard-server.enable or false || config.myNixOS.wireguard-client.enable or false) {
-        #   "wireguard-private-key-file/${hostname}" = {
-        #     owner = config.users.users.${username}.name;
-        #     mode = "0700";
-        #   };
-        # })
+        # TODO: add logic for server
+        (lib.mkIf (config.profiles.internal.my.nixos.features.wireguard-client.enable) {
+          "wireguard-private-key-file/${hostname}" = {
+            owner = config.users.users.${username}.name;
+            mode = "0700";
+          };
+        })
       ];
     };
   };
