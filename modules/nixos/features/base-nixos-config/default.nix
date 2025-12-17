@@ -16,13 +16,17 @@
 }: let
   cfg = config.profiles.${namespace}.my.nixos.features.base-nixos-config;
   inherit (lib) mkEnableOption mkIf;
+  inherit (lib.${namespace}) enabled genHostId;
 in {
   options.profiles.${namespace}.my.nixos.features.base-nixos-config = {
     enable = mkEnableOption "Enable custom module for platform 'nixos', of category 'features', of module 'base-nixos-config', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
-    # List packages installed in system profile. To search, run:
-    # $ nix search wget
+    # Give everyone a special ZFS linux kernel to use or deploy a zfs system.
+    boot.supportedFilesystems = ["zfs"];
+    networking.hostId = genHostId config.myVars.hostname; # that means you also need to have a hostId, even if you're not using zfs.
+
+    # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_17; # Change kernel if needed to support different file systems
     users.users.${config.myVars.username}.shell = pkgs.zsh;
     environment.systemPackages = with pkgs; [
       vim

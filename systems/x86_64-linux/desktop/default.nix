@@ -15,7 +15,7 @@
   inherit (lib.${namespace}) enabled;
 in {
   imports = [
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
     # inputs.nixos-facter-modules.nixosModules.facter
     # {config.facter.reportPath = ./facter.json;}
   ];
@@ -24,15 +24,37 @@ in {
   myVars.hostname = "desktop";
 
   profiles.${namespace}.my.nixos = {
-    disko.zfs-only-ephemeral = {
+    # disko.zfs-only-ephemeral = {
+    #   enable = true;
+    #   encryption = false;
+    #   blockDevice = "/dev/nvme0n1";
+    #   swap = {
+    #     enable = true;
+    #     swapPartSize = "16G";
+    #   };
+    # };
+    disko.bios-uefi-gpt = {
       enable = true;
-      encryption = false;
       blockDevice = "/dev/nvme0n1";
-      swap = {
+      swapPart = {
         enable = true;
-        swapPartSize = "16G";
+        size = "16G";
       };
+      dualBoot = enabled;
+      # windowsPartSize = "500G";
+      linuxPartSize = "1000G";
     };
+    # disko.dual-boot-generic = {
+    #   enable = true;
+    #   blockDevice = "/dev/nvme0n1";
+    #   # swapPart = {
+    #   #   enable = true;
+    #   #   size = "16G";
+    #   # };
+    #   dualBoot = enabled;
+    #   windowsPartSize = "800G";
+    #   linuxPartSize = "1000G";
+    # };
     bundles = {
       x86-64-uefi-boot = enabled;
       base-minimal-nixos = enabled;

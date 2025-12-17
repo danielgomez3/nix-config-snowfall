@@ -12,7 +12,7 @@
   config,
   ...
 }: let
-  inherit (lib.${namespace}) enabled genHostId;
+  inherit (lib.${namespace}) enabled;
 in {
   imports = [
     ./hardware-configuration.nix
@@ -45,6 +45,4 @@ in {
   };
 
   system.nixos.variant_id = "installer";
-  boot.supportedFilesystems = ["zfs"];
-  networking.hostId = genHostId config.myVars.hostname;
 }

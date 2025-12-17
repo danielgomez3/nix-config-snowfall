@@ -191,6 +191,16 @@
           path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.steam-machine;
         };
       };
+
+      deploy.nodes.usb = {
+        hostname = "usb";
+        sshUser = "root";
+        fastConnection = true; # Enable pipelined copying
+        profiles.system = {
+          user = "root";
+          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.usb;
+        };
+      };
     };
   inputs = {
     # Nix flake development/structure. Core inputs.

@@ -96,9 +96,11 @@ in {
                   size = "${cfg.linuxPartSize}"; # Takes all remaining space
                   content = {
                     type = "filesystem";
-                    format = "bcachefs";
+                    format = "ext4";
                     mountpoint = "/";
-                    mountOptions = ["compress=zstd"];
+                    mountOptions = [
+                      "defaults"
+                    ];
                   };
                 };
               };

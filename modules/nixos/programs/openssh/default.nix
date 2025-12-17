@@ -24,7 +24,8 @@ in {
     users.users.${config.myVars.username} = {
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII8SFBz7G2gfy1uJ3PMcHQDwpKTPVJKHSMOge9GVEXHj daniel@server"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOZCUX30GSq/IMWh+0/WUXp2Cq4DrUX+8b9oeAlfZnQX daniel@laptop"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBeMh7zQ7E8MoF+eHXHZyXTFdrjgOYbqNmwO1Qpy7a07 daniel@laptop"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB/Ye05cd+kVxK0aREjad0AaHxpA7AB0Ifebsa0TZxIf daniel@usb"
       ];
     };
 
