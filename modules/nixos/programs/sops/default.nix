@@ -29,10 +29,11 @@ in {
     sops = {
       defaultSopsFile = "${secretspath}/secrets.yaml";
       defaultSopsFormat = "yaml";
-      age.keyFile =
-        if config.myVars.isEphemeral
-        then "/persistent/root/.config/sops/age/keys.txt" # Ephemeral: use persistent location
-        else "/root/.config/sops/age/keys.txt"; # Non-ephemeral: normal location
+      # age.keyFile =
+      #   if config.myVars.isEphemeral
+      #   then "/persistent/root/.config/sops/age/keys.txt" # Ephemeral: use persistent location
+      #   else "/root/.config/sops/age/keys.txt"; # Non-ephemeral: normal location
+      age.keyFile = "/root/.config/sops/age/keys.txt"; # Non-ephemeral: normal location
       templates = {
         "minecraft-cf-api-key".content = ''
           CF_API_KEY=${config.sops.placeholder."minecraft/CF_API_KEY"}

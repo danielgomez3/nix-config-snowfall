@@ -25,12 +25,13 @@ in {
   };
   # imports = [./vm-with-nixosrebuild.nix];
   config = mkIf cfg.enable {
-    fileSystems."/persistent/run" = {
-      device = "secrets"; # This must match the key in sharedDirectories
-      fsType = "9p";
-      options = ["trans=virtio" "version=9p2000.L" "ro" "cache=loose"];
-      neededForBoot = true;
-    };
+    # This is ruining all the other configs
+    # fileSystems."/persistent/run" = {
+    #   device = "secrets"; # This must match the key in sharedDirectories
+    #   fsType = "9p";
+    #   options = ["trans=virtio" "version=9p2000.L" "ro" "cache=loose"];
+    #   neededForBoot = true;
+    # };
 
     virtualisation.vmVariant = {lib, ...}: {
       # HACK can't log in to system!

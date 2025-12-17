@@ -14,7 +14,7 @@
   inherit (lib.${namespace}) enabled;
 in {
   imports = [
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
     # inputs.nixos-facter-modules.nixosModules.facter
     # {config.facter.reportPath = ./facter.json;}
   ];

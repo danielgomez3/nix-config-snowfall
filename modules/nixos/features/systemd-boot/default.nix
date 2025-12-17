@@ -30,7 +30,7 @@ in {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
       systemd-boot.configurationLimit = 3;
-      timeout = 8;
+      timeout = lib.mkForce 8;
     };
   };
 }

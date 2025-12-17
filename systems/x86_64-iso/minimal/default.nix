@@ -28,6 +28,8 @@ in {
     extraGroups = ["wheel"];
   };
 
+  system.activationScripts.createPersistentStorageDirs.text = "";
+
   profiles.${namespace}.my.nixos = {
     # disko.zfs-only-ephemeral = {
     #   enable = true;
@@ -44,6 +46,7 @@ in {
     bundles = {
       x86-64-uefi-boot = enabled;
       base-minimal-nixos = enabled;
+      gui-desktop-environment = enabled;
     };
     features = {
     };

@@ -1,4 +1,4 @@
-# systems/x86_64-raw/minimal/default.nix
+# systems/x86_64-linux/usb/default.nix
 {
   lib,
   pkgs,
@@ -15,32 +15,30 @@
   inherit (lib.${namespace}) enabled;
 in {
   imports = [
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
     # inputs.nixos-facter-modules.nixosModules.facter
     # {config.facter.reportPath = ./facter.json;}
   ];
 
   myVars.username = "daniel";
-  myVars.hostname = "minimal";
+  myVars.hostname = "usb";
 
   users.users.${config.myVars.username} = {
     isNormalUser = true;
     extraGroups = ["wheel"];
   };
 
-  # HACK persistent retro is a jerk
   system.activationScripts.createPersistentStorageDirs.text = "";
 
   profiles.${namespace}.my.nixos = {
-    # disko.luks-ephemeral-btrfs = {
-    #   enable = true;
-    #   # encryption = false;
-    #   blockDevice = "/dev/sda";
-    # };
+    disko.luks-lvm-gpt = {
+      enable = true;
+    };
 
     bundles = {
       x86-64-uefi-boot = enabled;
       base-minimal-nixos = enabled;
+      gui-desktop-environment = enabled;
     };
     features = {
     };
