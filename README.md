@@ -37,6 +37,10 @@ in {
 
 # Documentation
 
+## Using a usb to deploy
+
+You must use the justfile-styled deploy recipe! Otherwise, you can't transfer the keys.
+
 ## Using my template
 
 <!-- TODO -->

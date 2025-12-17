@@ -41,7 +41,6 @@ in {
       # gnomeExtensions.hide-top-bar
       gnomeExtensions.blurt
       gnomeExtensions.caffeine
-      gnomeExtensions.keep-awake
       # gnomeExtensions.arc-menu
     ];
     home-manager.users.${config.myVars.username} = {
@@ -56,7 +55,6 @@ in {
             # pkgs.gnomeExtensions.hide-top-bar.extensionUuid
             pkgs.gnomeExtensions.blurt.extensionUuid
             pkgs.gnomeExtensions.caffeine.extensionUuid
-            pkgs.gnomeExtensions.keep-awake.extensionUuid
             # pkgs.gnomeExtensions.arc-menu.extensionUuid
           ];
 

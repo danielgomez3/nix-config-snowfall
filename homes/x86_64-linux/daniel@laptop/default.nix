@@ -15,6 +15,7 @@ in {
   profiles.${namespace}.my.home = {
     bundles = {
       base-minimal-home = enabled;
+      gui-desktop-environment = enabled;
     };
     features = {
       # gui-desktop-environment = false; # For non-nix machines only!
