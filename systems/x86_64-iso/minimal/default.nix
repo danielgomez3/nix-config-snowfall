@@ -1,4 +1,4 @@
-# systems/x86_64-raw/minimal/default.nix
+# systems/x86_64-iso/minimal/default.nix
 {
   lib,
   pkgs,
@@ -28,15 +28,18 @@ in {
     extraGroups = ["wheel"];
   };
 
-  # HACK persistent retro is a jerk
-  system.activationScripts.createPersistentStorageDirs.text = "";
-
   profiles.${namespace}.my.nixos = {
-    # disko.luks-ephemeral-btrfs = {
+    # disko.zfs-only-ephemeral = {
     #   enable = true;
-    #   # encryption = false;
+    #   encryption = false;
     #   blockDevice = "/dev/sda";
+    #   swap = {
+    #     enable = true;
+    #     swapPartSize = "16G";
+    #   };
     # };
+
+    disko.luks-persist-usb = enabled;
 
     bundles = {
       x86-64-uefi-boot = enabled;
