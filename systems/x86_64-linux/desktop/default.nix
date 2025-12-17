@@ -23,11 +23,6 @@ in {
   myVars.username = "daniel";
   myVars.hostname = "desktop";
 
-  users.users.${config.myVars.username} = {
-    isNormalUser = true;
-    extraGroups = ["wheel"];
-  };
-
   profiles.${namespace}.my.nixos = {
     disko.zfs-only-ephemeral = {
       enable = true;
@@ -38,7 +33,6 @@ in {
         swapPartSize = "16G";
       };
     };
-
     bundles = {
       x86-64-uefi-boot = enabled;
       base-minimal-nixos = enabled;

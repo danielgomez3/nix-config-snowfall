@@ -25,12 +25,10 @@ in {
       # bundles = {
       # };
       features = {
-        myVars = enabled; # TODO: think about making this inside of base-config.nix
+        foundation-nixos-config = enabled;
         base-nixos-config = enabled;
-        vm-boot-compatible = enabled;
       };
       programs = {
-        openssh = enabled;
         sops = enabled;
         stylix = enabled;
       };
