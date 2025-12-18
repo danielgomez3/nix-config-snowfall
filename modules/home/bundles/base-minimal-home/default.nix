@@ -32,6 +32,7 @@ in {
         git = enabled;
         neovim = enabled;
         zellij = enabled;
+        helix = enabled;
         btop = enabled;
         eza = enabled;
         zoxide = enabled;
