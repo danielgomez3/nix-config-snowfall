@@ -40,10 +40,11 @@ in {
     encryption = mkBoolOpt false "Enable encryption. Depends on sops configured key.";
   };
   config = mkIf cfg.enable {
+    myVars.isEphemeral = true;
     profiles.${namespace}.my.nixos = {
       features.persistence = enabled;
+      features.remote-unlock = enabled;
     };
-    myVars.isEphemeral = true;
 
     assertions = [
       {

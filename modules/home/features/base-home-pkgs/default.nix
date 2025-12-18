@@ -25,6 +25,7 @@ in {
       cyberPkgs = with pkgs; [
         age
         aria2
+        libfido2
       ];
       networkPkgs = with pkgs; [
         vim
@@ -58,6 +59,7 @@ in {
         uutils-coreutils-noprefix # updated version of 'dd' with progress param.
         grc # colorize a cmd: grc nmap
         nushell
+        tldr
       ];
       hardwarePkgs = with pkgs; [
         jmtpfs # For interfacing with my OP-1 Field.
@@ -70,6 +72,9 @@ in {
       funPkgs = with pkgs; [
         cmatrix
       ];
+      sbc = with pkgs; [
+        rpi-imager
+      ];
     in
       lib.concatLists [
         cyberPkgs
@@ -78,6 +83,7 @@ in {
         hardwarePkgs
         nixCliPkgs
         funPkgs
+        sbc
       ];
   };
 }

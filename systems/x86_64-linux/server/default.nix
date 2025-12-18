@@ -24,14 +24,16 @@ in {
   myVars.hostname = "server";
 
   profiles.${namespace}.my.nixos = {
-    disko.bios-uefi-gpt = {
+    disko.zfs-only-ephemeral = {
       enable = true;
+      encryption = true;
       blockDevice = "/dev/nvme0n1";
-      swapPart = {
+      swap = {
         enable = true;
-        size = "16G";
+        swapPartSize = "16G";
       };
     };
+
     bundles = {
       x86-64-uefi-boot = enabled;
       base-minimal-nixos = enabled;

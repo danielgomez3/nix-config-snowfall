@@ -43,7 +43,7 @@ in {
       hideMounts = true;
       directories = [
         "/etc/ssh"
-        "/etc"
+        # "/etc"
         "/run" # TODO is this completely secure?
         "/root/.config/sops/age" # <-- Add this!
         "/var/lib/nixos"
@@ -72,7 +72,7 @@ in {
         ];
       };
       files = [
-        "/etc/machine-id"
+        # "/etc/machine-id"
         # ... other files
       ];
     };

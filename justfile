@@ -77,14 +77,17 @@ metadata input=(none):
 # 
 # 
 
+# example:
+# deploy x86_64-linux laptop usb
+# "deploy this linux machine flake 'laptop' to the ip address host 'usb'.
 [confirm("You are about to completely wipe a device! Continue? (Y/N)")]
-deploy host ip_address:
+deploy platform host ip_address:
     root_dir=$(mktemp -d) && \
     trap 'rm -rf "$root_dir"' EXIT && \
     mkdir -p "${root_dir}/root/.config/sops/age" && \
     cp ~/.config/sops/age/keys.txt "${root_dir}/root/.config/sops/age/keys.txt" && \
     nix run github:nix-community/nixos-anywhere/main -- --extra-files "$root_dir" --copy-host-keys --flake .#{{host}} --target-host root@{{ip_address}} \
-    --generate-hardware-config nixos-generate-config ./systems/x86_64-linux/{{host}}/hardware-configuration.nix
+    --generate-hardware-config nixos-generate-config ./systems/{{platform}}/{{host}}/hardware-configuration.nix
 
 
 apply target: pre-command-hooks

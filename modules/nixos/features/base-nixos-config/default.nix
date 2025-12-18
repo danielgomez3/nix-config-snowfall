@@ -23,6 +23,16 @@ in {
   };
   config = mkIf cfg.enable {
     # Give everyone a special ZFS linux kernel to use or deploy a zfs system.
+
+    boot.initrd.availableKernelModules = [
+      "virtio-pci" # for zfs systems. Enable remote unlock.
+      "xhci_pci"
+      "ahci"
+      "nvme"
+      "usbhid"
+      "uas"
+      "sd_mod"
+    ];
     boot.supportedFilesystems = ["zfs"];
     networking.hostId = genHostId config.myVars.hostname; # that means you also need to have a hostId, even if you're not using zfs.
 

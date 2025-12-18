@@ -21,6 +21,8 @@ in {
     enable = mkBoolOpt false "Enable custom module for platform 'nixos', of category 'features', of module 'yubikey-gui-functionality', for namespace '${namespace}'.";
   };
   config = mkIf cfg.enable {
+    users.users.root.hashedPasswordFile = lib.mkForce null; # disable any use of a text-based password
+    users.users.${config.myVars.username}.hashedPasswordFile = lib.mkForce null; # disable any use of a text-based password
     security.pam.u2f = {
       enable = true;
       settings = {
