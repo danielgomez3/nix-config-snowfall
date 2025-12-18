@@ -33,17 +33,17 @@ in {
     #     swapPartSize = "16G";
     #   };
     # };
-    disko.bios-uefi-gpt = {
-      enable = true;
-      blockDevice = "/dev/nvme0n1";
-      swapPart = {
-        enable = true;
-        size = "16G";
-      };
-      dualBoot = enabled;
-      # windowsPartSize = "500G";
-      linuxPartSize = "1000G";
-    };
+    # disko.bios-uefi-gpt = {
+    #   enable = true;
+    #   blockDevice = "/dev/nvme0n1";
+    #   swapPart = {
+    #     enable = true;
+    #     size = "16G";
+    #   };
+    #   dualBoot = enabled;
+    #   # windowsPartSize = "500G";
+    #   linuxPartSize = "1000G";
+    # };
     # disko.dual-boot-generic = {
     #   enable = true;
     #   blockDevice = "/dev/nvme0n1";
@@ -55,6 +55,10 @@ in {
     #   windowsPartSize = "800G";
     #   linuxPartSize = "1000G";
     # };
+    disko.simple-efi = {
+      enable = true;
+      blockDevice = "/dev/nvme0n1";
+    };
     bundles = {
       x86-64-uefi-boot = enabled;
       base-minimal-nixos = enabled;

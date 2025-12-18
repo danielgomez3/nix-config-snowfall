@@ -34,6 +34,7 @@ in {
         zellij = enabled;
         btop = enabled;
         eza = enabled;
+        zoxide = enabled;
       };
     };
   };

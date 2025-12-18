@@ -83,7 +83,8 @@ deploy host ip_address:
     trap 'rm -rf "$root_dir"' EXIT && \
     mkdir -p "${root_dir}/root/.config/sops/age" && \
     cp ~/.config/sops/age/keys.txt "${root_dir}/root/.config/sops/age/keys.txt" && \
-    nix run github:nix-community/nixos-anywhere/main -- --extra-files "$root_dir" --copy-host-keys --flake .#{{host}} --target-host root@{{ip_address}}
+    nix run github:nix-community/nixos-anywhere/main -- --extra-files "$root_dir" --copy-host-keys --flake .#{{host}} --target-host root@{{ip_address}} \
+    --generate-hardware-config nixos-generate-config ./systems/x86_64-linux/{{host}}/hardware-configuration.nix
 
 
 apply target: pre-command-hooks

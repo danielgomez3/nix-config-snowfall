@@ -28,6 +28,20 @@ in {
 
     # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_17; # Change kernel if needed to support different file systems
     users.users.${config.myVars.username}.shell = pkgs.zsh;
+    # TODO: move to wezterm for home manager solution
+    fonts.packages = with pkgs; [
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-color-emoji
+      liberation_ttf
+      fira-code
+      fira-code-symbols
+      mplus-outline-fonts.githubRelease
+      dina-font
+      proggyfonts
+      font-awesome_5
+      nerd-fonts.fira-code
+    ];
     environment.systemPackages = with pkgs; [
       vim
       git

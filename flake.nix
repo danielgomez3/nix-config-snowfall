@@ -169,38 +169,47 @@
           shellHook = ''alias d="deploy"'';
         };
 
-      # deploy = lib.mkDeploy {
-      #   inherit (inputs) self;
-      #   overrides = {
-      #     "steam-machine" = {
-      #       hostname = "steam-machine"; # or specific IP
-      #       profiles.system = {
-      #         sshUser = "root";
-      #         user = "root";
-      #       };
-      #     };
+      deploy = lib.mkDeploy {
+        inherit (inputs) self;
+        overrides = {
+          "steam-machine" = {
+            hostname = "steam-machine"; # or specific IP
+            profiles.system = {
+              sshUser = "root";
+              user = "root";
+            };
+          };
+        };
+      };
+
+      # deploy.nodes.steam-machine = {
+      #   hostname = "steam-machine";
+      #   sshUser = "root";
+      #   fastConnection = true; # Enable pipelined copying
+      #   profiles.system = {
+      #     user = "root";
+      #     path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.steam-machine;
       #   };
       # };
 
-      deploy.nodes.steam-machine = {
-        hostname = "steam-machine";
-        sshUser = "root";
-        fastConnection = true; # Enable pipelined copying
-        profiles.system = {
-          user = "root";
-          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.steam-machine;
-        };
-      };
-
-      deploy.nodes.usb = {
-        hostname = "usb";
-        sshUser = "root";
-        fastConnection = true; # Enable pipelined copying
-        profiles.system = {
-          user = "root";
-          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.usb;
-        };
-      };
+      # deploy.nodes.usb = {
+      #   hostname = "usb";
+      #   sshUser = "root";
+      #   fastConnection = true; # Enable pipelined copying
+      #   profiles.system = {
+      #     user = "root";
+      #     path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.usb;
+      #   };
+      # };
+      # deploy.nodes.desktop = {
+      #   hostname = "desktop";
+      #   sshUser = "root";
+      #   fastConnection = true; # Enable pipelined copying
+      #   profiles.system = {
+      #     user = "root";
+      #     path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.desktop;
+      #   };
+      # };
     };
   inputs = {
     # Nix flake development/structure. Core inputs.

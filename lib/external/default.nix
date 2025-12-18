@@ -51,10 +51,10 @@ in
                         path = deploy-rs.lib.${system}.activate.nixos host;
                       }
                       # Not useful for me
-                      # // lib.optionalAttrs (user != null) {
-                      #   user = "root";
-                      #   sshUser = user;
-                      # }
+                      // lib.optionalAttrs (user != null) {
+                        user = "root";
+                        sshUser = "root";
+                      }
                       // lib.optionalAttrs
                       (host.config.${namespace}.security.doas.enable or false) # TODO: adapt to danielgomezcoder
                       
