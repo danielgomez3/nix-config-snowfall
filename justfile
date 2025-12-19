@@ -16,6 +16,7 @@ currentHost := "`hostname`"
 none := ""
 delim := "__"
 tdir := "./extra/my-nix-mold-files" # template dir
+netbootdir := "./lib/netboot/system.nix"
 
 
 list:
@@ -81,13 +82,45 @@ metadata input=(none):
 # deploy x86_64-linux laptop usb
 # "deploy this linux machine flake 'laptop' to the ip address host 'usb'.
 [confirm("You are about to completely wipe a device! Continue? (Y/N)")]
-deploy platform host ip_address:
+deprecated-deploy platform host ip_address:
     root_dir=$(mktemp -d) && \
     trap 'rm -rf "$root_dir"' EXIT && \
     mkdir -p "${root_dir}/root/.config/sops/age" && \
     cp ~/.config/sops/age/keys.txt "${root_dir}/root/.config/sops/age/keys.txt" && \
     nix run github:nix-community/nixos-anywhere/main -- --extra-files "$root_dir" --copy-host-keys --flake .#{{host}} --target-host root@{{ip_address}} \
     --generate-hardware-config nixos-generate-config ./systems/{{platform}}/{{host}}/hardware-configuration.nix
+
+[confirm("You are about to completely wipe a device! Continue? (Y/N)")]
+deploy host ip_address:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    temp="$(mktemp -d)"
+    trap 'rm -rf "$temp"' EXIT
+
+    INITRD_HOSTKEY="$HOME/.ssh/initrd-{{host}}"
+
+    if [ ! -f "$INITRD_HOSTKEY" ]; then
+      echo "Generating initrd SSH host key for {{host}}..."
+      ssh-keygen -t ed25519 -f "$INITRD_HOSTKEY" -N "" -C "initrd-hostkey-{{host}}"
+    fi
+
+    install -d -m 755 "$temp/etc/ssh"
+
+    install -m 600 "$INITRD_HOSTKEY" \
+      "$temp/etc/ssh/initrd"
+
+    install -d -m 700 "$temp/root/.config/sops/age"
+    install -m 600 ~/.config/sops/age/keys.txt \
+      "$temp/root/.config/sops/age/keys.txt"
+
+    nix run github:numtide/nixos-anywhere -- \
+      --extra-files "$temp" \
+      --flake ".#{{host}}" \
+      "root@{{ip_address}}"
+
+
+
 
 
 apply target: pre-command-hooks
@@ -128,6 +161,11 @@ deploy-usb-remote-disk flake network_target block_device:
     ssh root@{{network_target}} nix run 'github:nix-community/disko/latest#disko-install' -- --extra-files /root/.config/sops/age/keys.txt /run/secrets/luks_password --flake 'github:danielgomez3/nix-config/new-main#{{flake}}' --write-efi-boot-entries --disk main {{block_device}}
 
 
+netboot:
+    nix build -f {{netbootdir}} -o /tmp/run-pixiecore
+    -sudo iptables -w -I nixos-fw -p udp -m multiport --dports 67,69,4011 -j ACCEPT
+    -sudo iptables -w -I nixos-fw -p tcp -m tcp --dport 64172 -j ACCEPT
+    sudo $(realpath /tmp/run-pixiecore)
 
 
 # 
@@ -153,7 +191,7 @@ commit:
 
 
 sed search replace file:
-    sed -i -E 's|\b__{{search}}__\b|{{replace}}|g' {{file}}
+    sed -i -E 's|__{{search}}__|{{replace}}|g' {{file}}
 
 # Provide full path of block device
 create-system platform host username block_device: nuke

@@ -33,7 +33,6 @@ in {
       "uas"
       "sd_mod"
     ];
-    boot.supportedFilesystems = ["zfs"];
     networking.hostId = genHostId config.myVars.hostname; # that means you also need to have a hostId, even if you're not using zfs.
 
     # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_17; # Change kernel if needed to support different file systems

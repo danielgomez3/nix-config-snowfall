@@ -43,7 +43,6 @@ in {
     myVars.isEphemeral = true;
     profiles.${namespace}.my.nixos = {
       features.persistence = enabled;
-      features.remote-unlock = enabled;
     };
 
     assertions = [
@@ -69,8 +68,6 @@ in {
         '';
       }
     ];
-
-    networking.hostId = genHostId config.myVars.hostname;
 
     disko.devices = {
       disk = {

@@ -1,4 +1,7 @@
 # modules/home/programs/git/default.nix
+# NOTE
+# create gpg key:
+# gpg --pinentry-mode loopback --passphrase '' --quick-generate-key "josh doe email"
 {
   lib,
   pkgs,
@@ -69,7 +72,7 @@ in {
       # };
       signing = {
         # gpg --list-secret-keys --keyid-format=long
-        key = "6827149CB91F9EAE"; # FIXME: put in sops, or put private key somewhere??
+        key = "D0FB99C8D0AECA2E"; # FIXME: put in sops, or put private key somewhere??
         signByDefault = true;
       };
     };

@@ -24,16 +24,20 @@ in {
   myVars.hostname = "server";
 
   profiles.${namespace}.my.nixos = {
-    disko.zfs-only-ephemeral = {
+    disko.ephemeral-zfs-luks = {
       enable = true;
-      encryption = true;
-      blockDevice = "/dev/nvme0n1";
-      swap = {
+      zfs = {
         enable = true;
-        swapPartSize = "16G";
+        root = {
+          encrypt = true;
+          disk1 = "nvme0n1";
+        };
+      };
+      initrd-ssh = {
+        enable = true;
+        ethernetDrivers = ["r8169"];
       };
     };
-
     bundles = {
       x86-64-uefi-boot = enabled;
       base-minimal-nixos = enabled;

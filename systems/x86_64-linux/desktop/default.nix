@@ -70,6 +70,7 @@ in {
       yubikey-gui-functionality = enabled;
       embedded-dev-environment = enabled;
       rdp-client-gnome = enabled;
+      netboot-server = enabled;
     };
     programs = {
       discord = enabled;

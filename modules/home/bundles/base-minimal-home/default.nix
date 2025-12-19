@@ -36,6 +36,7 @@ in {
         btop = enabled;
         eza = enabled;
         zoxide = enabled;
+        fzf = enabled;
       };
     };
   };
