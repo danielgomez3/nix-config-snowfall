@@ -1,5 +1,6 @@
 # TODO
 
+- remove luks option from ephemeral zfs 
 - Make wezterm fonts load correctly
 - make all disko assertions in a different file
 - change deploy recipe to 'just eval' before deploy
