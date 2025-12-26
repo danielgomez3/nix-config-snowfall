@@ -1,4 +1,4 @@
-# systems/x86_64-linux/minimal/default.nix
+# systems/x86_64-linux/minimal-linux/default.nix
 {
   lib,
   pkgs,
@@ -15,13 +15,13 @@
   inherit (lib.${namespace}) enabled;
 in {
   imports = [
-    ./hardware-configuration.nix
+    # ./hardware-configuration.nix
     # inputs.nixos-facter-modules.nixosModules.facter
     # {config.facter.reportPath = ./facter.json;}
   ];
 
   myVars.username = "daniel";
-  myVars.hostname = "minimal";
+  myVars.hostname = "minimal-linux";
 
   users.users.${config.myVars.username} = {
     isNormalUser = true;
@@ -29,9 +29,15 @@ in {
   };
 
   profiles.${namespace}.my.nixos = {
+    disko.simple-efi = {
+      enable = true;
+      blockDevice = "/dev/nvme0n1";
+    };
+
     bundles = {
       x86-64-uefi-boot = enabled;
       base-minimal-nixos = enabled;
+      gui-desktop-environment = enabled;
     };
     features = {
     };

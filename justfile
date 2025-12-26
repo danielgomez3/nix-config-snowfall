@@ -60,6 +60,13 @@ build-rawConfiguration host: pre-command-hooks
 eval-rawConfiguration host: pre-command-hooks
     nix eval .#rawConfigurations.{{host}}
 
+# builds .raw with secrest included using disko:
+build-diskImagesDisko host:
+    nix build .#nixosConfigurations.{{host}}.config.system.build.diskoImagesScript
+    ./result --pre-format-files ~/.config/sops/age/keys.txt /root/.config/sops/age/keys.txt \
+    --build-memory 2048
+
+
 # 
 #
 # Development
